@@ -19,7 +19,7 @@ def InitUsageConfig():
 	config.misc.remotecontrol_text_support = ConfigYesNo(default = True)
 
 	config.workaround = ConfigSubsection()
-	config.workaround.blueswitch = ConfigSelection(default = "0", choices = [("0", _("QuickMenu/Extensions")), ("1", _("Extensions/QuickMenu"))])
+	config.workaround.blueswitch = ConfigSelection(default = "1", choices = [("0", _("QuickMenu/Extensions")), ("1", _("Extensions/QuickMenu"))])
 	config.workaround.deeprecord = ConfigYesNo(default = False)
 
 	config.usage = ConfigSubsection()
@@ -683,7 +683,7 @@ def InitUsageConfig():
 	config.plisettings = ConfigSubsection()
 	config.plisettings.Subservice = ConfigYesNo(default = True)
 	config.plisettings.ColouredButtons = ConfigYesNo(default = False)
-	config.plisettings.InfoBarEpg_mode = ConfigSelection(default="3", choices = [
+	config.plisettings.InfoBarEpg_mode = ConfigSelection(default="0", choices = [
 					("0", _("as plugin in extended bar")),
 					("1", _("with long OK press")),
 					("2", _("with exit button")),

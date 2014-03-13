@@ -17,7 +17,7 @@
 		<menu level="0" text="Timers" entryID="timer_menu">
 			<id val="timermenu" />
 			<item weight="100" level="0" text="CronTimers" entryID="crontimer_edit"><screen module="CronTimer" screen="CronTimers" /></item>
-			<item weight="100" level="0" text="Timers" entryID="timer_edit"><screen module="TimerEdit" screen="TimerEditList" /></item>
+			<!--<item weight="100" level="0" text="Timers" entryID="timer_edit"><screen module="TimerEdit" screen="TimerEditList" /></item>-->
 			<item weight="100" level="0" text="PowerTimers" entryID="powertimer_edit"><screen module="PowerTimerEdit" screen="PowerTimerEditList" /></item>
 		</menu>
 		<item level="1" text="VCR scart" entryID="scart_switch" configcondition="config.usage.show_vcr_scart" requires="ScartSwitch"><code>self.session.scart.VCRSbChanged(3)</code></item>
@@ -54,13 +54,13 @@
 					<item level="0" entryID="display_setup"><setup id="display" /></item>
 					<item level="0" text="Skin setup" entryID="lcd_skin_setup"><screen module="SkinSelector" screen="LcdSkinSelector"/></item>
 				</menu>
-				<item level="0" entryID="specialfeatures_menu"><setup id="specialfeatures" /></item>
+				<!--<item level="0" entryID="specialfeatures_menu"><setup id="specialfeatures" /></item>
 				<item level="0" text="Timeshift settings" entryID="timshift_setup"><screen module="Timershift" screen="TimeshiftSettings" /></item>
-				<item level="0" text="Recording settings" entryID="recording_setup"><screen module="Recordings" screen="RecordingSettings" /></item>
+				<item level="0" text="Recording settings" entryID="recording_setup"><screen module="Recordings" screen="RecordingSettings" /></item>-->
 				<item level="1" text="Input devices" entryID="input_device_setup"><screen module="InputDeviceSetup" screen="InputDeviceSelection" /></item>
 				<item text="Keyboard" entryID="keyboard"><setup id="keyboard" /></item>
 				<item level="0" entryID="time_setup"><setup id="time"/></item>
-				<item level="0" entryID="logs_setup"><setup id="logs" /></item>
+				<!--<item level="0" entryID="logs_setup"><setup id="logs" /></item>-->
 				<menu level="2" text="OSD settings" entryID="osd_setup" requires="OsdMenu">
 					<id val="osd_menu" />
 					<item level="0" entryID="user_interface"><setup id="userinterface" /></item>
@@ -74,7 +74,7 @@
 					<item level="0" text="Filesystem Check" entryID="harddisk_check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection"/></item>
 					<item level="0" text="Convert ext3 filesystem to ext4" entryID="harddisk_convert" requires="ext4"><screen module="HarddiskSetup" screen="HarddiskConvertExt4Selection"/></item>
 				</menu>
-				<menu level="2" text="EPG" entryID="epg_menu">
+<!--				<menu level="2" text="EPG" entryID="epg_menu">
 					<id val="epg" />
 					<item level="0" entryID="epg_setup"><setup id="epgsettings" /></item>
 					<menu level="2" text="Load/Save" entryID="epgloadsave_menu">
@@ -107,7 +107,7 @@ self.session.openWithCallback(msgClosed, EpgLoadMsg)
 					<item level="2" entryID="setup_epginfobar"><setup id="epginfobar" /></item>
 					<item level="2" entryID="setup_epginfobargraphical"><setup id="epginfobargraphical" /></item>
 					<item level="2" entryID="setup_epggraphical"><setup id="epggraphical" /></item>
-				</menu>
+				      </menu>-->
 				<item level="0" text="HDMI CEC" entryID="hdmicec" requires="HDMICEC">
 <code>
 from Plugins.SystemPlugins.HdmiCEC.plugin import HdmiCECSetupScreen
@@ -122,7 +122,7 @@ from Plugins.SystemPlugins.RemoteControlCode.plugin import RemoteControlCode
 self.session.open(RemoteControlCode)
 </code>
 				</item>
-				<item level="0" entryID="dvdplayer_setup"><setup id="dvdplayer" /></item>
+				<!--<item level="0" entryID="dvdplayer_setup"><setup id="dvdplayer" /></item>-->
 				</menu>
 				<item level="0" text="Language" entryID="language_setup"><screen module="LanguageSelection" /></item>
 				<menu level="0" text="Network" entryID="network_menu">
