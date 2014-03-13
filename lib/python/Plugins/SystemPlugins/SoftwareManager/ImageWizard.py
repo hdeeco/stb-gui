@@ -1,66 +1,42 @@
-from Screens.Wizard import WizardSummary
+from os import access, W_OK, R_OK
+
+from enigma import eEnv
+
 from Screens.WizardLanguage import WizardLanguage
 from Screens.Wizard import wizardManager
 from Screens.Rc import Rc
-from Screens.Screen import Screen
-from Components.Label import Label
-from Components.MenuList import MenuList
-from Components.PluginComponent import plugins
-from Plugins.Plugin import PluginDescriptor
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
-from Components.Pixmap import Pixmap, MovingPixmap, MultiPixmap
-from os import popen, path, makedirs, listdir, access, stat, rename, remove, W_OK, R_OK
-from enigma import eEnv
-from boxbranding import getBoxType
-
-from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigText, ConfigLocations, ConfigBoolean
+from Components.Pixmap import Pixmap
+from Components.config import config, ConfigSubsection, ConfigText, ConfigLocations, ConfigBoolean
 from Components.Harddisk import harddiskmanager
 
-boxtype = getBoxType()
 
 config.misc.firstrun = ConfigBoolean(default = True)
 config.plugins.configurationbackup = ConfigSubsection()
-if boxtype in ('maram9', 'classm', 'axodin', 'axodinc', 'starsatlx', 'genius', 'evo'):
-	config.plugins.configurationbackup.backuplocation = ConfigText(default = '/media/backup/', visible_width = 50, fixed_size = False)
-else:
-	config.plugins.configurationbackup.backuplocation = ConfigText(default = '/media/hdd/', visible_width = 50, fixed_size = False)
-config.plugins.configurationbackup.backupdirs = ConfigLocations(default=[eEnv.resolve('${sysconfdir}/enigma2/'), '/etc/CCcam.cfg', '/etc/network/interfaces', '/etc/wpa_supplicant.conf', '/etc/wpa_supplicant.ath0.conf', '/etc/wpa_supplicant.wlan0.conf', '/etc/resolv.conf', '/etc/default_gw', '/etc/hostname'])
+config.plugins.configurationbackup.backuplocation = ConfigText(default = '/media/hdd/', visible_width = 50, fixed_size = False)
+config.plugins.configurationbackup.backupdirs = ConfigLocations(default=[eEnv.resolve('${sysconfdir}/enigma2/'), '/etc/network/interfaces', '/etc/wpa_supplicant.conf', '/etc/wpa_supplicant.ath0.conf', '/etc/wpa_supplicant.wlan0.conf', '/etc/resolv.conf', '/etc/default_gw', '/etc/hostname'])
 
 
 backupfile = "enigma2settingsbackup.tar.gz"
 
 def checkConfigBackup():
 	parts = [ (r.description, r.mountpoint) for r in harddiskmanager.getMountedPartitions(onlyhotplug = False)]
-	if boxtype in ('maram9', 'classm', 'axodin', 'axodinc', 'starsatlx', 'genius', 'evo'):
-		parts.append(('mtd backup','/media/backup'))
 	for x in parts:
 		if x[1] == '/':
 			parts.remove(x)
 	if len(parts):
 		for x in parts:
 			if x[1].endswith('/'):
-				fullbackupfile =  x[1] + 'backup_' + boxtype + '/' + backupfile
-				if fileExists(fullbackupfile):
-					config.plugins.configurationbackup.backuplocation.setValue(str(x[1]))
-					config.plugins.configurationbackup.backuplocation.save()
-					config.plugins.configurationbackup.save()
-					return x
 				fullbackupfile =  x[1] + 'backup/' + backupfile
 				if fileExists(fullbackupfile):
-					config.plugins.configurationbackup.backuplocation.setValue(str(x[1]))
+					config.plugins.configurationbackup.backuplocation.value = str(x[1])
 					config.plugins.configurationbackup.backuplocation.save()
 					config.plugins.configurationbackup.save()
 					return x
 			else:
-				fullbackupfile =  x[1] + '/backup_' + boxtype + '/' + backupfile
-				if fileExists(fullbackupfile):
-					config.plugins.configurationbackup.backuplocation.setValue(str(x[1]))
-					config.plugins.configurationbackup.backuplocation.save()
-					config.plugins.configurationbackup.save()
-					return x
 				fullbackupfile =  x[1] + '/backup/' + backupfile
 				if fileExists(fullbackupfile):
-					config.plugins.configurationbackup.backuplocation.setValue(str(x[1]))
+					config.plugins.configurationbackup.backuplocation.value = str(x[1])
 					config.plugins.configurationbackup.backuplocation.save()
 					config.plugins.configurationbackup.save()
 					return x
@@ -69,25 +45,17 @@ def checkConfigBackup():
 def checkBackupFile():
 	backuplocation = config.plugins.configurationbackup.backuplocation.getValue()
 	if backuplocation.endswith('/'):
-		fullbackupfile =  backuplocation + 'backup_' + boxtype + '/' + backupfile
+		fullbackupfile =  backuplocation + 'backup/' + backupfile
 		if fileExists(fullbackupfile):
 			return True
 		else:
-			fullbackupfile =  backuplocation + 'backup/' + backupfile
-			if fileExists(fullbackupfile):
-				return True
-			else:
-				return False
+			return False
 	else:
-		fullbackupfile =  backuplocation + '/backup_' + boxtype + '/' + backupfile
+		fullbackupfile =  backuplocation + '/backup/' + backupfile
 		if fileExists(fullbackupfile):
 			return True
 		else:
-			fullbackupfile =  backuplocation + '/backup/' + backupfile
-			if fileExists(fullbackupfile):
-				return True
-			else:
-				return False
+			return False
 
 if checkConfigBackup() is None:
 	backupAvailable = 0
@@ -117,7 +85,6 @@ class ImageWizard(WizardLanguage, Rc):
 		Rc.__init__(self)
 		self.session = session
 		self["wizard"] = Pixmap()
-		Screen.setTitle(self, _("Welcome..."))
 		self.selectedDevice = None
 		
 	def markDone(self):
@@ -142,7 +109,7 @@ class ImageWizard(WizardLanguage, Rc):
 		
 	def deviceSelect(self, device):
 		self.selectedDevice = device
-		config.plugins.configurationbackup.backuplocation.setValue(self.selectedDevice)
+		config.plugins.configurationbackup.backuplocation.value = self.selectedDevice
 		config.plugins.configurationbackup.backuplocation.save()
 		config.plugins.configurationbackup.save()
 
