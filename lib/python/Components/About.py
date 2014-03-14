@@ -31,7 +31,7 @@ def getChipSetString():
 		f = open('/proc/stb/info/chipset', 'r')
 		chipset = f.read()
 		f.close()
-		if chipset == "7405" and getModelString() == "unibox-uniboxhde":
+		if chipset == "7405\n" and getModelString() == "unibox-uniboxhde":
 			chipset = "7413"
 		return str(chipset.lower().replace('\n','').replace('bcm',''))
 	except IOError:
