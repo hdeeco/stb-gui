@@ -82,7 +82,7 @@ def skin_user_skinname():
 config.skin = ConfigSubsection()
 DEFAULT_SKIN = "Army_MoodBlue_mod/skin.xml"
 if not fileExists(resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)):
-	DEFAULT_SKIN = "MetrixHD/skin.xml"
+	DEFAULT_SKIN = "Vali.HD.flex/skin.xml"
 if not fileExists(resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)):
 	# in that case, fallback to Magic (which is an SD skin)
 	DEFAULT_SKIN = "skin.xml"
