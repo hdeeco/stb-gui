@@ -88,10 +88,10 @@
 	</map>
 
 	<map context="InfobarInstantRecord">
-		<key id="KEY_RECORD" mapto="instantRecord" flags="m" />
-		<key id="KEY_RECORD" mapto="ShortRecord" flags="b" />
-		<key id="KEY_RECORD" mapto="LongRecord" flags="l" />
-		<key id="KEY_RED" mapto="instantRecord" flags="b" />
+		<key id="KEY_RECORD" mapto="instantRecord2" flags="m" />
+		<key id="KEY_RECORD" mapto="ShortRecord2" flags="b" />
+		<key id="KEY_RECORD" mapto="LongRecord2" flags="l" />
+		<key id="KEY_RED" mapto="instantRecord2" flags="b" />
 	</map>
 
 	<map context="InfobarExtensions">
@@ -102,6 +102,7 @@
 		<key id="KEY_YELLOW" mapto="openEPGSearch" flags="b" />
 		<key id="KEY_YELLOW" mapto="openIMDB" flags="l" />
 		<key id="KEY_BLUE" mapto="showPluginBrowser" flags="l" /-->
+		<key id="KEY_PROGRAM" mapto="openTimerList" flags="b" />
 		<key id="KEY_F1" mapto="RedPressed" flags="b" />
 		<key id="KEY_F1" mapto="showEventInfo" flags="l" />
 		<key id="KEY_F2" mapto="openTimerList" flags="b" />
@@ -489,17 +490,17 @@
 	</map>
 
 	<map context="InfobarTimeshiftActions">
-		<key id="KEY_YELLOW" mapto="timeshiftStartY" flags="b" />
+		<key id="KEY_YELLOW" mapto="timeshiftStartY2" flags="b" />
 
 		<device name="dreambox ir keyboard">
-			<key id="KEY_YELLOW" mapto="timeshiftStartY" flags="m" />
-			<key id="KEY_TV" mapto="timeshiftStop" flags="m" />
+			<key id="KEY_YELLOW" mapto="timeshiftStartY2" flags="m" />
+			<key id="KEY_TV" mapto="timeshiftStop2" flags="m" />
 		</device>
-		<key id="KEY_PLAYPAUSE" mapto="timeshiftStart" flags="m" />
-		<key id="KEY_PAUSE" mapto="timeshiftStart" flags="m" />
-		<key id="KEY_STOP" mapto="timeshiftStop" flags="m" />
-		<key id="KEY_TIME" mapto="timeshiftStart" flags="m" />
-		<key id="KEY_RECORD" mapto="instantRecord" flags="m" />
+		<key id="KEY_PLAYPAUSE" mapto="timeshiftStart2" flags="m" />
+		<key id="KEY_PAUSE" mapto="timeshiftStart2" flags="m" />
+		<key id="KEY_STOP" mapto="timeshiftStop2" flags="m" />
+		<key id="KEY_TIME" mapto="timeshiftStart2" flags="m" />
+		<key id="KEY_RECORD" mapto="instantRecord2" flags="m" />
 		<key id="KEY_PREVIOUS" mapto="jumpPreviousFile" flags="m" />
 		<key id="KEY_NEXT" mapto="jumpNextFile" flags="m" />
 		<key id="KEY_STOP" mapto="instantRecord" flags="l" />
