@@ -4,6 +4,14 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 datarootdir=@datarootdir@
 
+# We only support UNiBOX Official Boxes not others
+if [ "$(cat /proc/stb/info/boxtype)" == 'unibox-hde' ]; then
+	echo "It is Unibox-HDe"
+else
+	echo "It is NOT Unibox-HDe"
+	reboot -f
+fi
+		
 # workaround for corrupt ssl files
 if [ ! "$(grep config.misc.firstrun /etc/enigma2/settings)" == "config.misc.firstrun=false" ]; then
 	rm -rf /etc/enigma2/cert.pem &

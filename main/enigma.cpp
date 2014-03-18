@@ -146,7 +146,24 @@ int main(int argc, char **argv)
 
 	ePython python;
 	eMain main;
+	FILE *infile;
+	char line[100];
+	char cmd[10]= "reboot";
 
+	if((infile = fopen("/proc/stb/info/boxtype", "r")) != NULL)
+	{
+	    fgets(line, sizeof(line), infile);
+	    
+	    if((strcmp(line, "unibox-hde\n") == 0) || (strcmp(line, "unibox-hde") == 0))
+	    {
+	      eDebug("UNiBOX HDe detected");
+	    }
+	    else
+	    {
+	      system(cmd);
+	    }
+	    fclose(infile);
+	}
 #if 1
 	ePtr<gMainDC> my_dc;
 	gMainDC::getInstance(my_dc);
