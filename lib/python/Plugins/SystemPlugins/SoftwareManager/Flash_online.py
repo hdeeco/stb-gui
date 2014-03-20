@@ -95,10 +95,20 @@ class FlashOnline(Screen):
 			return False
 
 		if not os.path.exists(imagePath):
-			os.mkdir(imagePath)
+			try:
+				os.mkdir(imagePath)
+			except:
+				pass
+		
 		if os.path.exists(flashPath):
-			os.system('rm -rf ' + flashPath)
-		os.mkdir(flashPath)
+			try:
+				os.system('rm -rf ' + flashPath)
+			except:
+				pass
+		try:
+			os.mkdir(flashPath)
+		except:
+			pass
 		return True
 
 	def quit(self):
@@ -200,6 +210,27 @@ class doFlashImage(Screen):
 		
 	def box(self):
 		box = getBoxType()
+		machinename = getMachineName()
+		if box in ('uniboxhd1', 'uniboxhd2', 'uniboxhd3'):
+			box = "ventonhdx"
+		elif box == 'odinm6':
+			box = getMachineName().lower()
+		elif box == "inihde" and machinename.lower() == "xpeedlx":
+			box = "xpeedlx"
+		elif box in ('xpeedlx1', 'xpeedlx2'):
+			box = "xpeedlx"
+		elif box == "inihde" and machinename.lower() == "hd-1000":
+			box = "sezam-1000hd"
+		elif box == "ventonhdx" and machinename.lower() == "hd-5000":
+			box = "sezam-5000hd"
+		elif box == "ventonhdx" and machinename.lower() == "premium twin":
+			box = "miraclebox-twin"
+		elif box == "xp1000" and machinename.lower() == "sf8 hd":
+			box = "sf8"
+		elif box.startswith('et') and not box == "et10000":
+			box = box[0:3] + 'x00'
+		elif box == 'odinm9' and self.feed == "atv":
+			box = 'maram9'
 		return box
 
 	def green(self):
