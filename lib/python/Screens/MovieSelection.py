@@ -1671,9 +1671,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase):
 		if args and (not args[0]):
 			# cancelled by user (passing any arg means it's a dialog return)
 			return
-		item = self.getCurrentSelection()
-		current = item[0]
-		info = item[1]
+		try:      
+			item = self.getCurrentSelection()
+			current = item[0]
+			info = item[1]
+		except:
+			return
 		cur_path = os.path.realpath(current.getPath())
 		if not os.path.exists(cur_path):
 			# file does not exist.
