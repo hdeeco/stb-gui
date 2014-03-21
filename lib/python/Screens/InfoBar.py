@@ -75,6 +75,7 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 				"showFormat": (self.showFormat, _("Show Format Setup...")),
 				"showPluginBrowser": (self.showPluginBrowser, _("Show the plugins...")),
 				"showBoxPortal": (self.showBoxPortal, _("Show Box Portal...")),
+				"showLanSetup": (self.showLanSetup, _("Show LAN Setup...")),
 			}, prio=2)
 
 		self["key_red"] = Label()
@@ -353,7 +354,11 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 			self.session.open(BoxPortal)
 		else:
 			self.showMovies()
-
+	
+	def showLanSetup(self):
+		from Screens.NetworkSetup import NetworkAdapterSelection
+		self.session.open(NetworkAdapterSelection)
+		
 class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBarMenu, InfoBarEPG, \
 		InfoBarSeek, InfoBarShowMovies, InfoBarInstantRecord, InfoBarAudioSelection, HelpableScreen, InfoBarNotifications,
 		InfoBarServiceNotifications, InfoBarPVRState, InfoBarCueSheetSupport, InfoBarSimpleEventView,
