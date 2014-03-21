@@ -557,7 +557,7 @@ def runScreenTest():
 			evfd.getInstance().vfd_write_string("-E2-")
 		evfd.getInstance().vfd_led(str(1))
 		
-	if boxtype in ('xp1000mk', 'xp1000max', 'sf8', 'classm', 'axodin', 'axodinc', 'starsatlx', 'genius', 'evo'):
+	if boxtype in ('sf8', 'classm', 'axodin', 'axodinc', 'starsatlx', 'genius', 'evo'):
 		f = open("/dev/dbox/oled0", "w")
 		f.write('-E2-')
 		f.close()
@@ -585,7 +585,7 @@ def runScreenTest():
 
 	#get currentTime
 	nowTime = time()
-	if not config.misc.SyncTimeUsing.getValue() == "0" or boxtype.startswith('gb') or boxtype.startswith('ini'):
+	if not config.misc.SyncTimeUsing.getValue() == "0" or boxtype.startswith('gb') or getBrandOEM().startswith('ini'):
 		print "dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime))
 		setRTCtime(nowTime)
 
