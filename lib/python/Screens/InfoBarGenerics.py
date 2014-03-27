@@ -1182,7 +1182,7 @@ class InfoBarChannelSelection:
 		self.session.execDialog(self.servicelist)
 
 	def zapUp(self):
-		if not self.LongButtonPressed:
+		#if not self.LongButtonPressed:
 			if self.pts_blockZap_timer.isActive():
 				return
 
@@ -1207,38 +1207,38 @@ class InfoBarChannelSelection:
 				self.servicelist.moveUp()
 			self.servicelist.zap(enable_pipzap = True)
 
-		elif self.LongButtonPressed:
-			if not hasattr(self.session, 'pip') and not self.session.pipshown:
-				self.session.open(MessageBox, _("Please open Picture in Picture first"), MessageBox.TYPE_ERROR)
-				return
+		#elif self.LongButtonPressed:
+			#if not hasattr(self.session, 'pip') and not self.session.pipshown:
+				#self.session.open(MessageBox, _("Please open Picture in Picture first"), MessageBox.TYPE_ERROR)
+				#return
 
-			from Screens.ChannelSelection import ChannelSelection
-			ChannelSelectionInstance = ChannelSelection.instance
-			ChannelSelectionInstance.dopipzap = True
-			if self.servicelist2.inBouquet():
-				prev = self.servicelist2.getCurrentSelection()
-				if prev:
-					prev = prev.toString()
-					while True:
-						if config.usage.quickzap_bouquet_change.getValue():
-							if self.servicelist2.atBegin():
-								self.servicelist2.prevBouquet()
-						self.servicelist2.moveUp()
-						cur = self.servicelist2.getCurrentSelection()
-						if cur:
-							if ChannelSelectionInstance.dopipzap:
-								isPlayable = self.session.pip.isPlayableForPipService(cur)
-							else:
-								isPlayable = isPlayableForCur(cur)
-						if cur and (cur.toString() == prev or isPlayable):
-							break
-			else:
-				self.servicelist2.moveUp()
-			self.servicelist2.zap(enable_pipzap = True)
-			ChannelSelectionInstance.dopipzap = False
+			#from Screens.ChannelSelection import ChannelSelection
+			#ChannelSelectionInstance = ChannelSelection.instance
+			#ChannelSelectionInstance.dopipzap = True
+			#if self.servicelist2.inBouquet():
+				#prev = self.servicelist2.getCurrentSelection()
+				#if prev:
+					#prev = prev.toString()
+					#while True:
+						#if config.usage.quickzap_bouquet_change.getValue():
+							#if self.servicelist2.atBegin():
+								#self.servicelist2.prevBouquet()
+						#self.servicelist2.moveUp()
+						#cur = self.servicelist2.getCurrentSelection()
+						#if cur:
+							#if ChannelSelectionInstance.dopipzap:
+								#isPlayable = self.session.pip.isPlayableForPipService(cur)
+							#else:
+								#isPlayable = isPlayableForCur(cur)
+						#if cur and (cur.toString() == prev or isPlayable):
+							#break
+			#else:
+				#self.servicelist2.moveUp()
+			#self.servicelist2.zap(enable_pipzap = True)
+			#ChannelSelectionInstance.dopipzap = False
 
 	def zapDown(self):
-		if not self.LongButtonPressed:
+		#if not self.LongButtonPressed:
 			if self.pts_blockZap_timer.isActive():
 				return
 
@@ -1262,35 +1262,35 @@ class InfoBarChannelSelection:
 			else:
 				self.servicelist.moveDown()
 			self.servicelist.zap(enable_pipzap = True)
-		elif self.LongButtonPressed:
-			if not hasattr(self.session, 'pip') and not self.session.pipshown:
-				self.session.open(MessageBox, _("Please open Picture in Picture first"), MessageBox.TYPE_ERROR)
-				return
+		#elif self.LongButtonPressed:
+			#if not hasattr(self.session, 'pip') and not self.session.pipshown:
+				#self.session.open(MessageBox, _("Please open Picture in Picture first"), MessageBox.TYPE_ERROR)
+				#return
 
-			from Screens.ChannelSelection import ChannelSelection
-			ChannelSelectionInstance = ChannelSelection.instance
-			ChannelSelectionInstance.dopipzap = True
-			if self.servicelist2.inBouquet():
-				prev = self.servicelist2.getCurrentSelection()
-				if prev:
-					prev = prev.toString()
-					while True:
-						if config.usage.quickzap_bouquet_change.value and self.servicelist2.atEnd():
-							self.servicelist2.nextBouquet()
-						else:
-							self.servicelist2.moveDown()
-						cur = self.servicelist2.getCurrentSelection()
-						if cur:
-							if ChannelSelectionInstance.dopipzap:
-								isPlayable = self.session.pip.isPlayableForPipService(cur)
-							else:
-								isPlayable = isPlayableForCur(cur)
-						if cur and (cur.toString() == prev or isPlayable):
-							break
-			else:
-				self.servicelist2.moveDown()
-			self.servicelist2.zap(enable_pipzap = True)
-			ChannelSelectionInstance.dopipzap = False
+			#from Screens.ChannelSelection import ChannelSelection
+			#ChannelSelectionInstance = ChannelSelection.instance
+			#ChannelSelectionInstance.dopipzap = True
+			#if self.servicelist2.inBouquet():
+				#prev = self.servicelist2.getCurrentSelection()
+				#if prev:
+					#prev = prev.toString()
+					#while True:
+						#if config.usage.quickzap_bouquet_change.value and self.servicelist2.atEnd():
+							#self.servicelist2.nextBouquet()
+						#else:
+							#self.servicelist2.moveDown()
+						#cur = self.servicelist2.getCurrentSelection()
+						#if cur:
+							#if ChannelSelectionInstance.dopipzap:
+								#isPlayable = self.session.pip.isPlayableForPipService(cur)
+							#else:
+								#isPlayable = isPlayableForCur(cur)
+						#if cur and (cur.toString() == prev or isPlayable):
+							#break
+			#else:
+				#self.servicelist2.moveDown()
+			#self.servicelist2.zap(enable_pipzap = True)
+			#ChannelSelectionInstance.dopipzap = False
 
 
 class InfoBarMenu:
