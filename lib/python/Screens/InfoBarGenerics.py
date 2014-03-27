@@ -2614,9 +2614,9 @@ class InfoBarExtensions:
 		self.addExtension(extension = self.getRestartNetwork, type = InfoBarExtensions.EXTENSION_LIST)
 
 	def bluekey_ex(self):
-		if config.workaround.blueswitch.getValue() == "1":
-			self.quickmenuStart()
-		else:
+		#if config.workaround.blueswitch.getValue() == "1":
+			#self.quickmenuStart()
+		#else:
 			self.showExtensionSelection()
 
 	def quickmenuStart(self):
