@@ -315,6 +315,11 @@ class UpdatePluginMenu(Screen):
 				elif (currentEntry == "system-backup"):
 					self.session.openWithCallback(self.backupDone,BackupScreen, runBackup = True)
 				elif (currentEntry == "system-restore"):
+					self.backuppath = getBackupPath()
+					if not os.path.isdir(self.backuppath):
+						self.backuppath = getOldBackupPath()
+					self.backupfile = getBackupFilename()
+					self.fullbackupfilename = self.backuppath + "/" + self.backupfile
 					if os_path.exists(self.fullbackupfilename):
 						self.session.openWithCallback(self.startRestore, MessageBox, _("Are you sure you want to restore the backup?\nYour receiver will restart after the backup has been restored!"))
 					else:
