@@ -3,6 +3,15 @@ from struct import pack, unpack
 from Components.config import config
 from boxbranding import getBoxType, getBrandOEM
 
+def getMicomVersion():
+	try:
+		file = open("/proc/stb/info/micomver", "r")
+		micomver = file.readline().strip()
+		file.close()
+		return micomver
+	except IOError:
+		return "unknown"
+	      
 def getFPVersion():
 	ret = None
 	try:

@@ -13,7 +13,7 @@ from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageVer
 from Components.Pixmap import MultiPixmap
 from Components.Network import iNetwork
 
-from Tools.StbHardware import getFPVersion
+from Tools.StbHardware import getFPVersion, getMicomVersion
 
 from os import path
 from re import search
@@ -50,9 +50,9 @@ class About(Screen):
 
 		AboutText += _("CPU:\t%s") % about.getCPUString() + "\n"
 		AboutText += _("Cores:\t%s") % about.getCpuCoresString() + "\n"
-
 		AboutText += _("Version:\t%s") % getImageVersion() + "\n"
-		AboutText += _("Build:\t%s") % getImageBuild() + "\n"
+		AboutText += _("Front Panel:\t%s") % getMicomVersion() + "\n"
+		#AboutText += _("Build:\t%s") % getImageBuild() + "\n"
 		AboutText += _("Kernel:\t%s") % about.getKernelVersionString() + "\n"
 
 		string = getDriverDate()
