@@ -223,14 +223,14 @@ class ImageBackup(Screen):
 		self.session.open(Console, title = self.TITLE, cmdlist = cmdlist, finishedCallback = self.doFullBackupCB, closeOnSuccess = True)
 
 	def doFullBackupCB(self):
-		ret = commands.getoutput(' gzip -d %s/vmlinux.gz -c > /tmp/vmlinux.bin' % self.WORKDIR)
-		if ret:
-			text = "Kernel dump error\n"
-			text += "Please Flash your Kernel new and Backup again"
-			system('rm -rf /tmp/vmlinux.bin')
-			self.session.open(MessageBox, _(text), type = MessageBox.TYPE_ERROR)
-			return
-
+		ret = commands.getoutput('gzip -d %s/vmlinux.gz -c > /tmp/vmlinux.bin' % self.WORKDIR)
+		# Sometimes it fails...We do not know why ret = 0 somtimes, so we addded to cmdlist
+		#if ret:
+			#text = "Kernel dump error\n"
+			#text += "Please Flash your Kernel new and Backup again"
+			#system('rm -rf /tmp/vmlinux.bin')
+			#self.session.open(MessageBox, _(text), type = MessageBox.TYPE_ERROR)
+			#return
 		cmdlist = []
 		cmdlist.append(self.message)
 		cmdlist.append('echo "Kernel dump OK"')
