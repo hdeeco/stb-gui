@@ -467,10 +467,27 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 		self["key_green"] = StaticText(_("Save"))
 		self["key_blue"] = StaticText(_("Edit DNS"))
 
-		self["VKeyIcon"] = Boolean(False)
+		self["VKeyIcon"] = Pixmap()
+		self["VKeyIcon"].hide()
+		self["HelpText"] = Label(_("Please press TEXT button to open Virtual keyboard"))
+		self["HelpText"].hide()
+		
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
-
+		
+		self["config"].onSelectionChanged.append(self.selectionChanged)
+		
+	def selectionChanged(self):
+		current = self["config"].getCurrent()
+		if current == self.wlanSSID or current == self.encryptionKey:
+			self["VKeyIcon"].hide()
+			self["HelpText"].show()
+		else:
+			self["VKeyIcon"].hide()
+			self["HelpText"].hide()  
+			
+		self.hideInputHelp()
+		
 	def layoutFinished(self):
 		self["DNS1"].setText(self.primaryDNS.getText())
 		self["DNS2"].setText(self.secondaryDNS.getText())
@@ -598,6 +615,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 							self.list.append(self.encryptionKey)
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
+		self["config"].onSelectionChanged.append(self.selectionChanged)
 
 	def KeyBlue(self):
 		self.session.openWithCallback(self.NameserverSetupClosed, NameserverSetup)
