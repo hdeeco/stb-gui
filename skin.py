@@ -125,7 +125,7 @@ except Exception, err:
 
 # Add Skin for Display
 try:
-	addSkin(config.vfd.show.getValue())
+	addSkin(config.vfd.show.value)
 except:
 	addSkin('skin_text.xml')
 
