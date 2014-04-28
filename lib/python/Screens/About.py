@@ -8,7 +8,7 @@ from Components.About import about
 from Components.ScrollLabel import ScrollLabel
 from Components.Console import Console
 from enigma import eTimer, getEnigmaVersionString
-from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageVersion, getImageBuild, getDriverDate
+from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageVersion, getImageBuild
 
 from Components.Pixmap import MultiPixmap
 from Components.Network import iNetwork
@@ -54,13 +54,7 @@ class About(Screen):
 		AboutText += _("Front Panel:\t%s") % getMicomVersion() + "\n"
 		#AboutText += _("Build:\t%s") % getImageBuild() + "\n"
 		AboutText += _("Kernel:\t%s") % about.getKernelVersionString() + "\n"
-
-		string = getDriverDate()
-		year = string[0:4]
-		month = string[4:6]
-		day = string[6:8]
-		driversdate = '-'.join((year, month, day))
-		AboutText += _("Drivers:\t%s") % driversdate + "\n"
+		AboutText += _("Drivers:\t%s") % about.getDriverBuildDateString() + "\n"
 
 		AboutText += _("Last update:\t%s") % getEnigmaVersionString() + "\n\n"
 
@@ -504,13 +498,7 @@ class AboutSummary(Screen):
 		AboutText += _("Version: %s") % getImageVersion() + "\n"
 		AboutText += _("Build: %s") % getImageVersion() + "\n"
 		AboutText += _("Kernel: %s") % about.getKernelVersionString() + "\n"
-
-		string = getDriverDate()
-		year = string[0:4]
-		month = string[4:6]
-		day = string[6:8]
-		driversdate = '-'.join((year, month, day))
-		AboutText += _("Drivers: %s") % driversdate + "\n"
+		AboutText += _("Drivers: %s") % about.getDriverBuildDateString() + "\n"
 		AboutText += _("Last update: %s") % getEnigmaVersionString() + "\n\n"
 
 		tempinfo = ""

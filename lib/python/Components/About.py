@@ -1,4 +1,4 @@
-from boxbranding import getImageVersion
+from boxbranding import getImageVersion, getDriverDate
 from sys import modules
 import socket, fcntl, struct
 
@@ -17,15 +17,29 @@ def getKernelVersionString():
 	except:
 		return _("unknown")
 	
-def getModelString():	
+def getModelString():
 	try:
 		file = open("/proc/stb/info/boxtype", "r")
 		model = file.readline().strip()
 		file.close()
 		return model
 	except IOError:
-		return "unknown"		
+		return "unknown"
 
+def getDriverBuildDateString():
+	try:
+		file = open("/proc/stb/info/buildate", "r")
+		model = file.readline().strip()
+		file.close()
+		return model
+	except IOError:
+		string = getDriverDate()
+		year = string[0:4]
+		month = string[4:6]
+		day = string[6:8]
+		driversdate = '-'.join((year, month, day))	  
+		return driversdate
+	      
 def getChipSetString():
 	try:
 		f = open('/proc/stb/info/chipset', 'r')
