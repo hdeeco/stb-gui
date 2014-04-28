@@ -17,8 +17,9 @@ import urllib2
 import os
 import shutil
 import math
-from boxbranding import getBoxType,  getImageDistro, getMachineName, getMachineBrand
+from boxbranding import getBoxType,  getImageDistro, getMachineName, getMachineBrand, getImageVersion
 distro =  getImageDistro()
+ImageVersion = getImageVersion()
 
 #############################################################################################################
 image = 0 # 0=openATV / 1=openMips
@@ -26,12 +27,12 @@ if distro.lower() == "openmips":
 	image = 1
 elif distro.lower() == "openatv":
 	image = 0
-feedurl_atv = 'http://images.mynonpublic.com/openatv/4.0'
+feedurl_atv = 'http://images.mynonpublic.com/openatv/%s' %ImageVersion
 feedurl_atv2= 'http://images.mynonpublic.com/openatv/3.0'
 feedurl_om = 'http://image.openmips.com/4.0'
-imagePath = '/hdd/images'
-flashPath = '/hdd/images/flash'
-flashTmp = '/hdd/images/tmp'
+imagePath = '/media/hdd/images'
+flashPath = '/media/hdd/images/flash'
+flashTmp = '/media/hdd/images/tmp'
 ofgwritePath = '/usr/bin/ofgwrite'
 #############################################################################################################
 
@@ -401,7 +402,7 @@ class doFlashImage(Screen):
 					self["key_blue"].setText("ATV 3.0")
 				else:
 					self.feedurl = feedurl_atv2
-					self["key_blue"].setText("ATV 4.0")
+					self["key_blue"].setText("ATV %s" %ImageVersion)
 			url = '%s/index.php?open=%s' % (self.feedurl,box)
 			req = urllib2.Request(url)
 			try:

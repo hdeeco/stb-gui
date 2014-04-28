@@ -415,7 +415,7 @@ msgid "1X"
 msgstr "1x"
 
 msgid "1st Infobar timeout"
-msgstr "1te Infoleiste Anzeidedauer"
+msgstr "1te Infoleiste Anzeigedauer"
 
 msgid "1 hour"
 msgstr "1 Stunde"
@@ -1797,6 +1797,10 @@ msgstr "Wähle was bei der 0-Taste passieren soll wenn PiP aktiv ist."
 msgid ""
 "Choose whether multi channel sound tracks should be downmixed to stereo."
 msgstr "Wähle ob Mehrkanalton zu Stereo runtergerechnet werden soll."
+
+msgid ""
+"Choose whether AAC sound tracks should be transcoded."
+msgstr "Wähle ob AAC transkodiert werden soll."
 
 msgid "Choose whether or not to show an icon when a motorized dish is moving."
 msgstr "Soll ein Icon angezeigt werden wenn sich ein Antennenrotor bewegt."

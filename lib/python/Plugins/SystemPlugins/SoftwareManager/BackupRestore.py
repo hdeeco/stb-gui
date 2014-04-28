@@ -21,7 +21,7 @@ from Tools.Directories import *
 from os import system, popen, path, makedirs, listdir, access, stat, rename, remove, W_OK, R_OK
 from time import gmtime, strftime, localtime, sleep
 from datetime import date
-from boxbranding import getBoxType
+from boxbranding import getBoxType, getMachineBrand, getMachineName
 
 boxtype = getBoxType()
 
@@ -363,13 +363,31 @@ class RestoreScreen(Screen, ConfigListScreen):
 
 	def checkPlugins(self):
 		if path.exists("/tmp/installed-list.txt"):
-			self.session.openWithCallback(self.restartGUI, installedPlugins)
+			if os.path.exists("/media/hdd/images/config/noplugins") and config.misc.firstrun.value:
+				self.userRestoreScript()
+			else:
+				self.session.openWithCallback(self.userRestoreScript, installedPlugins)
 		else:
-			self.restartGUI()
+			self.userRestoreScript()
+
+	def userRestoreScript(self, ret = None):
+		startSH = '/media/hdd/images/config/myrestore.sh'
+		if path.exists(startSH):
+			self.session.openWithCallback(self.restoreMetrixSkin, Console, title = _("Running Myrestore script, Please wait ..."), cmdlist = [startSH], closeOnSuccess = True)
+		else:
+			self.restoreMetrixSkin()
 
 	def restartGUI(self, ret = None):
-		self.console = eConsoleAppContainer()
-		self.console.execute("init 4;reboot")
+		self.session.open(Console, title = _("Your %s %s will Reboot...")% (getMachineBrand(), getMachineName()), cmdlist = ["init 4;reboot"])
+
+	def restoreMetrixSkin(self, ret = None):
+		try:
+			from Plugins.Extensions.MyMetrixLite.MainSettingsView import MainSettingsView
+			print"Restoring MyMetrixLite..."
+			MainSettingsView(None,True)
+		except:
+			pass
+		self.restartGUI()
 
 	def runAsync(self, finished_cb):
 		self.doRestore()
@@ -466,7 +484,10 @@ class installedPlugins(Screen):
 		if len(self.Menulist) == 0:
 			self.close()
 		else:
-			self.session.openWithCallback(self.startInstall, MessageBox, _("Backup plugins found\ndo you want to install now?"))
+			if os.path.exists("/media/hdd/images/config/plugins") and config.misc.firstrun.value:
+				self.startInstall(True)
+			else:
+				self.session.openWithCallback(self.startInstall, MessageBox, _("Backup plugins found\ndo you want to install now?"))
 
 	def startInstall(self, ret = None):
 		if ret:
@@ -505,6 +526,8 @@ class RestorePlugins(Screen):
 
 	def setWindowTitle(self):
 		self.setTitle(_("Restore Plugins"))
+		if os.path.exists("/media/hdd/images/config/plugins") and config.misc.firstrun.value:
+			self.green()
 
 	def exit(self):
 		self.close()
