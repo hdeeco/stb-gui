@@ -43,6 +43,18 @@ self.clearSelectedKeys()
 self.selectKey("OK")
 			</code>
 		</step>
+		<step id="upgrade">
+			<condition>
+config.misc.installwizard.hasnetwork.value and config.misc.installwizard.ipkgloaded.value
+			</condition>
+			<text value="Would you like to check for available updates for your %s %s ?" />
+			<config screen="InstallWizard" module="InstallWizard" args="3" type="ConfigList" />
+			<code>
+self.clearSelectedKeys()
+self.selectKey("UP")
+self.selectKey("DOWN")
+			</code>
+		</step>
 		<step id="networkfailed" >
 			<condition>
 self.condition = not config.misc.installwizard.ipkgloaded.value

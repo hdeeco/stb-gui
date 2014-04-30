@@ -10,13 +10,14 @@ config.misc.installwizard = ConfigSubsection()
 config.misc.installwizard.hasnetwork = ConfigBoolean(default = False)
 config.misc.installwizard.ipkgloaded = ConfigBoolean(default = False)
 config.misc.installwizard.channellistdownloaded = ConfigBoolean(default = False)
-
+config.misc.installwizard.upgradeimage = ConfigBoolean(default = False)
 
 class InstallWizard(Screen, ConfigListScreen):
 
 	STATE_UPDATE = 0
 	STATE_CHOISE_CHANNELLIST = 1
 # 	STATE_CHOISE_SOFTCAM = 2
+	STATE_CHOISE_IMAGE_UPGRADE = 3
 
 	def __init__(self, session, args = None):
 		Screen.__init__(self, session)
@@ -53,7 +54,12 @@ class InstallWizard(Screen, ConfigListScreen):
 # 			modes = {"cccam": _("default") + " (CCcam)", "scam": "scam"}
 # 			self.softcam_type = ConfigSelection(choices = modes, default = "cccam")
 # 			self.createMenu()
-
+		elif self.index == self.STATE_CHOISE_IMAGE_UPGRADE:
+			modes = {"yes": _(" "), "no": _(" ")}
+			modes2 = {"yes": _(" "), "no": _(" ")}
+			self.enabled = ConfigSelection(choices = modes, default = "yes")
+			self.enabled2 = ConfigSelection(choices = modes2, default = "no")
+			self.createMenu()
 	def checkNetworkCB(self, data):
 		if data < 3:
 			config.misc.installwizard.hasnetwork.value = True
@@ -84,6 +90,11 @@ class InstallWizard(Screen, ConfigListScreen):
 # 			self.list.append(getConfigListEntry(_("Install softcam"), self.enabled))
 # 			if self.enabled.value:
 # 				self.list.append(getConfigListEntry(_("Softcam type"), self.softcam_type))
+		elif self.index == self.STATE_CHOISE_IMAGE_UPGRADE:
+			self.yes = getConfigListEntry(_("Yes, please check for updates"), self.enabled)
+			self.list.append(self.yes)
+			self.no = getConfigListEntry(_("No, skip this step"), self.enabled2)
+			self.list.append(self.no)
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
 
@@ -107,6 +118,9 @@ class InstallWizard(Screen, ConfigListScreen):
 			self.session.open(InstallWizardIpkgUpdater, self.index, _('Please wait (downloading channel list)'), IpkgComponent.CMD_REMOVE, {'package': 'enigma2-plugin-settings-' + self.channellist_type.value})
 # 		elif self.index == self.STATE_CHOISE_SOFTCAM and self.enabled.value:
 # 			self.session.open(InstallWizardIpkgUpdater, self.index, _('Please wait (downloading softcam)'), IpkgComponent.CMD_INSTALL, {'package': 'enigma2-plugin-softcams-' + self.softcam_type.value})
+		elif self.index == self.STATE_CHOISE_IMAGE_UPGRADE and self["config"].getCurrent() == self.yes:
+			from Screens.SoftwareUpdate import UpdatePlugin
+			self.session.open(UpdatePlugin)
 		return
 
 
