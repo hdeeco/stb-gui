@@ -120,7 +120,7 @@ class PowerTimerEntry(timer.TimerEntry, object):
 
 		elif next_state == self.StateRunning:
 			self.wasPowerTimerWakeup = False
-			if os.path.exists("/tmp/was_timer_wakeup"):
+			if os.path.exists("/tmp/was_powertimer_wakeup"):
 				self.wasPowerTimerWakeup = int(open("/tmp/was_powertimer_wakeup", "r").read()) and True or False
 				os.remove("/tmp/was_powertimer_wakeup")
 			# if this timer has been cancelled, just go to "end" state.
@@ -158,7 +158,10 @@ class PowerTimerEntry(timer.TimerEntry, object):
 					if self.end <= self.begin:
 						self.end = self.begin
 
-			elif self.timerType == TIMERTYPE.AUTODEEPSTANDBY:
+			elif self.timerType == TIMERTYPE.AUTODEEPSTANDBY and self.wasPowerTimerWakeup:
+				return True
+
+			elif self.timerType == TIMERTYPE.AUTODEEPSTANDBY and not self.wasPowerTimerWakeup:
 				if (NavigationInstance.instance.RecordTimer.isRecording() or abs(NavigationInstance.instance.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(NavigationInstance.instance.RecordTimer.getNextZapTime() - time()) <= 900) or (self.autosleepinstandbyonly == 'yes' and not Screens.Standby.inStandby):
 					self.do_backoff()
 					# retry
@@ -168,6 +171,7 @@ class PowerTimerEntry(timer.TimerEntry, object):
 					return False
 				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
 					if Screens.Standby.inStandby: # in standby
+						print "[PowerTimer] quitMainloop #1"
 						quitMainloop(1)
 						return True
 					else:
@@ -193,6 +197,7 @@ class PowerTimerEntry(timer.TimerEntry, object):
 					return False
 				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
 					if Screens.Standby.inStandby: # in standby
+						print "[PowerTimer] quitMainloop #2"
 						quitMainloop(1)
 					else:
 						Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A finished powertimer wants to shutdown your %s %s.\nDo that now?") % (getMachineBrand(), getMachineName()), timeout = 180)
@@ -208,6 +213,7 @@ class PowerTimerEntry(timer.TimerEntry, object):
 					return False
 				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
 					if Screens.Standby.inStandby: # in standby
+						print "[PowerTimer] quitMainloop #3"
 						quitMainloop(2)
 					else:
 						Notifications.AddNotificationWithCallback(self.sendTryToRebootNotification, MessageBox, _("A finished powertimer wants to reboot your %s %s.\nDo that now?") % (getMachineBrand(), getMachineName()), timeout = 180)
@@ -223,6 +229,7 @@ class PowerTimerEntry(timer.TimerEntry, object):
 					return False
 				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
 					if Screens.Standby.inStandby: # in standby
+						print "[PowerTimer] quitMainloop #4"
 						quitMainloop(3)
 					else:
 						Notifications.AddNotificationWithCallback(self.sendTryToRestartNotification, MessageBox, _("A finished powertimer wants to restart the user interface.\nDo that now?"), timeout = 180)
@@ -244,6 +251,7 @@ class PowerTimerEntry(timer.TimerEntry, object):
 					return False
 				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
 					if Screens.Standby.inStandby: # in standby
+						print "[PowerTimer] quitMainloop #5"
 						quitMainloop(1)
 					else:
 						Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A finished power timer wants to shut down\nyour %s %s. Shutdown now?") % (getMachineBrand(), getMachineName()), timeout = 180)

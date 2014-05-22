@@ -130,6 +130,7 @@ void eRCDeviceInputDev::handleCode(long rccode)
 		
 	}
 #endif	
+
 	
 #if KEY_VIDEO_TO_KEY_EPG
 	if (ev->code == KEY_VIDEO)
