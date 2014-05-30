@@ -29,7 +29,11 @@ if distro.lower() == "openmips":
 elif distro.lower() == "openatv":
 	image = 0
 feedurl_atv = 'http://images.mynonpublic.com/openatv/%s' %ImageVersion
-feedurl_atv2= 'http://images.mynonpublic.com/openatv/3.0'
+if ImageVersion == '4.0' or ImageVersion == '3.0':
+	ImageVersion2= '4.1'
+else:
+	ImageVersion2= '4.0'
+feedurl_atv2= 'http://images.mynonpublic.com/openatv/%s' %ImageVersion2
 feedurl_om = 'http://image.openmips.com/4.0'
 imagePath = '/media/hdd/images'
 flashPath = '/media/hdd/images/flash'
@@ -305,9 +309,31 @@ class doFlashImage(Screen):
 			(_("Flash and restore settings and selected plugins (ask user)"), "restoresettings"),
 			(_("Flash and restore settings and all saved plugins"), "restoresettingsandallplugins"),
 			(_("Do not flash image"), "abort"))
-			self.session.openWithCallback(self.postFlashActionCallback, ChoiceBox,title=title,list=list)
+			self.session.openWithCallback(self.postFlashActionCallback, ChoiceBox,title=title,list=list,selection=self.SelectPrevPostFashAction())
 		else:
 			self.show()
+
+	def SelectPrevPostFashAction(self):
+		index = 0
+		Settings = False
+		AllPlugins = False
+		noPlugins = False
+		
+		if os.path.exists('/media/hdd/images/config/settings'):
+			Settings = True
+		if os.path.exists('/media/hdd/images/config/plugins'):
+			AllPlugins = True
+		if os.path.exists('/media/hdd/images/config/noplugins'):
+			noPlugins = True
+
+		if 	Settings and noPlugins:
+			index = 1
+		elif Settings and not AllPlugins and not noPlugins:
+			index = 2
+		elif Settings and AllPlugins:
+			index = 3
+
+		return index
 
 	def postFlashActionCallback(self, answer):
 		print "postFlashActionCallback"
@@ -476,7 +502,7 @@ class doFlashImage(Screen):
 			else:
 				if self.feed == "atv":
 					self.feedurl = feedurl_atv
-					self["key_blue"].setText("ATV 3.0")
+					self["key_blue"].setText("ATV %s" %ImageVersion2)
 				else:
 					self.feedurl = feedurl_atv2
 					self["key_blue"].setText("ATV %s" %ImageVersion)

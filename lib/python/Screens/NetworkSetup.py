@@ -584,9 +584,9 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 				self.list.append(self.gatewayEntry)
 				if self.hasGatewayConfigEntry.value:
 					self.list.append(getConfigListEntry(_('Gateway'), self.gatewayConfigEntry))
-			if SystemInfo["WOL"] and self.iface == 'eth0':
+			if SystemInfo["WakeOnLAN"] and self.iface == 'eth0':
 				if not getBoxType() == 'gbquad' :
-					self.wakeonlan = getConfigListEntry(_('Use WOL'), config.network.wol)
+					self.wakeonlan = getConfigListEntry(_('Use WakeOnLAN'), config.network.wol)
 					self.list.append(self.wakeonlan)
 
 			self.extended = None
@@ -2104,10 +2104,10 @@ class NetworkNfs(Screen):
 		self.updateService()
 
 	def Nfsset(self):
-		if fileExists('/etc/rc2.d/S20nfsserver'):
+		if fileExists('/etc/rc2.d/S11nfsserver'):
 			self.Console.ePopen('update-rc.d -f nfsserver remove', self.StartStopCallback)
 		else:
-			self.Console.ePopen('update-rc.d -f nfsserver defaults', self.StartStopCallback)
+			self.Console.ePopen('update-rc.d -f nfsserver defaults 11', self.StartStopCallback)
 
 	def updateService(self):
 		import process
@@ -2118,7 +2118,7 @@ class NetworkNfs(Screen):
 		self['labactive'].setText(_("Disabled"))
 		self.my_nfs_active = False
 		self.my_nfs_run = False
-		if fileExists('/etc/rc2.d/S20nfsserver'):
+		if fileExists('/etc/rc2.d/S11nfsserver'):
 			self['labactive'].setText(_("Enabled"))
 			self['labactive'].show()
 			self.my_nfs_active = True
@@ -2378,7 +2378,8 @@ class NetworkSamba(Screen):
 
 	def RemovedataAvail(self, str, retval, extra_args):
 		if str:
-			self.session.openWithCallback(self.RemovePackage, MessageBox, _('Ready to remove %s ?') % self.service_name, MessageBox.TYPE_YESNO)
+			restartbox = self.session.openWithCallback(self.RemovePackage,MessageBox,_('Your %s %s will be restarted after the removal of service\nDo you want to remove now ?') % (getMachineBrand(), getMachineName()), MessageBox.TYPE_YESNO)
+			restartbox.setTitle(_('Ready to remove "%s" ?') % self.service_name)
 		else:
 			self.updateService()
 

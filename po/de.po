@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: tuxbox-enigma 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-05 14:38+0000\n"
-"PO-Revision-Date: 2014-05-20 01:19+0100\n"
+"PO-Revision-Date: 2014-05-28 02:18+0100\n"
 "Last-Translator: mike99 <mike99@gmx.net>\n"
 "Language-Team: openATV\n"
 "Language: de\n"
@@ -747,7 +747,11 @@ msgstr "Aktiviere"
 
 #
 msgid "Activate Picture in Picture"
-msgstr "Bild in Bild aktivieren"
+msgstr "Bild-in-Bild aktivieren"
+
+#
+msgid "Setup Picture in Picture"
+msgstr "Einstellungen Bild-in-Bild"
 
 #
 msgid "Activate network settings"
@@ -3076,7 +3080,7 @@ msgstr ""
 "werden Zusatzinformationen angezeigt. Skin muss es unterstützen."
 
 msgid "Enable freesat EPG"
-msgstr "freesat EPG aktivieren"
+msgstr "Freesat EPG aktivieren"
 
 msgid "Enable subtitles for the hearing impaired."
 msgstr "Untertitel für Hörgeschädigte aktivieren."
@@ -4177,7 +4181,7 @@ msgid "Intermediate"
 msgstr "Fortgeschritten"
 
 #
-msgid "Internal Flash"
+msgid "Internal flash"
 msgstr "Interner Flash"
 
 msgid "Internal hdd only"
@@ -4661,10 +4665,6 @@ msgstr "Verschieben"
 
 msgid "Move Left/Right"
 msgstr "Links/Rechts"
-
-#
-msgid "Move Picture in Picture"
-msgstr "Verschiebe Bild-in-Bild"
 
 msgid "Move Up/Down"
 msgstr "Hoch/Runter"
@@ -5499,7 +5499,7 @@ msgstr "Bitte neu starten"
 
 #
 msgid "Please select medium to be scanned"
-msgstr "Bitte Medium zum Scannen auswählen"
+msgstr "Bitte Medium auswählen"
 
 #
 msgid "Please add titles to the compilation."
@@ -5689,7 +5689,7 @@ msgstr "Eine untenstehende Option auswählen."
 
 #
 msgid "Please select medium to use as backup location"
-msgstr "Datenträger als Sicherungs-Speicherort auswählen"
+msgstr "Sicherungs-Speicherort auswählen"
 
 #
 msgid "Please select tag to filter..."
@@ -5736,16 +5736,6 @@ msgstr "Tuner D einstellen."
 
 msgid "Please setup your tuner configuration."
 msgstr "Bitte Tuner-Konfiguration festlegen."
-
-#
-msgid ""
-"Please use direction keys to move the PiP window.\n"
-"Press Bouquet +/- to resize the window.\n"
-"Press OK to go back to the TV mode or EXIT to cancel the moving."
-msgstr ""
-"Verschieben des 'Bild in Bild' über die Navigationstasten.\n"
-"Bouquet +/- drücken, um die Größe zu ändern.\n"
-"OK zum speichern, Exit zum abbrechen."
 
 #
 msgid ""
@@ -5876,6 +5866,9 @@ msgstr "Benutzerdefinierter Transponder"
 msgid "Prefer AC3 track"
 msgstr "AC3 bevorzugen"
 
+msgid "Prefer AC3+ track"
+msgstr "AC3+ bevorzugen"
+
 msgid "Prefer graphical DVB subtitles"
 msgstr "Grafische DVB-Untertitel bevorzugen"
 
@@ -5921,9 +5914,6 @@ msgstr "Weiteren USB-Stick zum Image-Flashen vorbereiten"
 #
 msgid "Preparing... Please wait"
 msgstr "Vorbereitung läuft... Bitte warten!"
-
-msgid "Press '0' to toggle internal/external PiP."
-msgstr "\"0\" drücken zum Umschalten internes/externes PiP"
 
 msgid "Press Green/OK to start the scan"
 msgstr "Grün / OK drücken um Scan zu beginnen"
@@ -13145,7 +13135,8 @@ msgid "Setup Videomode"
 msgstr "Konfiguration Video"
 
 msgid "Setup your Video Mode, Video Output and other Video Settings"
-msgstr "Einstellungen Video Mode, Video Ausgang und andere Video-Einstellungen."
+msgstr ""
+"Einstellungen Video Mode, Video Ausgang und andere Video-Einstellungen."
 
 msgid "Setup Tuner"
 msgstr "Tuner Konfiguration"
@@ -15382,3 +15373,29 @@ msgid "Do you really want to permamently remove '%s' from trash can ?"
 msgstr ""
 "Wollen Sie '%s'\n"
 "wirklich aus dem Papierkorb entfernen?"
+
+msgid "Setup AutoLanguage"
+msgstr "Einstellungen Sprachenwahl"
+
+# PiPSetup.py
+msgid ""
+"Please use direction keys to move the PiP window.\n"
+"Press Bouquet +/- to resize the window.\n"
+"Press Info to switch PiP mode.\n"
+"Press OK to go back to the TV mode or EXIT to cancel the moving."
+msgstr ""
+"Verschieben des 'Bild-in-Bild' über die Navigationstasten.\n"
+"Bouquet +/- drücken, um die Größe zu ändern.\n"
+"Mit der Infotaste den PiP-Modus ändern.\n"
+"OK zum speichern, Exit zum abbrechen."
+
+# PiPSetup.py
+msgid "Press '0' to toggle internal/external PiP."
+msgstr "\"0\" drücken zum Umschalten internes/externes PiP."
+
+# setup.xml
+msgid "Show Restart Network in Extensions list *"
+msgstr "Netzwerk-Neustart im Erweiterungs-Menü anzeigen *"
+
+msgid "PANEL-Info"
+msgstr "Info Panel"
