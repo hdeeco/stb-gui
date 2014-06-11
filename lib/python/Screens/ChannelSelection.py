@@ -1784,7 +1784,10 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 		elif not (ref.flags & eServiceReference.isMarker or ref.type == -1):
 			root = self.getRoot()
 			if not root or not (root.flags & eServiceReference.isGroup):
-				self.zap(enable_pipzap = doClose, preview_zap = not doClose)
+				try:
+					self.zap(enable_pipzap = doClose, preview_zap = not doClose)
+				except:
+					self.zap(enable_pipzap = doClose)
 				self.asciiOff()
 				if doClose:
 					if self.dopipzap:
