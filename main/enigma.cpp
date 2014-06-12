@@ -198,7 +198,7 @@ int main(int argc, char **argv)
 	{
 	    fgets(line, sizeof(line), infile);
 	    
-	    if((strcmp(line, "unibox-hde\n") == 0) || (strcmp(line, "unibox-hde") == 0))
+	    if((strcmp(line, "unibox-hde\n") == 0) || (strcmp(line, "unibox-hde") == 0) || (strcmp(line, "ini-3000\n") == 0)|| (strcmp(line, "ini-5000\n") == 0)|| (strcmp(line, "ini-7000\n") == 0)|| (strcmp(line, "ini-7012\n") == 0))
 	    {
 	      eDebug("UNiBOX HDe detected");
 	    }
