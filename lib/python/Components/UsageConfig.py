@@ -1,6 +1,5 @@
 import os
 from time import time
-
 from enigma import eDVBDB, eEPGCache, setTunerTypePriorityOrder, setPreferredTuner, setSpinnerOnOff, setEnableTtCachingOnOff, eEnv, Misc_Options, eBackgroundFileEraser, eServiceEvent
 
 from Components.About import about
@@ -11,6 +10,7 @@ from Components.NimManager import nimmanager
 from Components.ServiceList import refreshServiceList
 from SystemInfo import SystemInfo
 from Tools.HardwareInfo import HardwareInfo
+from boxbranding import getBoxType
 
 def InitUsageConfig():
 	config.plugins.infopanel_redpanel = ConfigSubsection()
@@ -46,6 +46,12 @@ def InitUsageConfig():
 	config.usage.servicetype_icon_mode.addNotifier(refreshServiceList)
 	config.usage.crypto_icon_mode = ConfigSelection(default = "0", choices = [("0", _("None")), ("1", _("Left from servicename")), ("2", _("Right from servicename"))])
 	config.usage.crypto_icon_mode.addNotifier(refreshServiceList)
+
+	choicelist = [("-1", _("Devide")), ("0", _("Disable"))]
+	for i in range(100,1300,100):
+		choicelist.append(("%d" % i, ngettext("%d pixel wide", "%d pixels wide", i) % i))
+	config.usage.servicelist_column = ConfigSelection(default="0", choices=choicelist)
+	config.usage.servicelist_column.addNotifier(refreshServiceList)
 
 	config.usage.service_icon_enable = ConfigYesNo(default = False)
 	config.usage.service_icon_enable.addNotifier(refreshServiceList)
@@ -437,6 +443,14 @@ def InitUsageConfig():
 	config.usage.keymap = ConfigText(default = eEnv.resolve("${datadir}/enigma2/keymap.xml"))
 
 	config.network = ConfigSubsection()
+	if SystemInfo["WakeOnLAN"]:
+		def wakeOnLANChanged(configElement):
+			if getBoxType() == 'et10000':
+				open(SystemInfo["WakeOnLAN"], "w").write(configElement.value and "on" or "off")
+			else:
+				open(SystemInfo["WakeOnLAN"], "w").write(configElement.value and "enable" or "disable")		
+		config.network.wol = ConfigYesNo(default = False)
+		config.network.wol.addNotifier(wakeOnLANChanged)
 	config.network.AFP_autostart = ConfigYesNo(default = False)
 	config.network.NFS_autostart = ConfigYesNo(default = True)
 	config.network.OpenVPN_autostart = ConfigYesNo(default = False)

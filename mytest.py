@@ -92,7 +92,7 @@ def NTPserverChanged(configelement):
 	os.chmod("/etc/default/ntpdate", 0755)
 	from Components.Console import Console
 	Console = Console()
-	Console.ePopen('/usr/bin/ntpdate ' + config.misc.NTPserver.value)
+	Console.ePopen('/usr/bin/ntpdate-sync')
 config.misc.NTPserver.addNotifier(NTPserverChanged, immediate_feedback = True)
 
 profile("Twisted")
@@ -730,8 +730,7 @@ import keymapparser
 keymapparser.readKeymap(config.usage.keymap.value)
 
 profile("Network")
-import Components.Network, Components.Wol
-Components.Wol.Init()
+import Components.Network
 Components.Network.InitNetwork()
 
 profile("LCD")
