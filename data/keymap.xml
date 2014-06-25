@@ -204,6 +204,7 @@
 		<key id="KEY_MENU" mapto="mainMenu" flags="mr" />
 		<key id="KEY_SPACE" mapto="mainMenu" flags="mr" />
 		<key id="KEY_PC" mapto="showNetworkSetup" flags="mr" />
+		<key id="KEY_LAN" mapto="showNetworkSetup" flags="mr" />		
 		<key id="KEY_ANGLE" mapto="showRFmod" flags="l" /> 
 		<key id="KEY_ANGLE" mapto="toggleAspectRatio" flags="b" />
 		<key id="KEY_VMODE" mapto="toggleAspectRatio" flags="b" />			
@@ -508,8 +509,16 @@
 	</map>
 
 	<map context="InfobarTimeshiftActions">
-		<key id="KEY_YELLOW" mapto="timeshiftStartY2" flags="b" />
-
+		<key id="KEY_YELLOW" mapto="timeshiftStart" flags="b" />
+		<device name="dreambox advanced remote control (native)">
+			<key id="KEY_PLAY" mapto="timeshiftStart" flags="m" />
+			<key id="KEY_TV" mapto="timeshiftStop" flags="m" />
+			<key id="KEY_STOP" mapto="timeshiftStop" flags="m" />
+		</device>
+		<device name="dreambox remote control (native)">
+			<key id="KEY_YELLOW" mapto="timeshiftStart" flags="b" />
+			<key id="KEY_TV" mapto="timeshiftStop" flags="m" />
+		</device>
 		<device name="dreambox ir keyboard">
 			<key id="KEY_YELLOW" mapto="timeshiftStartY2" flags="m" />
 			<key id="KEY_TV" mapto="timeshiftStop2" flags="m" />

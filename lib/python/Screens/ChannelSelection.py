@@ -333,7 +333,7 @@ class ChannelContextMenu(Screen):
 				self.session.openWithCallback(self.close, MessageBox, _("Could not open Picture in Picture"), MessageBox.TYPE_ERROR)
 		else:
 			self.session.open(MessageBox, _("Your %s %s does not support PiP HD") % (getMachineBrand(), getMachineName()), type = MessageBox.TYPE_INFO,timeout = 5 )
-			
+
 	def addServiceToBouquetSelected(self):
 		bouquets = self.csel.getBouquetList()
 		if bouquets is None:
