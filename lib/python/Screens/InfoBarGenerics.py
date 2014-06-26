@@ -3000,7 +3000,7 @@ class InfoBarPiP:
 			service = self.session.nav.getCurrentService()
 			info = service and service.info()
 			xres = str(info.getInfo(iServiceInformation.sVideoWidth))
-			if int(xres) <= 720 or not getMachineBuild() == 'blackbox7405':
+			if int(xres) <= 720 or not getMachineBuild() in ('blackbox7405', 'inihdx'):
 				self.session.pip = self.session.instantiateDialog(PictureInPicture)
 				self.session.pip.show()
 				newservice = self.lastPiPService or self.session.nav.getCurrentlyPlayingServiceReference() or self.servicelist.servicelist.getCurrent()

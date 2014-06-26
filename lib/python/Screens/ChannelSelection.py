@@ -315,7 +315,7 @@ class ChannelContextMenu(Screen):
 		service = self.session.nav.getCurrentService()
 		info = service and service.info()
 		xres = str(info.getInfo(iServiceInformation.sVideoWidth))
-		if int(xres) <= 720 or not getMachineBuild() == 'blackbox7405':
+		if int(xres) <= 720 or not getMachineBuild() in ('blackbox7405', 'inihdx'):
 			if not self.pipAvailable:
 				return
 			if self.session.pipshown:
