@@ -4,6 +4,7 @@ from enigma import ePixmap, ePicLoad
 from Tools.Alternatives import GetWithAlternative
 from Tools.Directories import pathExists, SCOPE_ACTIVE_SKIN, resolveFilename
 from Components.Harddisk import harddiskmanager
+from Components.config import config, ConfigBoolean
 
 searchPaths = []
 lastPiconPath = None
@@ -132,10 +133,13 @@ class Picon(Renderer):
 				pngname = getPiconName(self.source.text)
 				if not pathExists(pngname): # no picon for service found
 					pngname = self.defaultpngname
+				if not config.usage.showpicon.value:
+					pngname = self.nopicon
 				if self.pngname != pngname:
 					if pngname:
-						self.PicLoad.setPara((self.piconsize[0], self.piconsize[1], 0, 0, 1, 1, "#FF000000"))
-						self.PicLoad.startDecode(pngname)
+						self.instance.setScale(1)
+						self.instance.setPixmapFromFile(pngname)
+						self.instance.show()
 					else:
 						self.instance.hide()
 					self.pngname = pngname
