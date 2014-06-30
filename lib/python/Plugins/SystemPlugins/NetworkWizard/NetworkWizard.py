@@ -71,6 +71,32 @@ class NetworkWizard(WizardLanguage, Rc):
 		self.getInstalledInterfaceCount()
 		self.isWlanPluginInstalled()
 
+	def KeyText(self):
+		sel = self['config'].getCurrent()
+		if sel:
+			self.vkvar = sel[0]
+			if self.vkvar == _("Encryption key"):
+				from Screens.VirtualKeyBoard import VirtualKeyBoard
+				self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
+			if self.vkvar == _("Network name (SSID)"):
+				from Screens.VirtualKeyBoard import VirtualKeyBoard
+				self.session.openWithCallback(self.VirtualKeyBoardCallback2, VirtualKeyBoard, title = self["config"].getCurrent()[0], text = self["config"].getCurrent()[1].value)
+				
+	def VirtualKeyBoardCallback(self, callback = None):
+		if callback is not None and len(callback):
+			from Plugins.SystemPlugins.WirelessLan.Wlan import config
+			config.plugins.wlan.psk.setValue(callback)
+			config.plugins.wlan.encryption.save()
+			config.plugins.wlan.save()
+			self.activateInterfaceEntry = True
+
+	def VirtualKeyBoardCallback2(self, callback = None):
+		if callback is not None and len(callback):
+			from Plugins.SystemPlugins.WirelessLan.Wlan import config
+			config.plugins.wlan.essid.setValue(callback)
+			config.plugins.wlan.save()
+			self.activateInterfaceEntry = True
+			
 	def exitWizardQuestion(self, ret = False):
 		if ret:
 			self.markDone()
