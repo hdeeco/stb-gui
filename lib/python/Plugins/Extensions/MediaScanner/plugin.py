@@ -3,6 +3,8 @@ from Components.Scanner import scanDevice
 from Screens.InfoBar import InfoBar
 import os
 
+global fpath
+
 def execute(option):
 	print "execute", option
 	if option is None:
@@ -99,11 +101,61 @@ def movielist_open(list, session, **kwargs):
 		if not path.endswith('/'):
 			path += '/'
 		config.movielist.last_videodir.value = path
-		try:
-			InfoBar.instance.showMovies(eServiceReference(stype, 0, f.path))
-		except:
-			pass
+		InfoBar.instance.showMovies(eServiceReference(stype, 0, f.path))
 
+def channellist_open(list, session, **kwargs):
+	if not list:
+		# sanity
+		return
+	f = list[0]
+	path = os.path.split(f.path)[0]
+	if not path.endswith('/'):
+		path += '/'
+	if f.mimetype == "application/channellist":
+		global fpath
+		fpath = path
+		from Screens.MessageBox import MessageBox
+		session.openWithCallback(InstallChannelList, MessageBox, _("Would You like to install channel list ?"), MessageBox.TYPE_YESNO)
+
+def InstallChannelList(answer):
+	if answer:
+		cmd = "cp -a " + fpath + "updatechannels/* /etc/enigma2/"
+		os.system(cmd)
+		from enigma import eDVBDB
+		eDVBDB = eDVBDB.getInstance()
+		eDVBDB.reloadServicelist()
+		eDVBDB.reloadBouquets()  
+
+def InstallSoftCamConfigFiles(list, session, **kwargs):
+	if not list:
+		# sanity
+		return
+	f = list[0]
+	path = os.path.split(f.path)[0]
+	if not path.endswith('/'):
+		path += '/'
+	print path
+	if f.mimetype == "application/cccam":
+		print "Coping CCcam.cfg"
+		cmd = "cp -a " + path + "CCcam.cfg /etc/CCcam.cfg"
+	elif f.mimetype == "application/mgnewcamd":  
+		print "Coping newcamd.list" 
+		cmd = "cp -a " + path + "newcamd.list /var/keys/newcamd.list"
+	elif f.mimetype == "application/mgcccamd":
+		print "Coping cccamd.list"  
+		cmd = "cp -a " + path + "cccamd.list /var/keys/cccamd.list"
+	elif f.mimetype == "application/mgcamd":
+		print "Coping mg_cfg"  
+		cmd = "cp -a " + path + "mg_cfg /var/keys/mg_cfg"
+	elif f.mimetype == "application/oscam":
+		print "Coping oscam.conf"  
+		cmd = "cp -a " + path + "oscam.* /var/tuxbox/config/"
+	elif f.mimetype == "application/wicardd":
+		print "Coping wicardd.conf"  
+		cmd = "cp -a " + path + "wicardd.conf /var/tuxbox/config/wicardd.conf"
+		
+	os.system(cmd)
+	  
 def filescan(**kwargs):
 	from Components.Scanner import Scanner, ScanPath
 	return [
@@ -144,6 +196,52 @@ def filescan(**kwargs):
 			name = "Audio-CD",
 			description = _("Play Audio-CD..."),
 			openfnc = movielist_open,
+		),
+		## EGAMI
+		Scanner(mimetypes = ["application/cccam"],
+			paths_to_scan =
+				[
+					ScanPath(path = "updatesoftcam", with_subdirs = False),
+				],
+			name = "CCcam Config File",
+			description = _("Install CCcam Config Files..."),
+			openfnc = InstallSoftCamConfigFiles,
+		),
+		Scanner(mimetypes = ["application/mgcamd", "application/mgnewcamd", "application/mgcccamd"],
+			paths_to_scan =
+				[
+					ScanPath(path = "updatesoftcam", with_subdirs = False),
+				],
+			name = "Mgcamd Config File",
+			description = _("Install MGCamd Config Files..."),
+			openfnc = InstallSoftCamConfigFiles,
+		),
+		Scanner(mimetypes = ["application/oscam"],
+			paths_to_scan =
+				[
+					ScanPath(path = "updatesoftcam", with_subdirs = False),
+				],
+			name = "OScam Config File",
+			description = _("Install OSCam Config Files..."),
+			openfnc = InstallSoftCamConfigFiles,
+		),
+		Scanner(mimetypes = ["application/wicardd"],
+			paths_to_scan =
+				[
+					ScanPath(path = "updatesoftcam", with_subdirs = False),
+				],
+			name = "Wicardd Config File",
+			description = _("Install Wicardd Config Files..."),
+			openfnc = InstallSoftCamConfigFiles,
+		),		
+		Scanner(mimetypes = ["application/channellist"],
+			paths_to_scan =
+				[
+					ScanPath(path = "updatechannels", with_subdirs = False),
+				],
+			name = "Enigma2 Channel List",
+			description = _("Install Channel List..."),
+			openfnc = channellist_open,
 		),
 		]
 

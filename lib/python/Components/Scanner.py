@@ -15,13 +15,35 @@ add_type("video/x-matroska", ".mkv")
 add_type("audio/x-matroska", ".mka")
 add_type("video/mpeg", ".mts")
 
+add_type("application/channellist", ".tv")
+add_type("application/channellist", ".radio")
+add_type("application/channellist", ".xml")
+
 def getType(file):
+	if file[-10:].lower() == "oscam.conf":
+		return "application/oscam"
+
+	if file[-12:].lower() == "wicardd.conf":
+		return "application/wicardd"
+		      
 	(type, _) = guess_type(file)
 	if type is None:
 		# Detect some unknown types
 		if file[-12:].lower() == "video_ts.ifo":
 			return "video/x-dvd"
 
+		if file[-6:].lower() == "mg_cfg":
+			return "application/mgcamd"
+
+		if file[-12:].lower() == "newcamd.list":
+			return "application/mgnewcamd"
+
+		if file[-11:].lower() == "cccamd.list":
+			return "application/mgcccamd"
+
+		if file[-9:].lower() == "cccam.cfg":
+			return "application/cccam"
+		      
 		p = file.rfind('.')
 		if p == -1:
 			return None
