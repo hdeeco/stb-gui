@@ -78,7 +78,7 @@ def InitUsageConfig():
 	config.usage.show_infobar_channel_number = ConfigYesNo(default = False)	
 	config.usage.show_infobar_lite = ConfigYesNo(default = False)
 	config.usage.show_infobar_channel_number = ConfigYesNo(default = False)
-	config.usage.show_second_infobar = ConfigSelection(default = "1", choices = [("0", _("Off")), ("1", _("Event Info")), ("2", _("2nd Infobar INFO")), ("3", _("2nd Infobar ECM"))])
+	config.usage.show_second_infobar = ConfigSelection(default = "2", choices = [("0", _("Off")), ("1", _("Event Info")), ("2", _("2nd Infobar INFO")), ("3", _("2nd Infobar ECM"))])
 	config.usage.second_infobar_timeout = ConfigSelection(default = "5", choices = [("0", _("No timeout"))] + choicelist)
 	def showsecondinfobarChanged(configElement):
 		if config.usage.show_second_infobar.value != "INFOBAREPG":
@@ -339,7 +339,7 @@ def InitUsageConfig():
 
 	config.usage.hide_zap_errors = ConfigYesNo(default = True)
 	config.usage.hide_ci_messages = ConfigYesNo(default = True)
-	config.usage.show_cryptoinfo = ConfigSelection([("0", _("Off")),("1", _("One line")),("2", _("Two lines"))], "2")
+	config.usage.show_cryptoinfo = ConfigSelection([("2", _("Off")),("1", _("One line")),("2", _("Two lines"))], "2")
 	config.usage.show_eit_nownext = ConfigYesNo(default = True)
 	config.usage.show_vcr_scart = ConfigYesNo(default = False)
 
