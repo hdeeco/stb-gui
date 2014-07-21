@@ -47,6 +47,7 @@ def InitUsageConfig():
 	config.usage.crypto_icon_mode = ConfigSelection(default = "0", choices = [("0", _("None")), ("1", _("Left from servicename")), ("2", _("Right from servicename"))])
 	config.usage.crypto_icon_mode.addNotifier(refreshServiceList)
 
+	# just merge note, config.usage.servicelist_column was allready there
 	choicelist = [("-1", _("Devide")), ("0", _("Disable"))]
 	for i in range(100,1300,100):
 		choicelist.append(("%d" % i, ngettext("%d pixel wide", "%d pixels wide", i) % i))
@@ -481,6 +482,7 @@ def InitUsageConfig():
 	config.timeshift.favoriteSaveAction = ConfigSelection([("askuser", _("Ask user")),("savetimeshift", _("Save and stop")),("savetimeshiftandrecord", _("Save and record")),("noSave", _("Don't save"))], "askuser")
 	config.timeshift.autorecord = ConfigYesNo(default = False)
 	config.timeshift.isRecording = NoSave(ConfigYesNo(default = False))
+	config.timeshift.timeshiftMaxHours = ConfigSelectionNumber(min = 1, max = 999, stepwidth = 1, default = 12, wraparound = True)
 
 	config.seek = ConfigSubsection()
 	config.seek.baractivation = ConfigSelection([("leftright", _("Long Left/Right")),("ffrw", _("Long << / >>"))], "leftright")

@@ -111,6 +111,7 @@ AM_CONDITIONAL(ET10000, test "$BOXTYPE" == et10000)
 AM_CONDITIONAL(FORCE1, test "$BOXTYPE" == force1)
 AM_CONDITIONAL(WORLDVISIONF1, test "$BOXTYPE" == worldvisionf1)
 AM_CONDITIONAL(FORMULER1, test "$BOXTYPE" == formuler1)
+AM_CONDITIONAL(FORMULER3, test "$BOXTYPE" == formuler3)
 AM_CONDITIONAL(GBIPBOX, test "$BOXTYPE" == gbipbox)
 AM_CONDITIONAL(GB800SOLO, test "$BOXTYPE" == gb800solo)
 AM_CONDITIONAL(GB800SE, test "$BOXTYPE" == gb800se)
@@ -134,6 +135,7 @@ AM_CONDITIONAL(MUTANT2400, test "$BOXTYPE" == mutant2400)
 AM_CONDITIONAL(ODINM6, test "$BOXTYPE" == odinm6)
 AM_CONDITIONAL(ODINM7, test "$BOXTYPE" == odinm7)
 AM_CONDITIONAL(ODINM9, test "$BOXTYPE" == odinm9)
+AM_CONDITIONAL(QUADBOX2400, test "$BOXTYPE" == quadbox2400)
 AM_CONDITIONAL(OPTIMUSSOS1, test "$BOXTYPE" == optimussos1)
 AM_CONDITIONAL(OPTIMUSSOS2, test "$BOXTYPE" == optimussos2)
 AM_CONDITIONAL(SOGNO8800HD, test "$BOXTYPE" == sogno8800hd)
@@ -306,6 +308,7 @@ fi
 if test "$BOXTYPE" == "ebox5000" -o "$BOXTYPE" == "ebox7358" -o "$BOXTYPE" == "ebox5100" -o "$BOXTYPE" == "eboxlumi"; then
 	AC_DEFINE(KEY_SCREEN_TO_KEY_ANGLE, 1,[define when rc sends a KEY_SCREEN event for its KEY_ANGLE key])
 	AC_DEFINE(KEY_TIME_TO_KEY_SLEEP, 1,[define when rc sends a KEY_TIME event for its KEY_SLEEP])
+	AC_DEFINE(KEY_MODE_TO_KEY_AUDIO, 1,[define when rc sends a KEY_MODE event for its AV plus])
 fi
 
 
@@ -319,7 +322,7 @@ if test "$BOXTYPE" == "hd2400" ; then
 	AC_DEFINE(KEY_F3_TO_KEY_LIST, 1,[define when rc sends a KEY_F3 event for its KEY_LIST key])
 fi
 
-if test "$BOXTYPE" == "formuler1" ; then
+if test "$BOXTYPE" == "formuler1" -o "$BOXTYPE" == "formuler3"; then
 	AC_DEFINE(KEY_F3_TO_KEY_LIST, 1,[define when rc sends a KEY_F3 event for its KEY_LIST key])
 fi
 
@@ -432,6 +435,7 @@ data/Makefile
 data/defaults/Makefile
 data/fonts/Makefile
 data/extensions/Makefile
+data/gbipbox/Makefile
 data/keymaps/Makefile
 data/displaytext/Makefile
 data/display96/Makefile

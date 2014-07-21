@@ -47,7 +47,7 @@ def getChipSetString():
 		f.close()
 		if chipset == "7405\n" and getModelString() == "unibox-uniboxhde":
 			chipset = "7413"
-		return str(chipset.lower().replace('\n','').replace('bcm',''))
+		return str(chipset.lower().replace('\n','').replace('bcm','').replace('brcm',''))
 	except IOError:
 		return "unavailable"
 
