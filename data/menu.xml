@@ -76,7 +76,7 @@ self.session.openWithCallback(msgClosed, OurConsole, _('Install default channel 
 				<menu level="2" text="OSD settings" entryID="osd_setup" requires="OsdMenu">
 					<id val="osd_menu" />
 					<item level="0" entryID="user_interface"><setup id="userinterface" /></item>
-					<item level="2" text="OSD Position" entryID="osdsetup" requires="OsdSetup"><screen module="UserInterfacePositioner" screen="UserInterfacePositioner2"/></item>
+					<item level="2" text="OSD Position" entryID="osdsetup" requires="CanChangeOsdPosition"><screen module="UserInterfacePositioner" screen="UserInterfacePositioner2"/></item>
 					<item level="2" text="OSD 3D Setup" entryID="osd3dsetup" requires="CanChange3DOsd"><screen module="UserInterfacePositioner" screen="OSD3DSetupScreen"/></item>
 				</menu>
 				<menu level="0" text="Storage devices" entryID="hardisk_selection" requires="Harddisk">
@@ -151,6 +151,7 @@ self.session.open(RemoteControlCode)
 					<item level="2" text="Samba Setup" entryID="netsmba_setup"><screen module="NetworkSetup" screen="NetworkSamba"/></item>
 					<item level="2" text="Telnet Setup" entryID="nettelnet_setup"><screen module="NetworkSetup" screen="NetworkTelnet"/></item>
 					<item level="2" text="uShare Setup" entryID="netushare_setup"><screen module="NetworkSetup" screen="NetworkuShare"/></item>
+					<item level="2" text="Remote Tuner Server Setup" entryID="netrts_setup"><screen module="NetworkSetup" screen="RemoteTunerServer"/></item>
 				</menu>
 				<item level="0" text="Skin Setup" entryID="skin_setup"><screen module="SkinSelector" screen="SkinSelector"/></item>
 
