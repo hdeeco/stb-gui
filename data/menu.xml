@@ -48,7 +48,7 @@ def msgClosed():
 		eDVBDB.reloadServicelist()
 		eDVBDB.reloadBouquets()  
 		
-self.session.openWithCallback(msgClosed, OurConsole, _('Install default channel list'), ['opkg --force-depends remove enigma2-plugin-settings-*;cp /share/enigma2/defaults/enigma2-plugin-settings-unibox.ipk /tmp/plugin.ipk;opkg --force-overwrite install /tmp/plugin.ipk'])
+self.session.openWithCallback(msgClosed, OurConsole, _('Install default channel list'), ['tar xzf /share/enigma2/defaults/enigma2-plugin-settings-unibox.tar.gz -C /'])
 </code>
 				</item>
 			</menu>
