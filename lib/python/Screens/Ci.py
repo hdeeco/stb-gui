@@ -22,7 +22,7 @@ def InitCiConfig():
 	config.ci = ConfigSubList()
 	for slot in range(MAX_NUM_CI):
 		config.ci.append(ConfigSubsection())
-		config.ci[slot].canDescrambleMultipleServices = ConfigSelection(choices = [("no", _("Auto")), ("no", _("No")), ("yes", _("Yes"))], default = "auto")
+		config.ci[slot].canDescrambleMultipleServices = ConfigSelection(choices = [("auto", _("Auto")), ("no", _("No")), ("yes", _("Yes"))], default = "no")
 		if SystemInfo["CommonInterfaceSupportsHighBitrates"]:
 			config.ci[slot].canHandleHighBitrates = ConfigSelection(choices = [("no", _("No")), ("yes", _("Yes"))], default = "yes")
 			config.ci[slot].canHandleHighBitrates.slotid = slot
