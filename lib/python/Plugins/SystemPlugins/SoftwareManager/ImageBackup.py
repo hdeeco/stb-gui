@@ -21,7 +21,7 @@ from boxbranding import getBoxType, getMachineBrand, getMachineName, getDriverDa
 VERSION = "Version 4.1 UNiBOX"
 
 HaveGZkernel = True
-if getBrandOEM() in ("fulan", "blackbox"):
+if getBrandOEM() in ("fulan"):
 	HaveGZkernel = False
 
 def Freespace(dev):
@@ -230,7 +230,7 @@ class ImageBackup(Screen):
 
 	def doFullBackupCB(self):
 		if HaveGZkernel:
-			ret = commands.getoutput(' gzip -d %s/vmlinux.gz -c > /tmp/vmlinux.bin' % self.WORKDIR)
+			ret = commands.getoutput(' gzip -f -9c %s/vmlinux.gz > /tmp/vmlinux.bin' % self.WORKDIR)
 			if ret:
 				text = "Kernel dump error\n"
 				text += "Please Flash your Kernel new and Backup again"
