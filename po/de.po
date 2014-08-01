@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: tuxbox-enigma 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-05 14:38+0000\n"
-"PO-Revision-Date: 2014-07-21 13:22+0100\n"
+"PO-Revision-Date: 2014-08-01 10:15+0100\n"
 "Last-Translator: mike99 <mike99@gmx.net>\n"
 "Language-Team: openATV\n"
 "Language: de\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.7\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
 
 #
@@ -2470,10 +2470,10 @@ msgstr "Was soll mit übermittelten Crashlogs passieren?"
 
 #
 msgid "Deep Standby"
-msgstr "Ausschalten"
+msgstr "Bereitschaft"
 
 msgid "Deep standby"
-msgstr "Ausschalten"
+msgstr "Bereitschaft"
 
 msgid "Default"
 msgstr "Standard"
@@ -7718,11 +7718,11 @@ msgstr "Standard"
 
 #
 msgid "Standby"
-msgstr "Standby"
+msgstr "Eco-Modus"
 
 #
 msgid "Standby / Restart"
-msgstr "Standby / Neustart"
+msgstr "Bereitschaft / Neustart"
 
 #
 #, python-format
