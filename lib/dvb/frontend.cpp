@@ -355,8 +355,10 @@ RESULT eDVBFrontendParameters::calculateDifference(const iDVBFrontendParameters 
 				oterrestrial.code_rate_HP != eDVBFrontendParametersTerrestrial::FEC_Auto &&
 				terrestrial.code_rate_HP != eDVBFrontendParametersTerrestrial::FEC_Auto)
 				diff = 1 << 30;
-			else if (exact && oterrestrial.plpid != terrestrial.plpid)
+			else if (oterrestrial.plpid != terrestrial.plpid)
 				diff = 1 << 27;
+			else if (oterrestrial.system != terrestrial.system)
+				diff = 1 << 30;
 			else
 				diff = abs(terrestrial.frequency - oterrestrial.frequency) / 1000;
 			return 0;
@@ -934,7 +936,11 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	}
 	else if (!strcmp(m_description, "BCM7346 DVB-S2 NIM (internal)")) // Gigablue
 	{
-		ret = (int)((((double(snr) / (65536.0 / 100.0)) * 0.1800) - 1.0000) * 100);
+		ret = (int)((((double(snr) / (65536.0 / 100.0)) * 0.1710) - 1.0000) * 100);
+	}
+	else if (!strcmp(m_description, "BCM7358 DVB-S2 NIM (internal)")) // Gigablue
+	{
+		ret = (int)((((double(snr) / (65536.0 / 100.0)) * 0.1710) - 1.0000) * 100);
 	}
 	else if (!strcmp(m_description, "GIGA DVB-S2 NIM (Internal)")) // Gigablue
 	{
@@ -1748,7 +1754,9 @@ void eDVBFrontend::setFrontend(bool recvEvents)
 				case eDVBFrontendParametersCable::FEC_5_6: p[cmdseq.num].u.data = FEC_5_6; break;
 				case eDVBFrontendParametersCable::FEC_7_8: p[cmdseq.num].u.data = FEC_7_8; break;
 				case eDVBFrontendParametersCable::FEC_8_9: p[cmdseq.num].u.data = FEC_8_9; break;
-				case eDVBFrontendParametersCable::FEC_6_7: p[cmdseq.num].u.data = FEC_6_7; break;
+				case eDVBFrontendParametersCable::FEC_3_5: p[cmdseq.num].u.data = FEC_3_5; break;
+				case eDVBFrontendParametersCable::FEC_4_5: p[cmdseq.num].u.data = FEC_4_5; break;
+				case eDVBFrontendParametersCable::FEC_9_10: p[cmdseq.num].u.data = FEC_9_10; break;
 			}
 			cmdseq.num++;
 
