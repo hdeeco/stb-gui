@@ -23,8 +23,15 @@ class About(Screen):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Image Information"))
 		self.skinName = "AboutOE"
-		self.populate()
+		self.loader = "Unknown"
+		self.searchBootVer()
 
+		self["lab1"] = StaticText(_("UNiBOX"))
+		self["lab2"] = StaticText(_("By UNiBOX Image Team"))
+		self["lab3"] = StaticText(_("Support at") + " www.venton.de")
+		
+		self["AboutScrollLabel"] = ScrollLabel()
+		
 		self["key_green"] = Button(_("Translations"))
 		self["actions"] = ActionMap(["SetupActions", "ColorActions", "TimerEditActions"],
 			{
@@ -35,18 +42,25 @@ class About(Screen):
 				"down": self["AboutScrollLabel"].pageDown,
 				"green": self.showTranslationInfo,
 			})
+	    
+	def searchBootVer(self):
+		self.console = Console()
+		cmd = "strings -n 28 /dev/mtd1ro | grep ' [0-2][0-9]:[0-5][0-9]:[0-5][0-9] '"
+		self.console.ePopen(cmd, callback=self.searchBootVerFinished)
 
+	def searchBootVerFinished(self, result, retval,extra_args):
+		for line in result.splitlines():
+			line = line.strip()
+		self.loader = line[4:]
+		self.populate()
+		
 	def populate(self):
-		self["lab1"] = StaticText(_("UNiBOX"))
-		self["lab2"] = StaticText(_("By UNiBOX Image Team"))
 		model = None
 		AboutText = ""
-		self["lab3"] = StaticText(_("Support at") + " www.venton.de")
 		AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
 
 		if path.exists('/proc/stb/info/chipset'):
 			AboutText += _("Chipset:\t%s") % about.getChipSetString() + "\n"
-
 
 		AboutText += _("CPU:\t%s") % about.getCPUString() + "\n"
 		AboutText += _("Cores:\t%s") % about.getCpuCoresString() + "\n"
@@ -55,6 +69,7 @@ class About(Screen):
 		#AboutText += _("Build:\t%s") % getImageBuild() + "\n"
 		AboutText += _("Kernel:\t%s") % about.getKernelVersionString() + "\n"
 		AboutText += _("Drivers:\t%s") % about.getDriverBuildDateString() + "\n"
+		AboutText += _("Bootloader:\t%s") % self.loader + "\n"
 
 		AboutText += _("Last update:\t%s") % getEnigmaVersionString() + "\n\n"
 
@@ -87,7 +102,7 @@ class About(Screen):
 			mark = str('\xc2\xb0')
 			AboutText += _("Processor temperature:\t%s") % tempinfo.replace('\n', '') + mark + "C\n"
 
-		self["AboutScrollLabel"] = ScrollLabel(AboutText)
+		self["AboutScrollLabel"].setText(AboutText)
 
 	def showTranslationInfo(self):
 		self.session.open(TranslationInfo)
