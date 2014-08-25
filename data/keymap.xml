@@ -83,7 +83,7 @@
 	<map context="InfobarEPGActions">
 		<key id="KEY_RED" mapto="RedPressed" flags="b" />
 		<key id="KEY_I" mapto="IPressed" flags="b" />
-		<key id="KEY_INFO" mapto="InfoPressed" flags="b" />
+		<key id="KEY_INFO" mapto="InfoPressed" flags="m" />
 		<key id="KEY_INFO" mapto="showEventInfoPlugin" flags="l" />
 		<key id="KEY_EPG" mapto="EPGPressed" flags="b" />
 		<key id="KEY_EPG" mapto="showEventInfoPlugin" flags="l" />
@@ -148,7 +148,7 @@
 		<key id="KEY_CHANNELDOWN" mapto="ChannelMinusPressedLong" flags="l" />-->
 		<key id="BTN_0" mapto="zapUp" flags="mr" />
 		<key id="BTN_1" mapto="zapDown" flags="mr" />
-		<key id="KEY_SAT" mapto="openSatellites" flags="m" />		
+		<key id="KEY_SAT" mapto="openSatellites" flags="m" />
 	</map>
 	
 	<map context="InfobarHDMIActions">
@@ -209,10 +209,10 @@
 		<key id="KEY_MENU" mapto="mainMenu" flags="mr" />
 		<key id="KEY_SPACE" mapto="mainMenu" flags="mr" />
 		<key id="KEY_PC" mapto="showNetworkSetup" flags="mr" />
-		<key id="KEY_LAN" mapto="showNetworkSetup" flags="mr" />		
+		<key id="KEY_LAN" mapto="showNetworkSetup" flags="mr" />
 		<key id="KEY_ANGLE" mapto="showRFmod" flags="l" /> 
 		<key id="KEY_ANGLE" mapto="toggleAspectRatio" flags="b" />
-		<key id="KEY_VMODE" mapto="toggleAspectRatio" flags="b" />			
+		<key id="KEY_VMODE" mapto="toggleAspectRatio" flags="b" />
 	</map>
 
 	<map context="MenuActions">
@@ -223,7 +223,6 @@
 	<map context="InfobarShowHideActions">
 		<key id="KEY_OK" mapto="toggleShow" flags="m" />
 		<key id="KEY_OK" mapto="LongOKPressed" flags="l" />
-		<key id="KEY_INFO" mapto="InfoPressed" flags="m" />
 		<key id="KEY_ENTER" mapto="toggleShow" flags="m" />
 		<key id="KEY_EXIT" mapto="hide" flags="m" />
 		<key id="KEY_ESC" mapto="hide" flags="m" />
