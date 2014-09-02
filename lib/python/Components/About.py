@@ -47,12 +47,13 @@ def getChipSetString():
 		f.close()
 		if chipset == "7405\n" and getModelString() == "unibox-uniboxhde":
 			chipset = "7413"
-		return str(chipset.lower().replace('\n','').replace('bcm','').replace('brcm',''))
+		return str(chipset.lower().replace('\n','').replace('bcm','').replace('brcm','').replace('sti',''))
 	except IOError:
 		return "unavailable"
 
 def getCPUString():
 	try:
+		system="unknown"
 		file = open('/proc/cpuinfo', 'r')
 		lines = file.readlines()
 		for x in lines:

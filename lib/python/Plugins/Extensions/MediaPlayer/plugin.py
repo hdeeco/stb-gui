@@ -1127,7 +1127,7 @@ from Plugins.Plugin import PluginDescriptor
 def Plugins(**kwargs):
 	l = []
 	if config.mediaplayer.onPluginMenu.getValue():
-		l.append(PluginDescriptor(name = _("Media player"), description = _("Play back media files"), where = PluginDescriptor.WHERE_PLUGINMENU, needsRestart = False, fnc = main),)
+		l.append(PluginDescriptor(name = _("Media player"), description = _("Play back media files"), where = PluginDescriptor.WHERE_PLUGINMENU, icon="MediaPlayer.png", needsRestart = False, fnc = main),)
 	l.append(PluginDescriptor(name = _("Media player"), description = _("Play back media files"), where = PluginDescriptor.WHERE_MENU, needsRestart = False, fnc = menu))
 
 	return l
