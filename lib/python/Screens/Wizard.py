@@ -230,7 +230,8 @@ class Wizard(Screen):
 			"7": self.keyNumberGlobal,
 			"8": self.keyNumberGlobal,
 			"9": self.keyNumberGlobal,
-			"0": self.keyNumberGlobal
+			"0": self.keyNumberGlobal,
+			"test":self.testmode
 		}, -1)
 
 		self["VirtualKB"] = NumberActionMap(["VirtualKeyboardActions"],
@@ -375,6 +376,13 @@ class Wizard(Screen):
 					self.configInstance.run()
 		self.finished()
 
+	def testmode(self):
+		try:
+			from Screens.TestMenu import TestMenu
+			self.session.open(TestMenu)
+		except:
+			pass
+		      
 	def keyNumberGlobal(self, number):
 		if self.wizard[self.currStep]["config"]["screen"] is not None:
 			self.configInstance.keyNumberGlobal(number)
