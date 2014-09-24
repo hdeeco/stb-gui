@@ -3115,13 +3115,13 @@ class InfoBarINFOpanel:
 				for x in self.onHBBTVActivation:
 					x()
 					
-			elif config.plugins.infopanel_redpanel.selection.value == '0':
-				self.instantRecord()
+			#elif config.plugins.infopanel_redpanel.selection.value == '0':
+			#	self.instantRecord()
 			else:
 				self.doRedKeyTask()
 		
-		elif config.plugins.infopanel_redpanel.selection.value == '0':
-			self.instantRecord()
+		#elif config.plugins.infopanel_redpanel.selection.value == '0':
+		#	self.instantRecord()
 		else:
 			self.doRedKeyTask()
 
