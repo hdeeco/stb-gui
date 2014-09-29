@@ -15,7 +15,7 @@ from Components.Network import iNetwork
 
 from Tools.StbHardware import getFPVersion, getMicomVersion
 
-from os import path
+from os import path, popen
 from re import search
 
 class About(Screen):
@@ -62,7 +62,16 @@ class About(Screen):
 		if path.exists('/proc/stb/info/chipset'):
 			AboutText += _("Chipset:\t%s") % about.getChipSetString() + "\n"
 
-		AboutText += _("CPU:\t%s") % about.getCPUString() + "\n"
+		cmd = 'cat /proc/cpuinfo | grep "cpu MHz" -m 1 | awk -F ": " ' + "'{print $2}'"
+		try:
+			res = popen(cmd).read()
+		except:
+			res = ""
+		cpuMHz = ""
+		if res:
+			cpuMHz = "   (" + res.replace("\n", "") + " MHz)"
+
+		AboutText += _("CPU:\t%s") % about.getCPUString() + cpuMHz + "\n"
 		AboutText += _("Cores:\t%s") % about.getCpuCoresString() + "\n"
 		AboutText += _("Version:\t%s") % getImageVersion() + "\n"
 		AboutText += _("Front Panel:\t%s") % getMicomVersion() + "\n"
