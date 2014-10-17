@@ -123,13 +123,13 @@ class MMIDialog(Screen):
 		elif self.tag == "ENQ":
 			pin = config.cipin.pin1.value
 			if len(str(config.cipin.pin1.value)) == 3:
-				pin = "0" + str(config.cipin.pin1.value)  
+				pin = "0" + str(config.cipin.pin1.value)
 			cur = self["entries"].getCurrent()
 			try:
 				answer = str(cur[1].value)
 			except:
 				answer = str(pin)
-			
+
 			length = len(answer)
 			
 			try:

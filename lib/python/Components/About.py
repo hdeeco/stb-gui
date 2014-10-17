@@ -1,4 +1,4 @@
-from boxbranding import getImageVersion, getDriverDate
+from boxbranding import getBoxType, getImageVersion, getDriverDate
 from sys import modules
 import socket, fcntl, struct
 
@@ -41,15 +41,18 @@ def getDriverBuildDateString():
 		return driversdate
 	      
 def getChipSetString():
-	try:
-		f = open('/proc/stb/info/chipset', 'r')
-		chipset = f.read()
-		f.close()
-		if chipset == "7405\n" and getModelString() == "unibox-uniboxhde":
-			chipset = "7413"
-		return str(chipset.lower().replace('\n','').replace('bcm','').replace('brcm','').replace('sti',''))
-	except IOError:
-		return "unavailable"
+	if getBoxType() == "dm7080":
+		return "7435"
+	if getBoxType() == "blackbox7405":
+		return "7413"
+	else:
+		try:
+			f = open('/proc/stb/info/chipset', 'r')
+			chipset = f.read()
+			f.close()
+			return str(chipset.lower().replace('\n','').replace('bcm','').replace('brcm','').replace('sti',''))
+		except IOError:
+			return "unavailable"
 
 def getCPUString():
 	try:
