@@ -19,7 +19,7 @@ def getNumVideoDecoders():
 SystemInfo["NumVideoDecoders"] = getNumVideoDecoders()
 SystemInfo["PIPAvailable"] = SystemInfo["NumVideoDecoders"] > 1
 SystemInfo["CanMeasureFrontendInputPower"] = eDVBResourceManager.getInstance().canMeasureFrontendInputPower()
-
+SystemInfo["Feed"] = fileExists("/etc/opkg/feed")
 
 def countFrontpanelLEDs():
 	leds = 0
