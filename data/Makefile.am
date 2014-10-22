@@ -2,7 +2,7 @@ SUBDIRS = defaults fonts extensions keymaps
 
 dist_pkgdata_DATA = \
 	encoding.conf \
-	keymap.xml keymap_feed.xml \
+	keymap.xml keymap_feed.xml keymap_nofeed.xml \
 	keymap.ntr \
 	keymap.u80 \
 	menu.xml \
