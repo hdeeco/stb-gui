@@ -121,6 +121,7 @@ class EPGList(HTMLComponent, GUIComponent):
 		self.nowServPix = None
 		self.recEvPix = None
 		self.recSelEvPix = None
+		self.recordingEvPix= None
 		self.zapEvPix = None
 		self.zapSelEvPix = None
 
@@ -888,10 +889,16 @@ class EPGList(HTMLComponent, GUIComponent):
 						alignnment = RT_HALIGN_CENTER | RT_VALIGN_CENTER
 
 				if stime <= now < (stime + duration):
-					foreColor = self.foreColorNow
-					backColor = self.backColorNow
-					foreColorSel = self.foreColorNowSelected
-					backColorSel = self.backColorNowSelected
+					if clock_types is not None and clock_types == 2:
+						foreColor = self.foreColorRecord
+						backColor = self.backColorRecord
+						foreColorSel = self.foreColorRecordSelected
+						backColorSel = self.backColorRecordSelected
+					else:
+						foreColor = self.foreColorNow
+						backColor = self.backColorNow
+						foreColorSel = self.foreColorNowSelected
+						backColorSel = self.backColorNowSelected
 				else:
 					foreColor = self.foreColor
 					backColor = self.backColor
@@ -916,7 +923,9 @@ class EPGList(HTMLComponent, GUIComponent):
 					borderBottomPix = self.borderSelectedBottomPix
 					borderRightPix = self.borderSelectedRightPix
 					infoPix = self.selInfoPix
-					if stime <= now < (stime + duration):
+					if clock_types is not None and clock_types == 2:
+						bgpng = self.recSelEvPix
+					elif stime <= now < (stime + duration):
 						bgpng = self.nowSelEvPix
 					else:
 						bgpng = self.selEvPix
@@ -929,7 +938,10 @@ class EPGList(HTMLComponent, GUIComponent):
 					borderRightPix = self.borderRightPix
 					infoPix = self.InfoPix
 					if stime <= now < (stime + duration):
-						bgpng = self.nowEvPix
+						if clock_types is not None and clock_types == 2:
+							bgpng = self.recordingEvPix
+						else:
+							bgpng = self.nowEvPix
 					else:
 						bgpng = self.othEvPix
 						if clock_types is not None and clock_types == 2:
@@ -1182,6 +1194,7 @@ class EPGList(HTMLComponent, GUIComponent):
 				self.nowServPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/CurrentService.png'))
 				self.recEvPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/RecordEvent.png'))
 				self.recSelEvPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/SelectedRecordEvent.png'))
+				self.recordingEvPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/RecordingEvent.png'))
 				self.zapEvPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/ZapEvent.png'))
 				self.zapSelEvPix = loadPNG(resolveFilename(SCOPE_ACTIVE_SKIN, 'epg/SelectedZapEvent.png'))
 
