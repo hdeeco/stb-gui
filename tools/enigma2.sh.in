@@ -45,6 +45,8 @@ if [ -x @bindir@/enigma2_pre_start.sh ]; then
 	@bindir@/enigma2_pre_start.sh
 fi
 
+python /usr/bin/unibox.py
+
 if [ -e /proc/stb/info/hwmodel ]; then
    stbcheck=`cat /proc/stb/info/hwmodel | cut -c1-8`
    if [ $stbcheck == "optimuss" ]; then
