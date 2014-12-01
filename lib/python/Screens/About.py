@@ -28,7 +28,8 @@ class About(Screen):
 
 		self["lab1"] = StaticText(_("UNiBOX"))
 		self["lab2"] = StaticText(_("By UNiBOX Image Team"))
-		self["lab3"] = StaticText(_("Support at") + " www.venton.de")
+		self["lab3"] = StaticText(_("Support at") + " www.unibox.to")
+		self["lab3"] = StaticText()
 		
 		self["AboutScrollLabel"] = ScrollLabel()
 		
@@ -85,7 +86,7 @@ class About(Screen):
 		AboutText += _("Kernel:\t%s") % about.getKernelVersionString() + "\n"
 		AboutText += _("Drivers:\t%s") % about.getDriverBuildDateString() + "\n"
 		AboutText += _("Bootloader:\t%s") % self.loader + "\n"
-
+		AboutText += _("GStreamer:\t%s") % about.getGStreamerVersionString() + "\n"
 		AboutText += _("Last update:\t%s") % getEnigmaVersionString() + "\n\n"
 
 		fp_version = getFPVersion()
@@ -655,3 +656,4 @@ class TranslationInfo(Screen):
 				"cancel": self.close,
 				"ok": self.close,
 			})
+
