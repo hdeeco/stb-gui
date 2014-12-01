@@ -448,32 +448,35 @@ class Wizard(Screen):
 		self.updateLcd()
 
 	def updateLcd(self):
-		if self.wizard[self.currStep]["id"] == "end":
-			return
-		else:
-			displaytext = []
-			displaytext.append(self.getTranslation(self.wizard[self.currStep]["text"]))
-			if self.first:
-				getlist = self.getTranslation(self.wizard[self.currStep]["list"][0][0])
-				if getlist is not None:
-					entry = getlist
-				self.first = False
+		try:
+			if self.wizard[self.currStep]["id"] == "end":
+				return
 			else:
-				if self.showList:
-					if self["list"].getCurrent() is not None:
-						getlistentry = self["list"].getCurrent()[0]
-						entry = getlistentry
+				displaytext = []
+				displaytext.append(self.getTranslation(self.wizard[self.currStep]["text"]))
+				if self.first:
+					getlist = self.getTranslation(self.wizard[self.currStep]["list"][0][0])
+					if getlist is not None:
+						entry = getlist
+					self.first = False
+				else:
+					if self.showList:
+						if self["list"].getCurrent() is not None:
+							getlistentry = self["list"].getCurrent()[0]
+							entry = getlistentry
+						else:
+							entry = ""
+					elif self.showConfig:
+						getconfigentry = self.wizard[self.currStep]["config"]
+						entry = getconfigentry
 					else:
 						entry = ""
-				elif self.showConfig:
-					getconfigentry = self.wizard[self.currStep]["config"]
-					entry = getconfigentry
-				else:
-					entry = ""
-			displaytext.append(entry)
-#			print "set LCD text"
-			for x in self.lcdCallbacks:
-				x(displaytext)
+				displaytext.append(entry)
+	#			print "set LCD text"
+				for x in self.lcdCallbacks:
+					x(displaytext)
+		except:
+			pass
 
 	def selChanged(self):
 		self.resetCounter()
