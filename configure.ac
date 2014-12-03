@@ -88,6 +88,7 @@ AM_CONDITIONAL(DAGS1, test "$BOXTYPE" == dags1)
 AM_CONDITIONAL(DAGS2, test "$BOXTYPE" == dags2)
 AM_CONDITIONAL(DAGS3, test "$BOXTYPE" == dags3)
 AM_CONDITIONAL(DAGS4, test "$BOXTYPE" == dags4)
+AM_CONDITIONAL(DAGS5, test "$BOXTYPE" == dags5)
 AM_CONDITIONAL(DM8000, test "$BOXTYPE" == dm8000)
 AM_CONDITIONAL(DM7080, test "$BOXTYPE" == dm7080)
 AM_CONDITIONAL(DM7020HD, test "$BOXTYPE" == dm7020hd)
@@ -98,7 +99,8 @@ AM_CONDITIONAL(DM800SEV2, test "$BOXTYPE" == dm800sev2)
 AM_CONDITIONAL(DM500HD, test "$BOXTYPE" == dm500hd)
 AM_CONDITIONAL(DM500HDV2, test "$BOXTYPE" == dm500hdv2)
 AM_CONDITIONAL(E3HD, test "$BOXTYPE" == e3hd)
-AM_CONDITIONAL(KMT3000, test "$BOXTYPE" == kmt3000)
+AM_CONDITIONAL(VG1000, test "$BOXTYPE" == vg1000)
+AM_CONDITIONAL(VG5000, test "$BOXTYPE" == vg5000)
 AM_CONDITIONAL(MIXOSF5, test "$BOXTYPE" == mixosf5)
 AM_CONDITIONAL(MIXOSF5MINI, test "$BOXTYPE" == mixosf5mini)
 AM_CONDITIONAL(MIXOSLUMI, test "$BOXTYPE" == mixoslumi)
@@ -408,7 +410,7 @@ if test "$BOXTYPE" == "inihde" -o "$BOXTYPE" == "inihdx" -o "$BOXTYPE" == "inihd
 	AC_DEFINE(KEY_LIST_TO_KEY_PVR, 1,[define when rc sends a KEY_LIST event for its KEY_PVR key])
 fi
 
-if test "$BOXTYPE" == "kmt3000"; then
+if test "$BOXTYPE" == "vg1000" -o "$BOXTYPE" == "vg5000"; then
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
 	AC_DEFINE(KEY_F3_TO_KEY_LIST, 1,[define when rc sends a KEY_F3 event for its KEY_LIST key])
 fi
@@ -423,7 +425,7 @@ if test "$BOXTYPE" == "blackbox7405"; then
 	AC_DEFINE(KEY_TIME_TO_KEY_SLOW, 1,[define when rc sends a KEY_TOME event for its KEY_SLOW key])
 fi
 
-if test "$BOXTYPE" == "dags1" -o "$BOXTYPE" == "dags2" -o "$BOXTYPE" == "dags3" -o "$BOXTYPE" == "dags4"; then
+if test "$BOXTYPE" == "dags1" -o "$BOXTYPE" == "dags2" -o "$BOXTYPE" == "dags3" -o "$BOXTYPE" == "dags4" -o "$BOXTYPE" == "dags5"; then
 	AC_DEFINE(KEY_F1_TO_KEY_PC, 1,[define when rc sends a KEY_F1 event for its KEY_PC key])
 	AC_DEFINE(KEY_F5_TO_KEY_ANGLE, 1,[define when rc sends a KEY_F5 event for its KEY_ANGLE key])
 	AC_DEFINE(KEY_DOT_TO_KEY_HOMEPAGE, 1,[define when rc sends a KEY_DOT event for its KEY_KEY_HOMEPAGE key])
