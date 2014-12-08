@@ -45,7 +45,7 @@ def getDriverBuildDateString():
 		return driversdate
 	      
 def getChipSetString():
-	if getBoxType() == "dm7080":
+	if getBoxType() in ('dm7080','dm820'):
 		return "7435"
 	if getBoxType() == "blackbox7405":
 		return "7413"

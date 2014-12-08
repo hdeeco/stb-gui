@@ -91,6 +91,7 @@ AM_CONDITIONAL(DAGS4, test "$BOXTYPE" == dags4)
 AM_CONDITIONAL(DAGS5, test "$BOXTYPE" == dags5)
 AM_CONDITIONAL(DM8000, test "$BOXTYPE" == dm8000)
 AM_CONDITIONAL(DM7080, test "$BOXTYPE" == dm7080)
+AM_CONDITIONAL(DM820, test "$BOXTYPE" == dm820)
 AM_CONDITIONAL(DM7020HD, test "$BOXTYPE" == dm7020hd)
 AM_CONDITIONAL(DM7020HDV2, test "$BOXTYPE" == dm7020hdv2)
 AM_CONDITIONAL(DM800, test "$BOXTYPE" == dm800)
@@ -128,6 +129,8 @@ AM_CONDITIONAL(GB800SE, test "$BOXTYPE" == gb800se)
 AM_CONDITIONAL(GB800UE, test "$BOXTYPE" == gb800ue)
 AM_CONDITIONAL(GB800SEPLUS, test "$BOXTYPE" == gb800seplus)
 AM_CONDITIONAL(GB800UEPLUS, test "$BOXTYPE" == gb800ueplus)
+AM_CONDITIONAL(GBULTRASE, test "$BOXTYPE" == gbultrase)
+AM_CONDITIONAL(GBULTRAUE, test "$BOXTYPE" == gbultraue)
 AM_CONDITIONAL(GBQUADPLUS, test "$BOXTYPE" == gbquadplus)
 AM_CONDITIONAL(GBQUAD, test "$BOXTYPE" == gbquad)
 AM_CONDITIONAL(INIHDE, test "$BOXTYPE" == inihde)
@@ -166,7 +169,7 @@ AM_CONDITIONAL(VUDUO2, test "$BOXTYPE" == vuduo2)
 AM_CONDITIONAL(VUZERO, test "$BOXTYPE" == vuzero)
 AM_CONDITIONAL(VENTONHDX, test "$BOXTYPE" == ventonhdx)
 AM_CONDITIONAL(XP1000, test "$BOXTYPE" == xp1000)
-AM_CONDITIONAL(HAVE_COLORLCD2, test "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm800sev2)
+AM_CONDITIONAL(HAVE_COLORLCD2, test "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm800sev2 -o "$BOXTYPE" == dm820)
 AM_CONDITIONAL(HAVE_COLORLCD1, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800 -o "$BOXTYPE" == dm7020hd -o "$BOXTYPE" == dm7020hdv2 -o "$BOXTYPE" == dm7080)
 
 if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
@@ -387,7 +390,7 @@ if test "$BOXTYPE" == "vp7358ci" ; then
 	AC_DEFINE(KEY_INFO_TO_KEY_EPG, 1,[define when rc sends a KEY_INFO event for its KEY_EPG key])
 fi
 
-if test "$BOXTYPE" == "gb800solo" -o "$BOXTYPE" == "gb800se" -o "$BOXTYPE" == "gb800ue" -o "$BOXTYPE" == "gbquad" -o "$BOXTYPE" == "gb800seplus" -o "$BOXTYPE" == "gb800ueplus" -o "$BOXTYPE" == "gbquadplus" -o "$BOXTYPE" == "gbipbox"; then
+if test "$BOXTYPE" == "gb800solo" -o "$BOXTYPE" == "gb800se" -o "$BOXTYPE" == "gb800ue" -o "$BOXTYPE" == "gbquad" -o "$BOXTYPE" == "gb800seplus" -o "$BOXTYPE" == "gb800ueplus" -o "$BOXTYPE" == "gbquadplus" -o "$BOXTYPE" == "gbipbox" -o "$BOXTYPE" == "gbultrase" -o "$BOXTYPE" == "gbultraue"; then
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
 	AC_DEFINE(KEY_GUIDE_TO_KEY_EPG, 1,[define when rc sends a KEY_HELP event for its KEY_EPG key])
 	AC_DEFINE(KEY_F2_TO_KEY_F6, 1,[define when rc sends a KEY_F2 event for its KEY_F6 key])
