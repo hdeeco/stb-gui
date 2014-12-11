@@ -28,6 +28,10 @@ SUBDIRS += displaytext
 endif
 endif
 
+if HAVE_COLORLCD3
+SUBDIRS += display128dm
+endif
+
 if HAVE_COLORLCD2
 SUBDIRS += display96
 endif
