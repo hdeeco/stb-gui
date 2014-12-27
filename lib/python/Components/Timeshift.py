@@ -445,6 +445,9 @@ class InfoBarTimeshift:
 			self.setSeekState(self.SEEK_STATE_PLAY)
 		self.setSeekState(self.makeStateBackward(int(config.seek.enter_backward.value)))
 
+	def callServiceStarted(self):
+		self.__serviceStarted()
+
 	# same as activateTimeshiftEnd, but pauses afterwards.
 	def activateTimeshiftEndAndPause(self):
 		self.activateTimeshiftEnd(False)
@@ -479,7 +482,11 @@ class InfoBarTimeshift:
 				if self.save_current_timeshift:
 					# print 'TEST6'
 					# the user has previously activated "Timeshift save recording" of current event - so must be necessarily saved of the timeshift!
-					InfoBarTimeshift.saveTimeshiftActions(self, "savetimeshiftandrecord", returnFunction)
+					# workaround - without the message box can the box no longer be operated (not freeze - only no longer can use)
+					message = _("You have chosen to save the current timeshift")
+					choice = [(_("Now save timeshift as movie and continues recording"), "savetimeshiftandrecord")]
+					self.session.openWithCallback(boundFunction(self.checkTimeshiftRunningCallback, returnFunction), MessageBox, message, simple = True, list = choice, timeout=1)
+					#InfoBarTimeshift.saveTimeshiftActions(self, "savetimeshiftandrecord", returnFunction)
 				else:
 					# print 'TEST7'
 					message =  _("You seem to be in timeshift, Do you want to leave timeshift ?")
@@ -489,7 +496,11 @@ class InfoBarTimeshift:
 			# the user has chosen "no warning" when timeshift is stopped (config.usage.check_timeshift=False)
 			# but the user has previously activated "Timeshift save recording" of current event
 			# so we silently do "savetimeshiftandrecord" when switching channel independent of config.timeshift.favoriteSaveAction
-			InfoBarTimeshift.saveTimeshiftActions(self, "savetimeshiftandrecord", returnFunction)
+			# workaround - without the message box can the box no longer be operated (not freeze - only no longer can use)
+			message = _("You have chosen to save the current timeshift")
+			choice = [(_("Now save timeshift as movie and continues recording"), "savetimeshiftandrecord")]
+			self.session.openWithCallback(boundFunction(self.checkTimeshiftRunningCallback, returnFunction), MessageBox, message, simple = True, list = choice, timeout=1)
+			#InfoBarTimeshift.saveTimeshiftActions(self, "savetimeshiftandrecord", returnFunction)
 		else:
 			returnFunction(True)
 

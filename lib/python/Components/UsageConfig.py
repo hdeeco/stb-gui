@@ -42,10 +42,12 @@ def InitUsageConfig():
 		refreshServiceList()
 	config.usage.alternative_number_mode.addNotifier(alternativeNumberModeChange)
 
-	config.usage.servicetype_icon_mode = ConfigSelection(default = "0", choices = [("0", _("None")), ("1", _("Left from servicename")), ("2", _("Right from servicename"))])  
+	config.usage.servicetype_icon_mode = ConfigSelection(default = "0", choices = [("0", _("None")), ("1", _("Left from servicename")), ("2", _("Right from servicename"))])
 	config.usage.servicetype_icon_mode.addNotifier(refreshServiceList)
 	config.usage.crypto_icon_mode = ConfigSelection(default = "0", choices = [("0", _("None")), ("1", _("Left from servicename")), ("2", _("Right from servicename"))])
 	config.usage.crypto_icon_mode.addNotifier(refreshServiceList)
+	config.usage.record_indicator_mode = ConfigSelection(default = "3", choices = [("0", _("None")), ("1", _("Left from servicename")), ("2", _("Right from servicename")), ("3", _("Red colored"))])
+	config.usage.record_indicator_mode.addNotifier(refreshServiceList)
 
 	# just merge note, config.usage.servicelist_column was allready there
 	choicelist = [("-1", _("Devide")), ("0", _("Disable"))]
@@ -121,7 +123,11 @@ def InitUsageConfig():
 		("swapstop", _("Move PiP to main picture")), ("stop", _("Stop PiP")) ])
 	config.usage.pip_hideOnExit = ConfigSelection(default = "no", choices = [
 		("no", _("No")), ("popup", _("With popup")), ("without popup", _("Without popup")) ])
-
+	choicelist = [("-1", _("Disabled")), ("0", _("No timeout"))]
+	for i in [60, 300, 600, 900, 1800, 2700, 3600]:
+		m = i/60
+		choicelist.append(("%d" % i, ngettext("%d minute", "%d minutes", m) % m))
+	config.usage.pip_last_service_timeout = ConfigSelection(default = "0", choices = choicelist)
 	if not os.path.exists(resolveFilename(SCOPE_HDD)):
 		try:
 			os.mkdir(resolveFilename(SCOPE_HDD),0755)
@@ -190,14 +196,18 @@ def InitUsageConfig():
 	config.usage.movielist_trashcan_network_clean = ConfigYesNo(default=False)
 	config.usage.movielist_trashcan_days = ConfigSelectionNumber(min = 1, max = 31, stepwidth = 1, default = 8, wraparound = True)
 	config.usage.movielist_trashcan_reserve = ConfigNumber(default = 40)
-	config.usage.on_movie_start = ConfigSelection(default = "ask", choices = [
-		("ask", _("Ask user")), ("resume", _("Resume from last position")), ("beginning", _("Start from the beginning")) ])
+	config.usage.on_movie_start = ConfigSelection(default = "resume", choices = [
+		("ask yes", _("Ask user (with default as 'yes')")),
+		("ask no", _("Ask user (with default as 'no')")),
+		("resume", _("Resume from last position")),
+		("beginning", _("Start from the beginning"))])
 	config.usage.on_movie_stop = ConfigSelection(default = "movielist", choices = [
 		("ask", _("Ask user")), ("movielist", _("Return to movie list")), ("quit", _("Return to previous service")) ])
 	config.usage.on_movie_eof = ConfigSelection(default = "movielist", choices = [
 		("ask", _("Ask user")), ("movielist", _("Return to movie list")), ("quit", _("Return to previous service")), ("pause", _("Pause movie at end")), ("playlist", _("Play next (return to movie list)")),
 		("playlistquit", _("Play next (return to previous service)")), ("loop", _("Continues play (loop)")), ("repeatcurrent", _("Repeat"))])
 	config.usage.next_movie_msg = ConfigYesNo(default = True)
+	config.usage.last_movie_played = ConfigText()
 	config.usage.leave_movieplayer_onExit = ConfigSelection(default = "no", choices = [
 		("no", _("No")), ("popup", _("With popup")), ("without popup", _("Without popup")) ])
 
@@ -228,7 +238,11 @@ def InitUsageConfig():
 		("2", "DVB-C/-S/-T"),
 		("3", "DVB-C/-T/-S"),
 		("4", "DVB-T/-C/-S"),
-		("5", "DVB-T/-S/-C") ])
+		("5", "DVB-T/-S/-C"),
+		("127", "No priority") ])
+
+	config.usage.remote_fallback_enabled = ConfigYesNo(default = False);
+	config.usage.remote_fallback = ConfigText(default = "", fixed_size = False);
 
 	nims = [("-1", _("auto"))]
 	rec_nims = [("-2", _("Disabled")), ("-1", _("auto"))]
@@ -262,9 +276,19 @@ def InitUsageConfig():
 	config.usage.updownbutton_mode = ConfigSelection(default="1", choices = [
 					("0", _("Just change channels")),
 					("1", _("Channel List"))])
-	config.usage.okbutton_mode = ConfigSelection(default="0", choices = [
-					("0", _("InfoBar")),
-					("1", _("Channel List"))])
+	if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/CoolTVGuide/plugin.pyo"):
+		config.usage.okbutton_mode = ConfigSelection(default="0", choices = [
+						("0", _("InfoBar")),
+						("1", _("Channel List")),
+						("2", _("Show CoolInfoGuide")),
+						("3", _("Show CoolSingleGuide")),
+						("4", _("Show CoolTVGuide")),
+						("5", _("Show CoolEasyGuide")),
+						("6", _("Show CoolChannelGuide"))])
+	else:
+		config.usage.okbutton_mode = ConfigSelection(default="0", choices = [
+						("0", _("InfoBar")),
+						("1", _("Channel List"))])
 	config.usage.show_bouquetalways = ConfigYesNo(default = False)
 	config.usage.show_event_progress_in_servicelist = ConfigSelection(default = 'barright', choices = [
 		('barleft', _("Progress bar left")),
@@ -339,6 +363,7 @@ def InitUsageConfig():
 	config.usage.show_cryptoinfo = ConfigSelection([("2", _("Off")),("1", _("One line")),("2", _("Two lines"))], "2")
 	config.usage.show_eit_nownext = ConfigYesNo(default = True)
 	config.usage.show_vcr_scart = ConfigYesNo(default = False)
+	config.usage.pic_resolution = ConfigSelection(default = None, choices = [(None, _("Same resolution as skin")), ("(720, 576)","720x576"), ("(1280, 720)", "1280x720"), ("(1920, 1080)", "1920x1080")])
 
 	config.epg = ConfigSubsection()
 	config.epg.eit = ConfigYesNo(default = True)
@@ -526,6 +551,13 @@ def InitUsageConfig():
 			os.mkdir(config.crash.debug_path.value,0755)
 	config.crash.debug_path.addNotifier(updatedebug_path, immediate_feedback = False)
 
+	crashlogheader = _("We are really sorry. Your receiver encountered " \
+					 "a software problem, and needs to be restarted.\n" \
+					 "Please send the logfile %senigma2_crash_xxxxxx.log to www.opena.tv.\n" \
+					 "Your receiver restarts in 10 seconds!\n" \
+					 "Component: enigma2") % config.crash.debug_path.value
+	config.crash.debug_text = ConfigText(default=crashlogheader, fixed_size=False)
+
 	config.usage.timerlist_finished_timer_position = ConfigSelection(default = "end", choices = [("beginning", _("at beginning")), ("end", _("at end"))])
 
 	def updateEnterForward(configElement):
@@ -591,7 +623,7 @@ def InitUsageConfig():
 	config.subtitles.subtitle_alignment = ConfigSelection(choices = [("left", _("left")), ("center", _("center")), ("right", _("right"))], default = "center")
 	config.subtitles.subtitle_rewrap = ConfigYesNo(default = False)
 	config.subtitles.subtitle_borderwidth = ConfigSelection(choices = ["1", "2", "3", "4", "5"], default = "3")
-	config.subtitles.subtitle_fontsize  = ConfigSelection(choices = ["16", "18", "20", "22", "24", "26", "28", "30", "32", "34", "36", "38", "40", "42", "44", "46", "48", "50", "52", "54"], default = "34")
+	config.subtitles.subtitle_fontsize  = ConfigSelection(choices = ["%d" % x for x in range(16,101) if not x % 2], default = "38")
 
 	subtitle_delay_choicelist = []
 	for i in range(-900000, 1845000, 45000):
@@ -667,7 +699,8 @@ def InitUsageConfig():
 		("spa", _("Spanish")),
 		("swe", _("Swedish")),
 		("tha", _("Thai")),
-		("tur Audio_TUR", _("Turkish"))]
+		("tur Audio_TUR", _("Turkish")),
+		("ukr Ukr", _("Ukrainian"))]
 
 	def setEpgLanguage(configElement):
 		eServiceEvent.setEPGLanguage(configElement.value)
@@ -807,7 +840,7 @@ def InitUsageConfig():
 	config.epgselection.graph_eventfs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.graph_timelinefs = ConfigSelectionNumber(default = 0, stepwidth = 1, min = -8, max = 10, wraparound = True)
 	config.epgselection.graph_timeline24h = ConfigYesNo(default = True)
-	config.epgselection.graph_itemsperpage = ConfigSelectionNumber(default = 8, stepwidth = 1, min = 3, max = 16, wraparound = True)
+	config.epgselection.graph_itemsperpage = ConfigSelectionNumber(default = 8, stepwidth = 1, min = 3, max = 20, wraparound = True)
 	config.epgselection.graph_pig = ConfigYesNo(default = True)
 	config.epgselection.graph_heightswitch = NoSave(ConfigYesNo(default = False))
 	config.epgselection.graph_servicewidth = ConfigSelectionNumber(default = 250, stepwidth = 1, min = 70, max = 500, wraparound = True)

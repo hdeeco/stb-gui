@@ -1163,6 +1163,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 		if session is not None:
 			from Screens.NumericalTextInputHelpDialog import NumericalTextInputHelpDialog
 			self.help_window = session.instantiateDialog(NumericalTextInputHelpDialog, self)
+			self.help_window.setSubScreen()
 			self.help_window.show()
 
 	def onDeselect(self, session):
@@ -1875,9 +1876,7 @@ class Config(ConfigSubsection):
 			print "Config: Couldn't write %s" % filename
 
 	def loadFromFile(self, filename, base_file=True):
-		f = open(filename, "r")
-		self.unpickle(f.readlines(), base_file)
-		f.close()
+		self.unpickle(open(filename, "r"), base_file)
 
 config = Config()
 config.misc = ConfigSubsection()

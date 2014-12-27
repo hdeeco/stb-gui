@@ -73,6 +73,7 @@ AM_CONDITIONAL(GIGABLUE, test `echo "$BOXTYPE" | cut -b 1-5` == "gb800")
 AM_CONDITIONAL(ODIN, test `echo "$BOXTYPE" | cut -b 1-4` == "odin")
 AM_CONDITIONAL(VENTON, test `echo "$BOXTYPE" | cut -b 1-6` == "venton")
 AM_CONDITIONAL(EBOX, test `echo "$BOXTYPE" | cut -b 1-4` == "ebox")
+AM_CONDITIONAL(IXUSS, test `echo "$BOXTYPE" | cut -b 1-4` == "ixus")
 AM_CONDITIONAL(EDISION, test `echo "$BOXTYPE" | cut -b 1-4` == "opti")
 AM_CONDITIONAL(JEPSSEN, test `echo "$BOXTYPE" | cut -b 1-5` == "media")
 AM_CONDITIONAL(SOGNO, test `echo "$BOXTYPE" | cut -b 1-5` == "sogno")
@@ -173,6 +174,15 @@ AM_CONDITIONAL(HAVE_COLORLCD3, test "$BOXTYPE" == dm7080)
 AM_CONDITIONAL(HAVE_COLORLCD2, test "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm800sev2 -o "$BOXTYPE" == dm820)
 AM_CONDITIONAL(HAVE_COLORLCD1, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800 -o "$BOXTYPE" == dm7020hd -o "$BOXTYPE" == dm7020hdv2)
 
+AC_ARG_WITH(libvugles2,
+	AS_HELP_STRING([--with-libvugles2],[use libvugles2, yes or no]),
+	[with_libvugles2=$withval],[with_libvugles2=no])
+if test "$with_libvugles2" = "yes"; then
+	PKG_CHECK_MODULES(LIBVUGLES2, [libvugles2])
+	GLES_CFLAGS="-DUSE_LIBVUGLES2"
+fi
+AM_CONDITIONAL(HAVE_LIBVUGLES2, test "$with_libvugles2" = "yes")
+
 if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
 	AC_DEFINE(DREAMBOX, 1, [Dreambox hardware])
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
@@ -238,12 +248,12 @@ fi
 AM_CONDITIONAL(HAVE_COLORLCD220, test x"$withcolorlcd220" != xno)
 
 AC_ARG_WITH(colorlcd400,
-	AC_HELP_STRING([--with-colorlcd400], [use 400x240 16bpp color display, yes or no]),
+	AC_HELP_STRING([--with-colorlcd400], [use 400x176 16bpp color display, yes or no]),
 	[[withcolorlcd400=$withval]],
 	[[withcolorlcd400=no]]
 )
 if test x"$withcolorlcd400" != xno ; then
-	AC_DEFINE(HAVE_COLORLCD400, 1,[Define when using a 400x240 color display device])
+	AC_DEFINE(HAVE_COLORLCD400, 1,[Define when using a 400x176 color display device])
 fi
 
 AM_CONDITIONAL(HAVE_COLORLCD400, test x"$withcolorlcd400" != xno)
@@ -308,7 +318,7 @@ if test x"$witholdpvr" != xno ; then
 fi
 AM_CONDITIONAL(HAVE_OLDPVR, test x"$witholdpvr" != xno)
 
-if test "$BOXTYPE" == "dm7080"; then
+if test "$BOXTYPE" == "dm7080" -o "$BOXTYPE" == "dm820"; then
 	AC_DEFINE(TUNER_DM7080, 1,[define BOXTYPE DM7080])
 fi
 
@@ -361,9 +371,14 @@ fi
 
 if test "$BOXTYPE" == "ew7358" -o  "$BOXTYPE" == "ew7356" -o "$BOXTYPE" == "ew7362"; then
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
+	AC_DEFINE(KEY_MEDIA_TO_KEY_LIST, 1,[define when rc sends a KEY_MEDIA event for its KEY_LIST key])
 fi
 
 if test "$BOXTYPE" == "sh1" ; then
+	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
+fi
+
+if test "$BOXTYPE" == "7000s" ; then
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
 fi
 
@@ -402,7 +417,7 @@ fi
 #	AC_DEFINE(FORCE_SERVICEAVAIL, 1,[define SERVICEAVAIL for GBIPBOX allways true ])
 #fi
 
-if test "$BOXTYPE" == "inihde" -o "$BOXTYPE" == "inihdx" -o "$BOXTYPE" == "inihdp" -o "$BOXTYPE" == "inihde2am"; then
+if test "$BOXTYPE" == "inihde" -o "$BOXTYPE" == "inihdx" -o "$BOXTYPE" == "inihdp" -o "$BOXTYPE" == "inihde2"; then
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
 	AC_DEFINE(KEY_MEDIA_TO_KEY_OPEN, 1,[define when rc sends a KEY_MEDIA event for its KEY_OPEN key])
@@ -417,6 +432,10 @@ fi
 if test "$BOXTYPE" == "vg1000" -o "$BOXTYPE" == "vg5000"; then
 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
 	AC_DEFINE(KEY_F3_TO_KEY_LIST, 1,[define when rc sends a KEY_F3 event for its KEY_LIST key])
+fi
+
+if test `echo "$BOXTYPE" | cut -b 1-4` == "ixus"; then
+	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
 fi
 
 if test "$BOXTYPE" == "blackbox7405"; then
@@ -481,7 +500,7 @@ AC_SUBST(ENIGMA2_CFLAGS)
 
 CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS"
 CFLAGS="$CFLAGS $DEBUG_CFLAGS -Wall"
-CXXFLAGS="$CXXFLAGS $DEBUG_CFLAGS -Wall $BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS"
+CXXFLAGS="$CXXFLAGS $DEBUG_CFLAGS -Wall $BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $GLES_CFLAGS"
 AX_SWIG_PYTHON_OPT="$AX_SWIG_PYTHON_OPT -DSWIG_PYTHON_LEGACY_BOOL"
 
 AC_CONFIG_FILES([
@@ -489,7 +508,6 @@ Makefile
 data/Makefile
 data/defaults/Makefile
 data/fonts/Makefile
-data/extensions/Makefile
 data/keymaps/Makefile
 data/displaytext/Makefile
 data/displaydualtext/Makefile
@@ -524,7 +542,6 @@ lib/python/Plugins/Extensions/MediaPlayer/Makefile
 lib/python/Plugins/Extensions/MediaPlayer/meta/Makefile
 lib/python/Plugins/Extensions/MediaScanner/Makefile
 lib/python/Plugins/Extensions/MediaScanner/meta/Makefile
-lib/python/Plugins/Extensions/Modem/Makefile
 lib/python/Plugins/Extensions/PicturePlayer/Makefile
 lib/python/Plugins/Extensions/PicturePlayer/meta/Makefile
 lib/python/Plugins/Extensions/PicturePlayer/data/Makefile
@@ -571,6 +588,7 @@ lib/python/Plugins/SystemPlugins/WirelessLan/Makefile
 lib/python/Plugins/SystemPlugins/WirelessLan/meta/Makefile
 lib/python/Plugins/SystemPlugins/SkinSelector/Makefile
 lib/python/Plugins/SystemPlugins/SkinSelector/meta/Makefile
+lib/python/Plugins/SystemPlugins/AnimationSetup/Makefile
 lib/python/Tools/Makefile
 po/Makefile
 main/Makefile

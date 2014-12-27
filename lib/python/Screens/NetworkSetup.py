@@ -46,7 +46,7 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 		self.lan_errortext = _("No working local network adapter found.\nPlease verify that you have attached a network cable and your network is configured correctly.")
 		self.oktext = _("Press OK on your remote control to continue.")
 		self.edittext = _("Press OK to edit the settings.")
-		self.defaulttext = _("Press yellow to set this interface as default interface.")
+		self.defaulttext = _("Press yellow to set this interface as the default interface.")
 		self.restartLanRef = None
 
 		self["key_red"] = StaticText(_("Close"))
@@ -70,7 +70,7 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 
 		self["DefaultInterfaceAction"] = HelpableActionMap(self, "ColorActions",
 			{
-			"yellow": (self.setDefaultInterface, [_("Set interface as default Interface"),_("* Only available if more than one interface is active.")] ),
+			"yellow": (self.setDefaultInterface, [_("Set interface as the default Interface"),_("* Only available if more than one interface is active.")] ),
 			})
 
 		self.adapters = [(iNetwork.getFriendlyAdapterName(x),x) for x in iNetwork.getAdapterList()]
@@ -1011,7 +1011,6 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 
 		if os_path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			menu.append((_("Network wizard"), "openwizard"))
-		# kernel_ver = about.getKernelVersionString()
 		# CHECK WHICH BOXES NOW SUPPORT MAC-CHANGE VIA GUI
 		if getBoxType() not in ('DUMMY') and self.iface == 'eth0':
 			menu.append((_("Network MAC settings"), "mac"))
@@ -2516,10 +2515,6 @@ class NetworkSamba(Screen):
 		self.Console.ePopen('/usr/bin/opkg install ' + pkgname, callback)
 
 	def installComplete(self,result = None, retval = None, extra_args = None):
-		#self.message.close()
-		#self.feedscheck.close()
-		#self.SambaStartStop()
-		# SAMBA INSTALLATION NEEDS A RESTART OF THE BOX BEFORE IT COULD BE USED !!
 		self.session.open(TryQuitMainloop, 2)
 
 	def UninstallCheck(self):
