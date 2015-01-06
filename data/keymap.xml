@@ -148,7 +148,7 @@
 		<key id="KEY_CHANNELDOWN" mapto="ChannelMinusPressedLong" flags="l" />-->
 		<key id="BTN_0" mapto="zapUp" flags="mr" />
 		<key id="BTN_1" mapto="zapDown" flags="mr" />
-		<key id="KEY_SAT" mapto="openSatellites" flags="m" />
+		<!--key id="KEY_SAT" mapto="openSatellites" flags="m" /-->
 	</map>
 	
 	<map context="InfobarHDMIActions">
@@ -779,7 +779,8 @@
 	</map>
 
 	<map context="HelpActions">
-		<key id="KEY_HELP" mapto="displayHelp" flags="m" />
+		<key id="KEY_HELP" mapto="displayHelp" flags="b" />
+		<key id="KEY_OPTION" mapto="displayHelp" flags="b" />
 	</map>
 
 	<map context="ShortcutActions">
@@ -837,8 +838,8 @@
 		<key id="KEY_ESC" mapto="cancel" flags="m" />
 		<key id="KEY_ENTER" mapto="ok" flags="m" />
 		<key id="KEY_OK" mapto="ok" flags="m" />
-		<key id="KEY_CHANNELUP" mapto="size+" flags="m" />
-		<key id="KEY_CHANNELDOWN" mapto="size-" flags="m" />
+		<key id="KEY_CHANNELUP" mapto="size+" flags="mr" />
+		<key id="KEY_CHANNELDOWN" mapto="size-" flags="mr" />
 		<key id="KEY_INFO" mapto="mode" flags="m" />
 	</map>
 
@@ -952,6 +953,7 @@
 		<key id="KEY_TV" mapto="showTv" flags="b"/>
 		<key id="KEY_TEXT" mapto="text" flags="b"/>
 		<key id="KEY_HELP" mapto="displayHelp" flags="b"/>
+		<key id="KEY_HELP" mapto="displayHelp_long" flags="l"/>
 		<key id="KEY_SUBTITLE" mapto="subtitle" flags="b"/>
 		<key id="KEY_MENU" mapto="mainMenu" flags="b"/>
 		<key id="KEY_INFO" mapto="info" flags="b"/>
@@ -990,6 +992,8 @@
 		<key id="KEY_POWER" mapto="power_long" flags="l"/>
 		<key id="KEY_SLEEP" mapto="sleep" flags="b"/>
 		<key id="KEY_HOME" mapto="home" flags="b"/>
+		<key id="KEY_SAT" mapto="sat" flags="b" />
+		<key id="KEY_SAT" mapto="sat_long" flags="l" />
 		<key id="KEY_CONTEXT_MENU" mapto="contextMenu" flags="m"/>
 		<key id="KEY_F1" mapto="f1" flags="b"/>
 		<key id="KEY_F1" mapto="f1_long" flags="l"/>

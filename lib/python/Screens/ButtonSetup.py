@@ -16,12 +16,12 @@ from enigma import eServiceReference, eActionMap
 from Components.Label import Label
 import os
 
-ButtonSetupKeys = [	(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
-	(_("Red long"), "red_long", "Infobar/activateRedButton"),
+ButtonSetupKeys = [	(_("Red"), "red", ""),
+	(_("Red long"), "red_long", ""),
 	(_("Green"), "green", ""),
-	(_("Green long"), "green_long", "Infobar/showAutoTimerList"),
-	(_("Yellow"), "yellow", "Plugins/Extensions/EPGSearch/1"),
-	(_("Yellow long"), "yellow_long", "Plugins/Extensions/IMDb/1"),
+	(_("Green long"), "green_long", ""),
+	(_("Yellow"), "yellow", ""),
+	(_("Yellow long"), "yellow_long", ""),
 	(_("Blue"), "blue", ""),
 	(_("Blue long"), "blue_long", ""),
 	(_("Info (EPG)"), "info", "Infobar/InfoPressed/1"),
@@ -69,6 +69,8 @@ ButtonSetupKeys = [	(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
 	(_("Power"), "power", ""),
 	(_("Power long"), "power_long", ""),
 	(_("Context"), "contextMenu", "Infobar/showExtensionSelection"),
+	(_("SAT"), "sat", "Infobar/openSatellites"),
+	(_("SAT long"), "sat_long", ""),
 	(_("F1/LAN"), "f1", "Infobar/showNetworkMounts"),
 	(_("F1/LAN long"), "f1_long", ""),
 	(_("F2"), "f2", ""),
@@ -113,6 +115,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Zap up"), "Infobar/zapUp", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show service list"), "Infobar/openServiceList", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show favourites list"), "Infobar/openFavouritesList", "InfoBar"))
+	ButtonSetupFunctions.append((_("Show satellites list"), "Infobar/openSatellites", "InfoBar"))
 	ButtonSetupFunctions.append((_("History back"), "Infobar/historyBack", "InfoBar"))
 	ButtonSetupFunctions.append((_("History next"), "Infobar/historyNext", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show eventinfo plugins"), "Infobar/showEventInfoPlugins", "EPG"))
@@ -182,7 +185,7 @@ class ButtonSetup(Screen):
 		Screen.__init__(self, session)
 		self['description'] = Label(_('Click on your remote on the button you want to change'))
 		self.session = session
-		self.setTitle(_("Button setup"))
+		self.setTitle(_("Hotkey Setup"))
 		self["key_red"] = Button(_("Exit"))
 		self.list = []
 		self.ButtonSetupFunctions = getButtonSetupFunctions()
@@ -251,7 +254,7 @@ class ButtonSetupSelect(Screen):
 		self['description'] = Label(_('Select the desired function and click on "OK" to assign it. Use "CH+/-" to toggle between the lists. Select an assigned function and click on "OK" to de-assign it. Use "Next/Previous" to change the order of the assigned functions.'))
 		self.session = session
 		self.key = key
-		self.setTitle(_("Button setup for") + ": " + key[0][0])
+		self.setTitle(_("Hotkey Setup for") + ": " + key[0][0])
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("Save"))
 		self.mode = "list"
