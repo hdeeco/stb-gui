@@ -43,6 +43,15 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("Subtitle"), "subtitle", ""),
 	(_("Menu"), "mainMenu", ""),
 	(_("List/Fav/PVR"), "list", ""),
+	(_("List/Fav/PVR long"), "list_long", ""),
+	(_("File"), "file", ""),
+	(_("File long"), "file_long", ""),
+	(_("Open"), "open", ""),
+	(_("Open long"), "open_long", ""),
+	(_("Www"), "www", ""),
+	(_("Www long"), "www_long", ""),
+	(_("Directory"), "directory", ""),
+	(_("Directory long"), "directory_long", ""),
 	(_("Back/Recall"), "back", ""),
 	(_("Back/Recall") + " " + _("long"), "back_long", ""),
 	(_("Home"), "home", ""),
@@ -71,7 +80,7 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("Context"), "contextMenu", "Infobar/showExtensionSelection"),
 	(_("SAT"), "sat", "Infobar/openSatellites"),
 	(_("SAT long"), "sat_long", ""),
-	(_("F1/LAN"), "f1", "Infobar/showNetworkMounts"),
+	(_("F1/LAN"), "f1", ""),
 	(_("F1/LAN long"), "f1_long", ""),
 	(_("F2"), "f2", ""),
 	(_("F2 long"), "f2_long", ""),
@@ -113,6 +122,8 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Show extension selection"), "Infobar/showExtensionSelection", "InfoBar"))
 	ButtonSetupFunctions.append((_("Zap down"), "Infobar/zapDown", "InfoBar"))
 	ButtonSetupFunctions.append((_("Zap up"), "Infobar/zapUp", "InfoBar"))
+	ButtonSetupFunctions.append((_("Volume down"), "Infobar/volumeDown", "InfoBar"))
+	ButtonSetupFunctions.append((_("Volume up"), "Infobar/volumeUp", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show service list"), "Infobar/openServiceList", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show favourites list"), "Infobar/openFavouritesList", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show satellites list"), "Infobar/openSatellites", "InfoBar"))
@@ -178,6 +189,8 @@ def getButtonSetupFunctions():
 		for x in [x for x in os.listdir("/usr/script") if x.endswith(".sh")]:
 			x = x[:-3]
 			ButtonSetupFunctions.append((_("Shellscript") + " " + x, "Shellscript/" + x, "Shellscripts"))
+	if os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/EnhancedMovieCenter/plugin.pyo"):
+		ButtonSetupFunctions.append((_("EnhancedMovieCenter"), "EMC/", "Plugins"))
 	return ButtonSetupFunctions
 
 class ButtonSetup(Screen):
@@ -518,4 +531,11 @@ class InfoBarButtonSetup():
 				if os.path.isfile(command) and os.path.isdir('/usr/lib/enigma2/python/Plugins/Extensions/PPanel'):
 					from Plugins.Extensions.PPanel.ppanel import Execute
 					self.session.open(Execute, selected[1] + " shellscript", None, command)
+			elif selected[0] == "EMC":
+				try:
+					from Plugins.Extensions.EnhancedMovieCenter.plugin import showMoviesNew
+					from Screens.InfoBar import InfoBar
+					open(showMoviesNew(InfoBar.instance))
+				except Exception as e:
+					print('[EMCPlayer] showMovies exception:\n' + str(e))
 

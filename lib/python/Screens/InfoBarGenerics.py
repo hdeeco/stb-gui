@@ -166,7 +166,7 @@ resumePointCacheLast = int(time())
 class InfoBarDish:
 	def __init__(self):
 		self.dishDialog = self.session.instantiateDialog(Dish)
-		self.dishDialog.setSubScreen()
+		self.dishDialog.setAnimationMode(0)
 
 class InfoBarLongKeyDetection:
 	def __init__(self):
@@ -183,7 +183,7 @@ class InfoBarLongKeyDetection:
 class InfoBarUnhandledKey:
 	def __init__(self):
 		self.unhandledKeyDialog = self.session.instantiateDialog(UnhandledKey)
-		self.unhandledKeyDialog.setSubScreen()
+		self.unhandledKeyDialog.setAnimationMode(0)
 		self.hideUnhandledKeySymbolTimer = eTimer()
 		self.hideUnhandledKeySymbolTimer.callback.append(self.unhandledKeyDialog.hide)
 		self.checkUnusedTimer = eTimer()
@@ -1197,6 +1197,8 @@ class InfoBarChannelSelection:
 				"switchChannelDownLong": (self.switchChannelDown, _("Open service list and select next channel for PiP")),
 				"zapUp": (self.zapUp, _("Switch to previous channel")),
 				"zapDown": (self.zapDown, _("Switch next channel")),
+				"volumeUp": (self.volumeUp, _("change Volume up")),
+				"volumeDown": (self.volumeDown, _("change Volume down")),
 				"historyBack": (self.historyBack, _("Switch to previous channel in history")),
 				"historyNext": (self.historyNext, _("Switch to next channel in history")),
 				"openServiceList": (self.openServiceList, _("Open service list")),
@@ -1450,6 +1452,12 @@ class InfoBarChannelSelection:
 				#self.servicelist2.moveDown()
 			#self.servicelist2.zap(enable_pipzap = True)
 			#ChannelSelectionInstance.dopipzap = False
+
+	def volumeUp(self):
+		VolumeControl.instance.volUp()
+
+	def volumeDown(self):
+		VolumeControl.instance.volDown()
 
 
 class InfoBarMenu:
@@ -2021,7 +2029,7 @@ class InfoBarRdsDecoder:
 	def __init__(self):
 		self.rds_display = self.session.instantiateDialog(RdsInfoDisplay)
 		self.session.instantiateSummaryDialog(self.rds_display)
-		self.rds_display.setSubScreen()
+		self.rds_display.setAnimationMode(0)
 		self.rass_interactive = None
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
@@ -2702,7 +2710,7 @@ class InfoBarPVRState:
 		self.onChangedEntry = [ ]
 		self.onPlayStateChanged.append(self.__playStateChanged)
 		self.pvrStateDialog = self.session.instantiateDialog(screen)
-		self.pvrStateDialog.setSubScreen()
+		self.pvrStateDialog.setAnimationMode(0)
 		self.onShow.append(self._mayShow)
 		self.onHide.append(self.pvrStateDialog.hide)
 		self.force_show = force_show
@@ -3253,7 +3261,7 @@ class InfoBarPiP:
 			xres = str(info.getInfo(iServiceInformation.sVideoWidth))
 			if int(xres) <= 720 or not getMachineBuild() in ('blackbox7405', 'inihdx'):
 				self.session.pip = self.session.instantiateDialog(PictureInPicture)
-				self.session.pip.setSubScreen()
+				self.session.pip.setAnimationMode(0)
 				self.session.pip.show()
 				newservice = self.lastPiPService or self.session.nav.getCurrentlyPlayingServiceReference() or self.servicelist.servicelist.getCurrent()
 				if self.session.pip.playService(newservice):
@@ -4555,7 +4563,7 @@ class InfoBarSubtitleSupport(object):
 
 		if isStandardInfoBar(self):
 			self.subtitle_window = self.session.instantiateDialog(SubtitleDisplay)
-			self.subtitle_window.setSubScreen()
+			self.subtitle_window.setAnimationMode(0)
 		else:
 			from Screens.InfoBar import InfoBar
 			self.subtitle_window = InfoBar.instance.subtitle_window
