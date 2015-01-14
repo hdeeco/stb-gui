@@ -529,7 +529,24 @@ class installedPlugins(Screen):
 		self.close()
 
 class RestorePlugins(Screen):
-
+	skin = """
+		<screen name="RestorePlugins" position="center,center" size="560,400" title="Restore backups" >
+			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
+			<widget source="menu" render="Listbox" position="5,50" size="550,230" scrollbarMode="showOnDemand" transparent="1" zPosition="1">
+				<convert type="TemplatedMultiContent">
+					{"template": [
+					MultiContentEntryText(pos = (50, 3), size = (520, 25), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_TOP, text = 0),
+					MultiContentEntryPixmapAlphaBlend(pos = (5, 1), size = (24, 24), png = 1),
+					],
+					"fonts": [gFont("Regular",20), gFont("Regular",16)],
+					"itemHeight": 30
+					}
+				</convert>
+			</widget>
+		</screen>"""
 	def __init__(self, session, menulist):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Restore Plugins"))
@@ -577,14 +594,14 @@ class RestorePlugins(Screen):
 					pluginlist.append(x[0])
 		if len(pluginlist) > 0:
 			if len(self.myipklist) > 0:
-				self.session.open(Console, title = _("Installing plugins..."), cmdlist = ['ipkg --force-overwrite install ' + ' '.join(pluginlist)], finishedCallback = self.installLocalIPK, closeOnSuccess = True)
+				self.session.open(Console, title = _("Installing plugins..."), cmdlist = ['opkg --force-overwrite install ' + ' '.join(pluginlist)], finishedCallback = self.installLocalIPK, closeOnSuccess = True)
 			else:
-				self.session.open(Console, title = _("Installing plugins..."), cmdlist = ['ipkg --force-overwrite install ' + ' '.join(pluginlist)], finishedCallback = self.exit, closeOnSuccess = True)
+				self.session.open(Console, title = _("Installing plugins..."), cmdlist = ['opkg --force-overwrite install ' + ' '.join(pluginlist)], finishedCallback = self.exit, closeOnSuccess = True)
 		elif len(self.myipklist) > 0:
 			self.installLocalIPK()
 
 	def installLocalIPK(self):
-		self.session.open(Console, title = _("Installing plugins..."), cmdlist = ['ipkg --force-overwrite install ' + ' '.join(self.myipklist)], finishedCallback = self.exit, closeOnSuccess = True)
+		self.session.open(Console, title = _("Installing plugins..."), cmdlist = ['opkg --force-overwrite install ' + ' '.join(self.myipklist)], finishedCallback = self.exit, closeOnSuccess = True)
 	
 	def ok(self):
 		index = self["menu"].getIndex()
