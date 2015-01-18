@@ -46,6 +46,8 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("List/Fav/PVR long"), "list_long", ""),
 	(_("File"), "file", ""),
 	(_("File long"), "file_long", ""),
+	(_("Media"), "media", ""),
+	(_("Media long"), "media_long", ""),
 	(_("Open"), "open", ""),
 	(_("Open long"), "open_long", ""),
 	(_("Www"), "www", ""),
@@ -70,8 +72,10 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("activatePiP"), "activatePiP", ""),
 	(_("Timer"), "timer", ""),
 	(_("Playlist"), "playlist", ""),
+	(_("Playlist"), "playlist_long", ""),
 	(_("Timeshift"), "timeshift", ""),
 	(_("Search/WEB"), "search", ""),
+	(_("Search/WEB long"), "search_long", ""),
 	(_("Slow"), "slow", ""),
 	(_("Mark/Portal/Playlist"), "mark", ""),
 	(_("Sleep"), "sleep", ""),
@@ -125,7 +129,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Volume down"), "Infobar/volumeDown", "InfoBar"))
 	ButtonSetupFunctions.append((_("Volume up"), "Infobar/volumeUp", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show service list"), "Infobar/openServiceList", "InfoBar"))
-	ButtonSetupFunctions.append((_("Show favourites list"), "Infobar/openFavouritesList", "InfoBar"))
+	ButtonSetupFunctions.append((_("Show favourites list"), "Infobar/openBouquets", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show satellites list"), "Infobar/openSatellites", "InfoBar"))
 	ButtonSetupFunctions.append((_("History back"), "Infobar/historyBack", "InfoBar"))
 	ButtonSetupFunctions.append((_("History next"), "Infobar/historyNext", "InfoBar"))

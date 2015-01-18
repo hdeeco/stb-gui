@@ -472,11 +472,11 @@ class installedPlugins(Screen):
 
 	def doUpdate(self):
 		print"[SOFTWARE MANAGER] update package list"
-		self.container.execute("ipkg update")
+		self.container.execute("opkg update")
 
 	def doList(self):
 		print"[SOFTWARE MANAGER] read installed package list"
-		self.container.execute("ipkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base'")
+		self.container.execute("opkg list-installed | egrep 'enigma2-plugin-|task-base|packagegroup-base'")
 
 	def dataAvail(self, strData):
 		if self.type == self.LIST:
