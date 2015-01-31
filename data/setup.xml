@@ -6,7 +6,10 @@
 		<item level="0" text="NTP server" description="Configure your NTP server.">config.misc.NTPserver</item>
 		<item level="0" text="Sync NTP every (minutes)" description="Setup network time synchronization interval." requires="config.misc.SyncTimeUsing" >config.misc.useNTPminutes</item>
 	</setup>
-	<setup key="avsetup">
+	<setup key="audio_setup">
+		<!-- this is just a placeholder, the Videomode plugin implements this submenu -->
+	</setup>
+	<setup key="video_setup">
 		<!-- this is just a placeholder, the Videomode plugin implements this submenu -->
 	</setup>
 	<setup key="usage" title="Customize">
@@ -208,6 +211,7 @@
 		<item level="0" text="Keyboard map">config.keyboard.keymap</item>
 	</setup>
 	<setup key="display" title="Display settings" requires="FrontpanelDisplay">
+		<item level="0" requires="FBLCDDisplay" text="Clone TV screen to LCD" description="Shows live tv or informations on LCD.">config.lcd.fblcddisplay</item>
 		<item level="0" text="Brightness (Normal)" description="Configure the brightness level of the front panel display for normal operation.">config.lcd.bright</item>
 		<item level="0" text="Brightness (Standby)" description="Configure the brightness level of the front panel display for standby.">config.lcd.standby</item>
 		<item level="0" text="Contrast" description="Configure the contrast level of the front panel display.">config.lcd.contrast</item>
@@ -298,6 +302,9 @@
 		<item level="2" text="Stop timeshift while recording?" description="Stop's timeshift being used if a recording is in progress. (adviseable for usb sticks)">config.timeshift.stopwhilerecording</item>
 		<item level="2" text="Use timeshift seekbar while timeshifting?" description="If set to 'yes', allows you use the seekbar to jump to a point within the event.">config.timeshift.showinfobar</item>
 		<item level="2" text="Timeshift buffer limit [in hours]" description="Older files in the timeshift directory are removed on every event change.">config.timeshift.timeshiftMaxHours</item>
+		<item level="2" text="Timeshift last events limit [number of events]" description="'Buffer in hours' or 'number of last events'. Priority has the condition for deleting older timeshift files which is first occurred.">config.timeshift.timeshiftMaxEvents</item>
+		<item level="2" text="Timeshift checking for older files [in minutes]" description="In addition the check by an event start can a repetitive check are used. So will the condition 'buffer limit in hours' or 'check free space' earlier detected.">config.timeshift.timeshiftCheckEvents</item>
+		<item level="2" text="Timeshift checking for free space?" description="If the free space is less than 1024 MB, then an attempt is made to delete the old timeshift files">config.timeshift.timeshiftCheckFreeSpace</item>
 		<item level="2" text="Timeshift buffer delete after zap?" description="If set to 'no', can you save older events even after zapping or interruption of the timeshift.">config.timeshift.deleteAfterZap</item>
 	</setup>
 	<setup key="epgsingle" title="ChannelEPG settings">

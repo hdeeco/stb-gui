@@ -79,7 +79,7 @@
 	<map context="InfobarEPGActions">
 		<key id="KEY_RED" mapto="RedPressed" flags="b" />
 		<key id="KEY_I" mapto="IPressed" flags="b" />
-		<key id="KEY_INFO" mapto="InfoPressed" flags="m" />
+		<key id="KEY_INFO" mapto="InfoPressed" flags="b" />
 		<key id="KEY_INFO" mapto="showEventInfoPlugin" flags="l" />
 		<key id="KEY_EPG" mapto="EPGPressed" flags="b" />
 		<key id="KEY_EPG" mapto="showEventInfoPlugin" flags="l" />
@@ -128,8 +128,8 @@
 		<key id="KEY_BACK" mapto="historyBack" flags="b" />
 		<key id="KEY_FORWARD" mapto="historyNext" flags="mr" />
 		<key id="KEY_ARCHIVE" mapto="historyBack" flags="mr" />
-		<key id="KEY_CHANNELUP" mapto="openServiceList" flags="mr" />
-		<key id="KEY_CHANNELDOWN" mapto="openServiceList" flags="mr" />
+		<key id="KEY_CHANNELUP" mapto="openServiceList" flags="b" />
+		<key id="KEY_CHANNELDOWN" mapto="openServiceList" flags="b" />
 		<key id="BTN_0" mapto="zapUp" flags="mr" />
 		<key id="BTN_1" mapto="zapDown" flags="mr" />
 		<!--key id="KEY_SAT" mapto="openSatellites" flags="m" /-->
@@ -702,13 +702,13 @@
 	</map>
 
 	<map context="ColorActions">
-		<key id="KEY_RED" mapto="red" flags="m"/>
+		<key id="KEY_RED" mapto="red" flags="b"/>
 		<key id="KEY_RED" mapto="redlong" flags="l"/>
-		<key id="KEY_GREEN" mapto="green" flags="m"/>
+		<key id="KEY_GREEN" mapto="green" flags="b"/>
 		<key id="KEY_GREEN" mapto="greenlong" flags="l"/>
-		<key id="KEY_YELLOW" mapto="yellow" flags="m"/>
+		<key id="KEY_YELLOW" mapto="yellow" flags="b"/>
 		<key id="KEY_YELLOW" mapto="yellowlong" flags="l"/>
-		<key id="KEY_BLUE" mapto="blue" flags="m"/>
+		<key id="KEY_BLUE" mapto="blue" flags="b"/>
 		<key id="KEY_BLUE" mapto="bluelong" flags="l"/>
 	</map>
 

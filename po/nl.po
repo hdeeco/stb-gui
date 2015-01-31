@@ -809,13 +809,13 @@ msgid "Allow 25Hz/30Hz"
 msgstr "Gebruik 25Hz/30Hz modus"
 
 msgid "Allow quit movieplayer with exit"
-msgstr "Speler kan verlaten worden met de Exit-toets."
+msgstr "Speler kan verlaten worden met de Exit-toets"
 
 msgid "Allow subtitle language to equal audio language"
 msgstr "Ondertitel taal overeenkomstig aan audio taal"
 
 msgid "Allow subtitles for hearing impaired"
-msgstr "Accepteer ondertitels voor slechthorenden."
+msgstr "Accepteer ondertitels voor slechthorenden"
 
 msgid "Allow unstable (untested) updates"
 msgstr "Accepteer niet geteste updates"
@@ -8098,7 +8098,7 @@ msgid "Use timeshift seekbar while timeshifting?"
 msgstr "Gebruik timeshift seekbar tijdens timeshift?"
 
 msgid "Use trash can in movielist"
-msgstr "Gebruik de prullenbak in movielijst."
+msgstr "Gebruik de prullenbak in filmlijst"
 
 msgid "Used service scan type"
 msgstr "Gebruikte zoekmethode."
@@ -10180,9 +10180,6 @@ msgstr "Klaar - %d vernieuwde pakketen geinstalleerd"
 msgid "Upgrade finished. Do you want to reboot your %s %s?"
 msgstr "Upgrade klaar. %s %s opnieuw opstarten?"
 
-msgid "Message"
-msgstr "Bericht"
-
 msgid "Setup Mode"
 msgstr "Gebruikers modus"
 
@@ -10558,7 +10555,7 @@ msgid "Setup your recording config"
 msgstr "Alle instellingen die met opname's te maken hebben."
 
 msgid "Show movie lengths in movielist"
-msgstr "Toon lengte van opnames in de opnamelijst."
+msgstr "Toon lengte van opnames in de opnamelijst"
 
 # Menue Systeem EPG instellingen
 msgid "EPG Setup"
@@ -10765,9 +10762,13 @@ msgstr "Hier kunt u instellen hoe 1080p 25Hz moet weergegeven worden op je TV. (
 msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TV's support these resolutions)"
 msgstr "Hier kunt u instellen hoe 1080p 30Hz moet weergegeven worden op je TV. (sommige TVs ondersteunen deze resolutie niet)"
 
+#
+msgid "Message"
+msgstr "Boodschap"
+
 #: ButtonSetup
 msgid "Click on your remote on the button you want to change"
-msgstr "Druk op de knop van de afstandsbediening waarvan u de functie wil wijzigen"
+msgstr "Druk op de knop van de afstandsbediening waarvan u de functie wil wijzigen."
 
 msgid "Red long"
 msgstr "Rood lang"
@@ -10811,8 +10812,8 @@ msgstr "Opname"
 msgid "Help long"
 msgstr "Help lang"
 
-msgid "Subtitle
-msgstr "Ondertitels
+msgid "Subtitle"
+msgstr "Ondertitels"
  
 msgid "Previous"
 msgstr "Vorige"
@@ -10824,22 +10825,21 @@ msgid "Fastforward"
 msgstr "Vooruitspoelen"
 
 msgid ""
-"Select the desired function and click on "OK" to assign it." "
-"Use "Ch+/-" to toggle between the lists." "
-"Select an assigned function and click on "OK" to de-assing it." "
-"Use "Next/Previous" to change the order of the assigned functions."
+"Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" "
+"to toggle between the lists. Select an assigned function and click on \"OK\" "
+"to de-assign it. Use \"Next/Previous\" to change the order of the assigned "
+"functions."
 msgstr ""
-"Selecteer de gewenste functie en klik op \"OK\" om deze toe te wijzen. " "
-"Gebruik \"Ch +/-\" om te schakelen tussen de lijsten. Selecteer een " "
-"toegewezen functie en klik op \"OK\" om deze ongedaan te maken. Gebruik" "
-" "Volgende/Vorige" om de volgorde van de toegewezen functies te wijzigen."
+"Selecteer de gewenste functie en klik op \"OK\" om deze toe te wijzen. Gebruik "
+"\"Ch+/-\" om te schakelen tussen de lijsten. Selecteer een toegewezen functie "
+"en klik op \"OK\" om deze ongedaan te maken."
 
 # Channellist Menue
 msgid "set as startup service from standby"
-msgstr "Afstemmen op deze zender als box uit stand-by komt"
+msgstr "Zender gebruiken als startzender"
 
 msgid "stop using as startup service from standby"
-msgstr "Niet meer afstemmen op deze zender als box uit stand-by komt"
+msgstr "Niet meer gebruiken als startzender"
 
 msgid "find currently played service"
 msgstr "Springen naar de huidige zender"
@@ -10860,7 +10860,7 @@ msgid ""
 "Actions' preset actions are performed. "
 msgstr ""
 "Hier stelt u in waarheen als eerste gesprogen wordt in de kanaallijst "
-"(bij drukken op '2' springt u 'A' of naar '2')"
+"(bij drukken op '2' springt u 'A' of naar '2'). "
 "Wanneer 'snelle acties' vooraf ingesteld zijn"
 
 msgid "Show columns"
@@ -10987,7 +10987,7 @@ msgstr "Wilt u alle andere talen verwijderen?"
 
 # Backup/restore
 msgid ""
-"Are you sure you want to restore your STB backup?\n"
+"Are you sure you want to restore your %s %s backup?\n"
 "STB will restart after the restore"
 msgstr ""
 "Weet u zeker dat u de backup wilt terugplaatsen? \n"
@@ -10998,8 +10998,16 @@ msgstr "Een ogenblik geduld, we controleren uw geïnstalleerde plugins..."
 
 # Skin
 msgid ""
-"GUI needs a restart to apply a new skin\n"
+"GUI needs a restart to apply a new skin.\n"
 "Do you want to Restart the GUI now?"
 msgstr ""
 "De gebruikersinterface moet herstart worden om \n"
 "de nieuwe skin te activeren. Nu herstarten?"
+
+#
+msgid "are you sure to cancel all changes"
+msgstr "Weet U zeker dat U alle wijzigingen wil annuleren?"
+
+#
+msgid "Backup done."
+msgstr "Backup is genomen!"
