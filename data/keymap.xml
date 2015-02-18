@@ -222,7 +222,7 @@
 	</map>
 
 	<map context="InfobarShowHideActions">
-		<key id="KEY_OK" mapto="toggleShow" flags="m" />
+		<key id="KEY_OK" mapto="toggleShow" flags="b" />
 		<key id="KEY_OK" mapto="LongOKPressed" flags="l" />
 		<key id="KEY_ENTER" mapto="toggleShow" flags="m" />
 		<key id="KEY_EXIT" mapto="hide" flags="m" />
@@ -704,6 +704,8 @@
 		<key id="KEY_EPG" mapto="epg" flags="b"/>
 		<key id="KEY_TV" mapto="tv" flags="b"/>
 		<key id="KEY_TV" mapto="tvlong" flags="l"/>
+		<key id="KEY_FASTFORWARD" mapto="nextBouquet" flags="m" />
+		<key id="KEY_REWIND" mapto="prevBouquet" flags="m" />
 	</map>
 
 	<map context="EventViewActions">
@@ -951,6 +953,7 @@
 		<key id="KEY_MENU" mapto="mainMenu" flags="b"/>
 		<key id="KEY_INFO" mapto="info" flags="b"/>
 		<key id="KEY_INFO" mapto="info_long" flags="l"/>
+		<key id="KEY_OK" mapto="ok_long" flags="l"/>
 		<key id="KEY_VIDEO" mapto="list" flags="b"/>
 		<key id="KEY_VIDEO" mapto="list_long" flags="l"/>
 		<key id="KEY_BACK" mapto="back" flags="b"/>
@@ -960,8 +963,8 @@
 		<key id="KEY_EPG" mapto="epg_long" flags="l"/>
 		<key id="KEY_LEFT" mapto="cross_left" flags="mr"/>
 		<key id="KEY_RIGHT" mapto="cross_right" flags="mr"/>
-		<key id="KEY_UP" mapto="cross_up" flags="b"/>
-		<key id="KEY_DOWN" mapto="cross_down" flags="b"/>
+		<key id="KEY_UP" mapto="cross_up" flags="m"/>
+		<key id="KEY_DOWN" mapto="cross_down" flags="m"/>
 		<key id="KEY_CHANNELUP" mapto="channelup" flags="b"/>
 		<key id="KEY_CHANNELDOWN" mapto="channeldown" flags="b"/>
 		<key id="KEY_NEXT" mapto="next" flags="mr"/>
@@ -987,6 +990,8 @@
 		<key id="KEY_OPEN" mapto="open_long" flags="l"/>
 		<key id="KEY_WWW" mapto="www" flags="b"/>
         <key id="KEY_WWW" mapto="www_long" flags="l"/>
+		<key id="KEY_HOMEPAGE" mapto="homep" flags="b"/>
+		<key id="KEY_HOMEPAGE" mapto="homep_long" flags="l"/>
         <key id="KEY_DIRECTORY" mapto="directory" flags="b"/>
         <key id="KEY_DIRECTORY" mapto="directory_long" flags="l"/>
 		<key id="KEY_TIME" mapto="timeshift" flags="b"/>
