@@ -282,6 +282,10 @@
 			<key id="KEY_YELLOW" mapto="audioSelection" flags="b" />
 			<key id="KEY_YELLOW" mapto="audioSelection" flags="l" />
 		</device>
+		<device name="OPTIMUSS OS1+ remote control (native)">
+			<key id="KEY_YELLOW" mapto="audioSelection" flags="b" />
+			<key id="KEY_YELLOW" mapto="audioSelection" flags="l" />
+		</device>
 		<device name="remote control">
 			<key id="KEY_YELLOW" mapto="audioSelection" flags="b" />
 			<key id="KEY_YELLOW" mapto="audioSelection" flags="l" />
@@ -706,6 +710,9 @@
 		<key id="KEY_TV" mapto="tvlong" flags="l"/>
 		<key id="KEY_FASTFORWARD" mapto="nextBouquet" flags="m" />
 		<key id="KEY_REWIND" mapto="prevBouquet" flags="m" />
+		<key id="KEY_RED" mapto="red" flags="m"/>
+		<key id="KEY_YELLOW" mapto="yellow" flags="m"/>
+		<key id="KEY_BLUE" mapto="blue" flags="m"/>
 	</map>
 
 	<map context="EventViewActions">
@@ -845,8 +852,8 @@
 			<key id="KEY_NEXT" mapto="next" flags="m" />
 		</device>
 
-		<key id="KEY_YELLOW" mapto="pause" flags="m" />
-		<key id="KEY_GREEN" mapto="play" flags="m" />
+		<key id="KEY_YELLOW" mapto="pause" flags="b" />
+		<key id="KEY_GREEN" mapto="play" flags="b" />
 		<key id="KEY_RADIO" mapto="shift_record" flags="l" />
 		<key id="KEY_PREVIOUS" mapto="previous" flags="m" />
 		<key id="KEY_NEXT" mapto="next" flags="m" />
@@ -1012,5 +1019,10 @@
 		<key id="KEY_F2" mapto="f2_long" flags="l"/>
 		<key id="KEY_F3" mapto="f3" flags="b"/>
 		<key id="KEY_F3" mapto="f3_long" flags="l"/>
+	</map>
+	<map context="SubtitlesActions">
+		<key id="KEY_SUBTITLE" mapto="subtitles" flags="m" />
+		<key id="KEY_TEXT" mapto="subtitles" flags="m" />
+		<key id="KEY_RED" mapto="subtitles" flags="m" />
 	</map>
 </keymap>

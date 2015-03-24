@@ -90,6 +90,14 @@ void eRCDeviceInputDev::handleCode(long rccode)
 		}
 	}
 
+#if KEY_FAV_TO_KEY_PVR
+	if (ev->code == KEY_FAVORITES)
+	{
+		/* tomcat remote dont have a PVR Key. Correct this, so we do not have to place hacks in the keymaps. */
+		ev->code = KEY_PVR;
+	}
+#endif
+
 #if KEY_LAST_TO_KEY_PVR
 	if (ev->code == KEY_LAST)
 	{
@@ -417,38 +425,6 @@ void eRCDeviceInputDev::handleCode(long rccode)
 		/* HDx , which sends KEY_LIST events. Correct this, so we do not have to place hacks in the keymaps. */
 		ev->code = KEY_PVR;
 	}
-#endif
-
-#if KEY_INFO_TO_KEY_EPG
- /* INFO to EPG Toggle , which sends KEY_INFO events. Correct this, so we do not have to place hacks in the keymaps. */
- if (ev->code == KEY_INFO)
- {
-  if (ev->value == 0)
-  {
-  ev->code = KEY_EPG;
-  }
-  else
-  {
-  ev->code = KEY_INFO;
-  ev->value == 0;
-  }
- }
-#endif
-
-#if KEY_EPG_TO_KEY_INFO
- /* EPG to INFO Toggle , which sends KEY_EPG events. Correct this, so we do not have to place hacks in the keymaps. */
- if (ev->code == KEY_EPG)
- {
-  if (ev->value == 0)
-  {
-  ev->code = KEY_EPG;
-  }
-  else
-  {
-  ev->code = KEY_INFO;
-  ev->value == 0;
-  }
- }
 #endif
 
 	switch (ev->value)

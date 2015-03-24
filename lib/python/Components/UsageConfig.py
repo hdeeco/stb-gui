@@ -307,7 +307,7 @@ def InitUsageConfig():
 
 	config.usage.blinking_display_clock_during_recording = ConfigYesNo(default = False)
 
-	config.usage.blinking_rec_symbol_during_recording = ConfigYesNo(default = False)
+	config.usage.blinking_rec_symbol_during_recording = ConfigYesNo(default = True)
 
 	config.usage.show_message_when_recording_starts = ConfigYesNo(default = True)
 
@@ -372,6 +372,7 @@ def InitUsageConfig():
 	config.epg.viasat = ConfigYesNo(default = True)
 	config.epg.netmed = ConfigYesNo(default = True)
 	config.epg.virgin = ConfigYesNo(default = False)
+	config.epg.saveepg = ConfigYesNo(default = True)
 	
 	config.misc.showradiopic = ConfigYesNo(default = True)
 	config.misc.bootvideo = ConfigYesNo(default = True)
@@ -468,7 +469,7 @@ def InitUsageConfig():
 	config.network = ConfigSubsection()
 	if SystemInfo["WakeOnLAN"]:
 		def wakeOnLANChanged(configElement):
-			if getBoxType() in ('et10000', 'gbquadplus', 'gbquad', 'gb800ueplus', 'gb800seplus', 'gbultraue', 'gbultrase', 'gbipbox', 'quadbox2400', 'mutant2400'):
+			if getBoxType() in ('et10000', 'gbquadplus', 'gbquad', 'gb800ueplus', 'gb800seplus', 'gbultraue', 'gbultrase', 'gbipbox', 'quadbox2400', 'mutant2400', 'et7x00', 'et8500'):
 				open(SystemInfo["WakeOnLAN"], "w").write(configElement.value and "on" or "off")
 			else:
 				open(SystemInfo["WakeOnLAN"], "w").write(configElement.value and "enable" or "disable")
@@ -552,7 +553,10 @@ def InitUsageConfig():
 
 	def updatedebug_path(configElement):
 		if not os.path.exists(config.crash.debug_path.value):
-			os.mkdir(config.crash.debug_path.value,0755)
+			try:
+				os.mkdir(config.crash.debug_path.value,0755)
+			except:
+				print "Failed to create log path: %s" %config.crash.debug_path.value
 	config.crash.debug_path.addNotifier(updatedebug_path, immediate_feedback = False)
 
 	crashlogheader = _("We are really sorry. Your receiver encountered " \
