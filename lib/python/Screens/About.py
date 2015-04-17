@@ -18,6 +18,78 @@ from Tools.StbHardware import getFPVersion, getMicomVersion
 from os import path
 from re import search
 
+def getAboutText():
+	AboutText = ""
+	AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
+
+	if path.exists('/proc/stb/info/chipset'):
+		AboutText += _("Chipset:\t%s") % about.getChipSetString() + "\n"
+
+	cpuMHz = ""
+	if path.exists('/proc/cpuinfo'):
+		f = open('/proc/cpuinfo', 'r')
+		temp = f.readlines()
+		f.close()
+		try:
+			for lines in temp:
+				lisp = lines.split(': ')
+				if lisp[0].startswith('cpu MHz'):
+					#cpuMHz = "   (" +  lisp[1].replace('\n', '') + " MHz)"
+					cpuMHz = "   (" +  str(int(float(lisp[1].replace('\n', '')))) + " MHz)"
+					break
+		except:
+			pass
+
+	AboutText += _("CPU:\t%s") % about.getCPUString() + cpuMHz + "\n"
+	AboutText += _("Cores:\t%s") % about.getCpuCoresString() + "\n"
+
+	AboutText += _("Version:\t%s") % getImageVersion() + "\n"
+	AboutText += _("Build:\t%s") % getImageBuild() + "\n"
+	AboutText += _("Kernel:\t%s") % about.getKernelVersionString() + "\n"
+
+	string = getDriverDate()
+	year = string[0:4]
+	month = string[4:6]
+	day = string[6:8]
+	driversdate = '-'.join((year, month, day))
+	AboutText += _("Drivers:\t%s") % driversdate + "\n"
+
+	AboutText += _("Last update:\t%s") % getEnigmaVersionString() + "\n\n"
+
+	AboutText += _("GStreamer:\t%s") % about.getGStreamerVersionString() + "\n"
+
+	fp_version = getFPVersion()
+	if fp_version is None:
+		fp_version = ""
+	elif fp_version != 0:
+		fp_version = _("Frontprocessor version: %s") % fp_version
+		AboutText += fp_version + "\n"
+
+	tempinfo = ""
+	if path.exists('/proc/stb/sensors/temp0/value'):
+		f = open('/proc/stb/sensors/temp0/value', 'r')
+		tempinfo = f.read()
+		f.close()
+	elif path.exists('/proc/stb/fp/temp_sensor'):
+		f = open('/proc/stb/fp/temp_sensor', 'r')
+		tempinfo = f.read()
+		f.close()
+	if tempinfo and int(tempinfo.replace('\n', '')) > 0:
+		mark = str('\xc2\xb0')
+		AboutText += _("System temperature:\t%s") % tempinfo.replace('\n', '').replace(' ','') + mark + "C\n"
+
+	tempinfo = ""
+	if path.exists('/proc/stb/fp/temp_sensor_avs'):
+		f = open('/proc/stb/fp/temp_sensor_avs', 'r')
+		tempinfo = f.read()
+		f.close()
+	if tempinfo and int(tempinfo.replace('\n', '')) > 0:
+		mark = str('\xc2\xb0')
+		AboutText += _("Processor temperature:\t%s") % tempinfo.replace('\n', '').replace(' ','') + mark + "C\n"
+	AboutLcdText = AboutText.replace('\t', ' ')
+
+	return AboutText, AboutLcdText
+
 class About(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
