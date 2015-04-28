@@ -19,6 +19,7 @@ config.mediaplayer.sortPlaylists = ConfigYesNo(default=False)
 config.mediaplayer.alwaysHideInfoBar = ConfigYesNo(default=False)
 config.mediaplayer.onMainMenu = ConfigYesNo(default=True)
 config.mediaplayer.onPluginMenu = ConfigYesNo(default=False)
+config.mediaplayer.extraHeaders = ConfigText(default="")
 
 class DirectoryBrowser(Screen, HelpableScreen):
 
