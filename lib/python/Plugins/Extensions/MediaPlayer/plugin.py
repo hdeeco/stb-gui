@@ -11,7 +11,7 @@ from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.InputBox import InputBox
 from Screens.ChoiceBox import ChoiceBox
-from Screens.InfoBar import InfoBar
+from Screens.InfoBar import InfoBar, setAudioTrack
 from Screens.InfoBarGenerics import InfoBarSeek, InfoBarScreenSaver, InfoBarAudioSelection, InfoBarAspectSelection, InfoBarCueSheetSupport, InfoBarNotifications, InfoBarSubtitleSupport
 from Components.ActionMap import NumberActionMap, HelpableActionMap
 from Components.Label import Label
@@ -130,6 +130,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 
 		self.playlist = MyPlayList()
 		self.is_closing = False
+		self.hiding = False
 		self.delname = ""
 		self.playlistname = ""
 		self["playlist"] = self.playlist
@@ -260,6 +261,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 
 	def hideAndInfoBar(self):
 		self.hide()
+		self.hiding = True
 		self.mediaPlayerInfoBar.show()
 		if config.mediaplayer.alwaysHideInfoBar.value or self.ext not in AUDIO_EXTENSIONS and not self.isAudioCD:
 			self.hideMediaPlayerInfoBar.start(5000, True)
@@ -322,6 +324,15 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		if sTagTrackNumber or sTagTrackCount or sTagTitle:
 			print "[__evUpdatedInfo] title %d of %d (%s)" % (sTagTrackNumber, sTagTrackCount, sTagTitle)
 		self.readTitleInformation()
+		service = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		if service:
+			# we go this way for other extensions as own records(they switch over pmt in c)
+			path = service.getPath()
+			ext = os.path.splitext(path)[1].lower()
+			exts = [".mkv", ".avi", ".divx", ".mp4"]      # we need more extensions here ?
+			if ext.lower() in exts:
+				if currPlay:
+					setAudioTrack(currPlay)
 
 	def __evAudioDecodeError(self):
 		currPlay = self.session.nav.getCurrentService()
@@ -397,12 +408,32 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 						self.summaries.setText(info,4)
 
 	def leftDown(self):
-		self.lefttimer = True
-		self.leftKeyTimer.start(1000)
+		if self.hiding:
+			self.show()
+			self.hiding = False
+		else:
+			if self.currList == "playlist":
+				if self.playlist.getSelectionIndex() > 0:
+					self.playlist.pageUp()
+				else:
+					self.lefttimer = True
+					self.leftKeyTimer.start(1000)
+			else:
+				self.filelist.pageUp()
 
 	def rightDown(self):
-		self.righttimer = True
-		self.rightKeyTimer.start(1000)
+		if self.hiding:
+			self.show()
+			self.hiding = False
+		else:
+			if self.currList == "filelist":
+				if (self.filelist.getSelectionIndex() + 1) < len(self.filelist.list):
+					self.filelist.pageDown()
+				else:
+					self.righttimer = True
+					self.rightKeyTimer.start(1000)
+			else:
+				self.playlist.pageDown()
 
 	def leftUp(self):
 		if self.lefttimer:
@@ -550,7 +581,10 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		if self.currList == "playlist":
 			if self.playlist.getCurrentIndex() == self.playlist.getSelectionIndex() and not self.playlist.isStopped():
 				if self.shown:
-					self.hideAndInfoBar()
+					if self.seekstate == self.SEEK_STATE_PAUSE or self.isStateForward(self.seekstate) or self.isStateBackward(self.seekstate):
+						self.pauseEntry()
+					else:
+						self.hideAndInfoBar()
 				elif self.mediaPlayerInfoBar.shown:
 					self.mediaPlayerInfoBar.hide()
 					self.hideMediaPlayerInfoBar.stop()
@@ -763,6 +797,14 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 				if recursive:
 					if x[0][0] != directory:
 						self.copyDirectory(x[0][0])
+			# check if MerlinMusicPlayer is installed and merlinmp3player.so is running
+			# so we need the right id to play now the mp3-file
+			elif filelist.getServiceRef() and filelist.getServiceRef().type == 4116:
+				inst = x[0][0]
+				if isinstance(inst, eServiceReference):
+					path = inst.getPath()
+					service = eServiceReference(4097, 0, path)
+					self.playlist.addFile(service)
 			elif filelist.getServiceRef() and filelist.getServiceRef().type == 4097:
 				self.playlist.addFile(x[0][0])
 		self.playlist.updateList()
@@ -899,7 +941,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 
 	def xplayEntry(self):
 		if self.currList == "playlist":
-			self.playEntry()
+			self.pauseEntry()
 		else:
 			self.stopEntry()
 			self.playlist.clear()
@@ -982,16 +1024,35 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			self.playlist.rewindFile()
 
 	def pauseEntry(self):
-		if self.currList == "playlist" and self.seekstate == self.SEEK_STATE_PAUSE:
-			self.playEntry()
-		elif self.isStateForward(self.seekstate) or self.isStateBackward(self.seekstate):
-			self.playEntry()
+		if self.shown:
+			if self.currList == "playlist":
+				if self.seekstate == self.SEEK_STATE_PAUSE:
+					if self.playlist.getCurrentIndex() != self.playlist.getSelectionIndex():
+						self.changeEntry(self.playlist.getSelectionIndex())
+					else:
+						self.playEntry()
+				elif self.seekstate == self.SEEK_STATE_PLAY:
+					if self.playlist.getCurrentIndex() != self.playlist.getSelectionIndex():
+						self.changeEntry(self.playlist.getSelectionIndex())
+					else:
+						if not self.playlist.isStopped():
+							if self.ext in AUDIO_EXTENSIONS or self.isAudioCD:
+								self.pauseService()
+							else:
+								self.hideAndInfoBar()
+						else:
+							self.changeEntry(self.playlist.getSelectionIndex())
+				elif self.isStateForward(self.seekstate) or self.isStateBackward(self.seekstate):
+					self.playEntry()
 		else:
-			self.pauseService()
-			if self.seekstate == self.SEEK_STATE_PAUSE:
-				self.show()
+			if self.currList == "playlist" and self.seekstate == self.SEEK_STATE_PAUSE:
+				self.playEntry()
+			elif self.isStateForward(self.seekstate) or self.isStateBackward(self.seekstate):
+				self.playEntry()
 			else:
-				self.hideAndInfoBar()
+				self.pauseService()
+				if self.seekstate == self.SEEK_STATE_PAUSE:
+					self.show()
 
 	def stopEntry(self):
 		self.playlist.stopFile()
