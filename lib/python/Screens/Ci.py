@@ -1,12 +1,19 @@
+from boxbranding import getMachineBrand, getMachineName
+
 from Screen import Screen
+from Screens.Standby import TryQuitMainloop
+from Screens.MessageBox import MessageBox
 from Components.ActionMap import ActionMap
 from Components.ActionMap import NumberActionMap
 from Components.Label import Label
-
-from Components.config import config, ConfigNumber, ConfigYesNo, ConfigSubsection, ConfigSelection, ConfigSubList, getConfigListEntry, KEY_LEFT, KEY_RIGHT, KEY_0, ConfigNothing, ConfigPIN
+from Components.Pixmap import Pixmap
+from Components.config import config, ConfigNumber, ConfigYesNo, ConfigSubsection, ConfigSelection, ConfigSubList, NoSave, getConfigListEntry, KEY_LEFT, KEY_RIGHT, KEY_0, ConfigNothing, ConfigPIN
 from Components.ConfigList import ConfigList, ConfigListScreen
-
+from Components.Console import Console
 from Components.SystemInfo import SystemInfo
+from Tools.Directories import fileExists
+import time
+from os import path as os_path, remove, unlink, rename, chmod, access, X_OK, system as os_system
 
 from enigma import eTimer, eDVBCI_UI, eDVBCIInterfaces
 
@@ -450,4 +457,72 @@ class CiDefaultPinSetup(ConfigListScreen, Screen):
 		for x in self['config'].list:
 		    x[1].cancel()
 		self.close()
+
+class CIHelper(Screen):
+	skin = """
+	<screen name="CIHelper" title="CIHelper Setup" position="center,center" size="400,180" >
+		<widget name="autostart" position="10,130" size="150,30" font="Regular;22" valign="center" halign="left" backgroundColor="layer-a-background" foregroundColor="layer-a-foreground" transparent="1" />
+		<widget name="labdisabled" position="130,130" size="172,30" font="Regular;22" valign="center" halign="center" backgroundColor="red" zPosition="1" />
+		<widget name="labactive" position="130,130" size="172,30" font="Regular;22" valign="center" halign="center" backgroundColor="green" zPosition="2" />
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
+	</screen>"""
+
+	def __init__(self, session):
+		Screen.__init__(self, session)
+		Screen.setTitle(self, _("CI+ Setup"))
+		self.skinName = "CIHelper"
+		self.onChangedEntry = [ ]
+
+		self['autostart'] = Label(_("Status:"))
+		self['labactive'] = Label(_(_("Active")))
+		self['labdisabled'] = Label(_(_("Disabled")))
+
+		self['key_red'] = Label("Exit")
+		self['key_green'] = Label()
+		self.Console = Console()
+		self.my_cihelper_active = False
+		self.my_cihelper_run = False
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'], {'red': self.close, 'back': self.close, 'green': self.CIHelperStartStop})
+		self.onLayoutFinish.append(self.updateService)
+
+	def CIHelperStartStop(self):
+		self.CIHelperset()
+		if not self.my_cihelper_run:
+			self.Console.ePopen('/etc/init.d/blackbox-ci-controller start', self.StartStopCallback)
+		elif self.my_cihelper_run:
+			self.Console.ePopen('/etc/init.d/blackbox-ci-controller stop', self.StartStopCallback)
+
+	def StartStopCallback(self, result = None, retval = None, extra_args = None):
+		message = _("Changes need a system restart to take effect.\nRestart your %s %s now?") % (getMachineBrand(), getMachineName())
+		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
+		ybox.setTitle(_("Restart %s %s.") % (getMachineBrand(), getMachineName()))
 		
+	def CIHelperset(self):
+		if fileExists('/etc/rcS.d/S50blackbox-ci-controller'):
+			self.Console.ePopen('update-rc.d -f blackbox-ci-controller remove', self.StartStopCallback)
+		else:
+			self.Console.ePopen('update-rc.d -f -s blackbox-ci-controller start 50 S .', self.StartStopCallback)
+
+	def updateService(self):
+		import process
+		p = process.ProcessList()
+		cihelper_process = str(p.named('blackbox-ci-con')).strip('[]')
+		self['labactive'].hide()
+		self['labdisabled'].show()
+		self['key_green'].setText(_("Start"))
+		self.my_cihelper_run = False
+		
+		if cihelper_process:
+			self.my_cihelper_run = True
+			self['labdisabled'].hide()
+			self['labactive'].show()
+			self['key_green'].setText(_("Stop"))
+
+	def restartBox(self, answer):
+		if answer is True:
+			self.session.open(TryQuitMainloop, 2)
+		else:
+			self.close()
