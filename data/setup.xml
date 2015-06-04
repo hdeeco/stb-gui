@@ -29,7 +29,7 @@
 		<item level="1" text="Boot-up action" description="Select what should be done when the %s %s was boot-up, normal playing or goto standby.">config.usage.boot_action</item>
 		<item level="2" text="Require authentication for http streams" description="When enabled, authentication is required to watch http streams.">config.streaming.authentication</item>
 	</setup>
-	<setup key="userinterface" title="Settings...">
+	<setup key="userinterface" title="OSD settings">
 		<item level="0" text="1st Infobar timeout" description="Set the time to hide the infobar.">config.usage.infobar_timeout</item>
 		<item level="0" text="2nd infobar" description="Enable and set the duration of the second infobar (press OK twice) that may include more information on the current service.">config.usage.show_second_infobar</item>
 		<item level="0" text="2nd Infobar timeout" description="Set the time to hide the second infobar. The bar also disappears on pressing 'OK'.">config.usage.second_infobar_timeout</item>
@@ -264,14 +264,14 @@
 		<item text="Latitude" description="Configure the latitude of your location.">config.sat.diseqcb</item>
 		<item text="Use power measurement" description="When enabled, measure power consumption to detect when the rotor stops turning (when supported by the tuner)." >config.sat.diseqcc</item>
 	</setup>
-	<setup key="softwareupdate" title="Software update">
+	<setup key="softwareupdate" title="Softwareupdate">
 		<item level="1" text="Background check" description="Perform an online update check in the background">config.softwareupdate.check</item>
 		<item level="1" text="Check every (hours)" description="Setup the interval to check for online updates. (in hours)" requires="config.softwareupdate.check">config.softwareupdate.checktimer</item>
 		<item level="1" text="Allow unstable (untested) updates" description="When enabled the online checker will also check for experimental versions">config.softwareupdate.updatebeta</item>
 		<item level="1" text="Automatic setting backup" description="Perform a setting backup before updating.">config.softwareupdate.autosettingsbackup</item>
 		<item level="1" text="Automatic image backup" description="Perform a image backup before updating.">config.softwareupdate.autoimagebackup</item>
 	</setup>
-	<setup key="remotesetup" title="Button setup">
+	<setup key="remotesetup" title="Button Setup">
 		<item level="1" text="Action on long powerbutton press" description="Configure the function of a long press on the power button.">config.usage.on_long_powerpress</item>
 		<item level="1" text="Action on short powerbutton press" description="Configure the function of a short press on the power button.">config.usage.on_short_powerpress</item>
 		<item level="0" text="EPG button mode" description="Select what you want the EPG button to activate:">config.plisettings.PLIEPG_mode</item>
@@ -402,7 +402,7 @@
 	<setup key="dvdplayer" title="DVD-Player Setup">
 		<item level="0" text="Show DVD-Player in Mainmenu when BMC is installed ?" description="Show DVD-Player in Mainmenu">config.usage.show_dvdplayer</item>
 	</setup>
-	<setup key="pluginbrowsersetup" title="Settings...">
+	<setup key="pluginbrowsersetup" title="Pluginbrowser Settings">
 		<item level="2" text="Show translation packages" description="If set to 'yes' it will show the 'PO' packages in browser.">config.pluginbrowser.po</item>
 		<item level="2" text="Show source packages" description="If set to 'yes' it will show the 'SRC' packages in browser.">config.pluginbrowser.src</item>
 	</setup>

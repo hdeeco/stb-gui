@@ -252,11 +252,15 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
 			{
+				iPlayableService.evStart: self.__evStart,
 				iPlayableService.evUpdatedInfo: self.__evUpdatedInfo,
 				iPlayableService.evUser+10: self.__evAudioDecodeError,
 				iPlayableService.evUser+11: self.__evVideoDecodeError,
 				iPlayableService.evUser+12: self.__evPluginError,
-				iPlayableService.evUser+13: self["coverArt"].embeddedCoverArt
+				# we dont need that anymore, but keep it for the next two weeks
+				# let us see, if user reports any problems
+				iPlayableService.evUser+13: self["coverArt"].embeddedCoverArt,
+				iPlayableService.evUser+13: self.__embeddedCoverArt
 			})
 
 	def hideAndInfoBar(self):
@@ -316,6 +320,11 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		self.mediaPlayerInfoBar.doClose()
 		self.session.nav.playService(self.oldService)
 
+	def __evStart(self):
+		self.switchAudioTimer = eTimer()
+		self.switchAudioTimer.callback.append(self.switchAudio)
+		self.switchAudioTimer.start(750, True)    # 750 is a safe-value
+
 	def __evUpdatedInfo(self):
 		currPlay = self.session.nav.getCurrentService()
 		sTagTrackNumber = currPlay.info().getInfo(iServiceInformation.sTagTrackNumber)
@@ -324,15 +333,6 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		if sTagTrackNumber or sTagTrackCount or sTagTitle:
 			print "[__evUpdatedInfo] title %d of %d (%s)" % (sTagTrackNumber, sTagTrackCount, sTagTitle)
 		self.readTitleInformation()
-		service = self.session.nav.getCurrentlyPlayingServiceOrGroup()
-		if service:
-			# we go this way for other extensions as own records(they switch over pmt in c)
-			path = service.getPath()
-			ext = os.path.splitext(path)[1].lower()
-			exts = [".mkv", ".avi", ".divx", ".mp4"]      # we need more extensions here ?
-			if ext.lower() in exts:
-				if currPlay:
-					setAudioTrack(currPlay)
 
 	def __evAudioDecodeError(self):
 		currPlay = self.session.nav.getCurrentService()
@@ -352,9 +352,29 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		print "[__evPluginError]" , message
 		self.session.open(MessageBox, message, type = MessageBox.TYPE_INFO,timeout = 20 )
 
+	def __embeddedCoverArt(self):
+		self.embeddedCoverArtTimer = eTimer()
+		self.embeddedCoverArtTimer.callback.append(self.showEmbeddedCoverArt)
+		self.embeddedCoverArtTimer.start(500, True)
+
+	def showEmbeddedCoverArt(self):
+		self["coverArt"].embeddedCoverArt()
+
 	def delMPTimer(self):
 		del self.rightKeyTimer
 		del self.leftKeyTimer
+
+	def switchAudio(self):
+		service = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		if service:
+			# we go this way for other extensions as own records(they switch over pmt in c)
+			path = service.getPath()
+			ext = os.path.splitext(path)[1].lower()
+			exts = [".mkv", ".avi", ".divx", ".mp4"]      # we need more extensions here ?
+			if ext.lower() in exts:
+				service = self.session.nav.getCurrentService()
+				if service:
+					setAudioTrack(service)
 
 	def readTitleInformation(self):
 		currPlay = self.session.nav.getCurrentService()
@@ -957,7 +977,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			if len(self.playlist) > 0:
 				self.changeEntry(0)
 
-	def playEntry(self):
+	def playEntry(self, coverreload=True):
 		if len(self.playlist.getServiceRefList()):
 			needsInfoUpdate = False
 			currref = self.playlist.getServiceRefList()[self.playlist.getCurrentIndex()]
@@ -1006,11 +1026,12 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 					needsInfoUpdate = True
 
 			self.unPauseService()
-			if needsInfoUpdate:
+			if needsInfoUpdate and coverreload:
 				path = self.playlist.getServiceRefList()[self.playlist.getCurrentIndex()].getPath()
 				self["coverArt"].updateCoverArt(path)
 			else:
-				self["coverArt"].showDefaultCover()
+				if coverreload:
+					self["coverArt"].showDefaultCover()
 			self.readTitleInformation()
 
 	def updatedSeekState(self):
@@ -1030,7 +1051,13 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 					if self.playlist.getCurrentIndex() != self.playlist.getSelectionIndex():
 						self.changeEntry(self.playlist.getSelectionIndex())
 					else:
-						self.playEntry()
+						if self.ext in AUDIO_EXTENSIONS or self.isAudioCD:
+							# do not try to reload cover ! Cover is showing if exists.
+							# we dont need that, if the same file will continue to play
+							# otherwise showing embedded covers are gone !!!
+							self.playEntry(False)
+						else:
+							self.playEntry()
 				elif self.seekstate == self.SEEK_STATE_PLAY:
 					if self.playlist.getCurrentIndex() != self.playlist.getSelectionIndex():
 						self.changeEntry(self.playlist.getSelectionIndex())
