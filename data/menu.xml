@@ -107,6 +107,7 @@ self.session.openWithCallback(msgClosed, OurConsole, _('Install default channel 
 				<item weight="10" level="0" text="Timeshift settings" entryID="timshift_setup" requires="Feed"><screen module="Timershift" screen="TimeshiftSettings" /></item>
 				<item weight="15" level="0" text="Recording settings" entryID="recording_setup" requires="Feed"><screen module="Recordings" screen="RecordingSettings" /></item>
 				<item weight="20" level="1" text="Input devices" entryID="input_device_setup"><screen module="InputDeviceSetup" screen="InputDeviceSelection" /></item>
+				<item weight="22" level="0" text="Keymap Mode" entryID="input_device_setup" ><screen module="ButtonSetup" screen="KeymapSel" /></item>
 				<item weight="25" level="1" text="Keyboard" entryID="keyboard"><setup id="keyboard" /></item>
 				<item weight="30" level="0" entryID="time_setup"><setup id="time"/></item>
 				<!--<item weight="35" level="0" entryID="logs_setup"><setup id="logs" /></item>-->
