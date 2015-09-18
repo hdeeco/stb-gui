@@ -179,10 +179,12 @@ class Setup(ConfigListScreen, Screen):
 				self["VKeyIcon"].boolean = False
 
 	def HideHelp(self):
+		self.help_window_was_shown = False
 		try:
 			if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
 				if self["config"].getCurrent()[1].help_window.instance is not None:
 					self["config"].getCurrent()[1].help_window.hide()
+					self.help_window_was_shown = True
 		except:
 			pass
 
@@ -205,8 +207,7 @@ class Setup(ConfigListScreen, Screen):
 	def changedEntry(self):
 		self.item = self["config"].getCurrent()
 		try:
-			if isinstance(self["config"].getCurrent()[1], ConfigYesNo) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
-				self.createSetup()
+			self.createSetup()
 		except:
 			pass
 
@@ -221,7 +222,7 @@ class Setup(ConfigListScreen, Screen):
 					self.onNotifiers.append(self.levelChanged)
 					self.onClose.append(self.removeNotifier)
 
-				if item_level > self.onNotifiers.index:
+				if item_level > config.usage.setup_level.index:
 					continue
 
 				requires = x.get("requires")
@@ -257,3 +258,10 @@ def getSetupTitle(id):
 				return _("Settings...")
 			return x.get("title", "").encode("UTF-8")
 	raise SetupError("unknown setup id '%s'!" % repr(id))
+
+def getSetupTitleLevel(id):
+	xmldata = setupdom().getroot()
+	for x in xmldata.findall("setup"):
+		if x.get("key") == id:
+			return int(x.get("level", 0))
+	return 0

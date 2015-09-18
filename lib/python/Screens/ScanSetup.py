@@ -277,7 +277,7 @@ class CableTransponderSearchSupport:
 			cmd = "/opt/bin/mediaclient --blindscan %d" % nim_idx
 		else:
 			bin_name = GetCommand(nim_idx)
-			cmd = "%(BIN_NAME)s --init --scan --verbose --wakeup --inv 2 --bus %(BUS)d" % {'BIN_NAME':bin_name , 'BUS':bus}
+			cmd = "%(BIN_NAME)s --init --scan --verbose --wakeup --inv 2 --bus %(BUS)d" % {'BIN_NAME':bin_name, 'BUS':bus}
 
 		if cableConfig.scan_type.value == "bands":
 			cmd += " --scan-bands "
@@ -1253,6 +1253,16 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		else:
 			self.startScan(self.tlist, self.flags, self.feid)
 
+	def setTerrestrialTransponderSearchResult(self, tlist):
+		if tlist is not None:
+			self.tlist.extend(tlist)
+
+	def terrestrialTransponderSearchFinished(self):
+		if self.tlist is None:
+			self.tlist = []
+		else:
+			self.startScan(self.tlist, self.flags, self.feid)
+
 	def predefinedTranspondersList(self, orbpos):
 		default = None
 		if orbpos is not None:
@@ -1384,8 +1394,6 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 	def getNetworksForNim(self, nim):
 		if nim.isCompatible("DVB-S"):
 			networks = nimmanager.getSatListForNim(nim.slot)
-		elif nim.isCompatible("DVB-C"):
-			networks = nimmanager.getTranspondersCable(nim.slot)
 		elif nim.isCompatible("DVB-T"):
 			networks = nimmanager.getTerrestrialDescription(nim.slot)
 		elif not nim.empty:

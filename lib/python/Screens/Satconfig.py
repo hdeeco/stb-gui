@@ -15,6 +15,7 @@ from Screens.ChoiceBox import ChoiceBox
 from Screens.ServiceStopScreen import ServiceStopScreen
 from Screens.AutoDiseqc import AutoDiseqc
 from Tools.BoundFunction import boundFunction
+from boxbranding import getBoxType
 
 from time import mktime, localtime
 from datetime import datetime
@@ -185,6 +186,9 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				self.have_advanced = True
 			if path.exists("/proc/stb/frontend/%d/tone_amplitude" % self.nim.slot) and config.usage.setup_level.index >= 2: # expert
 				self.list.append(getConfigListEntry(_("Tone amplitude"), self.nimConfig.toneAmplitude))
+			if path.exists("/proc/stb/frontend/%d/use_scpc_optimized_search_range" % self.nim.slot) and config.usage.setup_level.index >= 2: # expert
+				self.list.append(getConfigListEntry(_("SCPC optimized search range"), self.nimConfig.scpcSearchRange))
+
 		elif self.nim.isCompatible("DVB-C"):
 			self.configMode = getConfigListEntry(_("Configuration mode"), self.nimConfig.configMode)
 			self.list.append(self.configMode)
@@ -228,7 +232,8 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			self.have_advanced = False
 			if self.nimConfig.configMode.value == "enabled":
 				self.list.append(getConfigListEntry(_("Terrestrial provider"), self.nimConfig.terrestrial))
-				self.list.append(getConfigListEntry(_("Enable 5V for active antenna"), self.nimConfig.terrestrial_5V))
+				if not getBoxType() in ('osmini', 'spycat', 'spycatmini'):
+					self.list.append(getConfigListEntry(_("Enable 5V for active antenna"), self.nimConfig.terrestrial_5V))
 		else:
 			self.have_advanced = False
 		self["config"].list = self.list
@@ -331,6 +336,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 					self.list.append(getConfigListEntry("LOF/H", currLnb.lofh))
 					self.list.append(getConfigListEntry(_("Threshold"), currLnb.threshold))
 				elif currLnb.unicable.value == "unicable_matrix":
+					nimmanager.sec.reconstructUnicableDate(currLnb.unicableMatrixManufacturer, currLnb.unicableMatrix, currLnb)
 					manufacturer_name = currLnb.unicableMatrixManufacturer.value
 					manufacturer = currLnb.unicableMatrix[manufacturer_name]
 					product_name = manufacturer.product.value
@@ -342,8 +348,9 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 						self.advancedSCR = getConfigListEntry(_("Channel"), manufacturer.scr[product_name])
 						self.list.append(self.advancedType)
 						self.list.append(self.advancedSCR)
-						self.list.append(getConfigListEntry(_("Frequency"), manufacturer.vco[product_name][manufacturer.scr[product_name].index])) 
+						self.list.append(getConfigListEntry(_("Frequency"), manufacturer.vco[product_name][manufacturer.scr[product_name].index]))
 				elif currLnb.unicable.value == "unicable_lnb":
+					nimmanager.sec.reconstructUnicableDate(currLnb.unicableLnbManufacturer, currLnb.unicableLnb, currLnb)
 					manufacturer_name = currLnb.unicableLnbManufacturer.value
 					manufacturer = currLnb.unicableLnb[manufacturer_name]
 					product_name = manufacturer.product.value
@@ -355,7 +362,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 						self.advancedSCR = getConfigListEntry(_("Channel"), manufacturer.scr[product_name])
 						self.list.append(self.advancedType)
 						self.list.append(self.advancedSCR)
-						self.list.append(getConfigListEntry(_("Frequency"), manufacturer.vco[product_name][manufacturer.scr[product_name].index])) 
+						self.list.append(getConfigListEntry(_("Frequency"), manufacturer.vco[product_name][manufacturer.scr[product_name].index]))
 
 				choices = []
 				connectable = nimmanager.canConnectTo(self.slotid)
@@ -660,14 +667,18 @@ class NimSelection(Screen):
 		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Select"))
 
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
 		{
 			"ok": self.okbuttonClick,
 			"cancel": self.close,
 			"red": self.close,
 			"green": self.okbuttonClick,
+			"menu": self.exit,
 		}, -2)
 		self.setTitle(_("Choose Tuner"))
+
+	def exit(self):
+		self.close(True)
 
 	def setResultClass(self):
 		self.resultclass = NimSetup
@@ -676,12 +687,12 @@ class NimSelection(Screen):
 		nim = self["nimlist"].getCurrent()
 		nim = nim and nim[3]
 		if nim is not None and not nim.empty and nim.isSupported():
-			self.session.openWithCallback(self.updateList, self.resultclass, nim.slot)
+			self.session.openWithCallback(boundFunction(self.updateList, self["nimlist"].getIndex()), self.resultclass, nim.slot)
 
 	def showNim(self, nim):
 		return True
 
-	def updateList(self):
+	def updateList(self, index=None):
 		self.list = [ ]
 		for x in nimmanager.nim_slots:
 			slotid = x.slot
@@ -744,6 +755,8 @@ class NimSelection(Screen):
 				self.list.append((slotid, x.friendly_full_description, text, x))
 		self["nimlist"].setList(self.list)
 		self["nimlist"].updateList(self.list)
+		if index is not None:
+			self["nimlist"].setIndex(index)
 
 class SelectSatsEntryScreen(Screen):
 	skin = """

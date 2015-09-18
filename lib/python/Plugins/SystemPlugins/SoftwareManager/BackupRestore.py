@@ -16,7 +16,7 @@ from Components.ConfigList import ConfigList,ConfigListScreen
 from Components.FileList import MultiFileSelectList
 from Components.Network import iNetwork
 from Plugins.Plugin import PluginDescriptor
-from enigma import eTimer, eEnv, eConsoleAppContainer
+from enigma import eTimer, eEnv, eConsoleAppContainer, eEPGCache
 from Tools.Directories import *
 from os import system, popen, path, makedirs, listdir, access, stat, rename, remove, W_OK, R_OK
 from time import gmtime, strftime, localtime, sleep
@@ -94,6 +94,8 @@ class BackupScreen(Screen, ConfigListScreen):
 
 	def doBackup(self):
 		configfile.save()
+		if config.plugins.softwaremanager.epgcache.value:
+			eEPGCache.getInstance().save()
 		try:
 			if path.exists(self.backuppath) == False:
 				makedirs(self.backuppath)
@@ -311,8 +313,14 @@ class RestoreMenu(Screen):
 
 	def startRestore(self, ret = False):
 		if ret == True:
-			self.exe = True
+			self.session.openWithCallback(self.CB_startRestore, MessageBox, _("Do you want to delete the old settings in /etc/enigma2 first?"))
+
+	def CB_startRestore(self, ret = False):
+		self.exe = True
+		if ret == True:
 			self.session.open(Console, title = _("Restoring..."), cmdlist = ["rm -R /etc/enigma2", "tar -xzvf " + self.path + "/" + self.sel + " -C /", "killall -9 enigma2", "/etc/init.d/autofs restart"])
+		else:
+			self.session.open(Console, title = _("Restoring..."), cmdlist = ["tar -xzvf " + self.path + "/" + self.sel + " -C /", "killall -9 enigma2", "/etc/init.d/autofs restart"])
 
 	def deleteFile(self):
 		if (self.exe == False) and (self.entry == True):

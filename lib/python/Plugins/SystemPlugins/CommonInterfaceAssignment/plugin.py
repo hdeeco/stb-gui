@@ -1,5 +1,5 @@
 from Screens.Screen import Screen
-from Screens.ChannelSelection import ChannelSelectionBase
+from Screens.ChannelSelection import *
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText
 from Components.config import config, ConfigNothing
@@ -400,6 +400,7 @@ class myProviderSelection(ChannelSelectionBase):
 	def __init__(self, session, title):
 		ChannelSelectionBase.__init__(self, session)
 		self.onShown.append(self.__onExecCallback)
+		self.bouquet_mark_edit = EDIT_BOUQUET
 
 		self["actions"] = ActionMap(["OkCancelActions", "ChannelSelectBaseActions"],
 			{
@@ -506,6 +507,7 @@ class myChannelSelection(ChannelSelectionBase):
 	def __init__(self, session, title):
 		ChannelSelectionBase.__init__(self, session)
 		self.onShown.append(self.__onExecCallback)
+		self.bouquet_mark_edit = OFF
 
 		self["actions"] = ActionMap(["OkCancelActions", "TvRadioActions", "ChannelSelectBaseActions"],
 			{
