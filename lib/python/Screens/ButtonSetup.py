@@ -35,6 +35,7 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("Channel down"), "channeldown", ""),
 	(_("TV"), "showTv", ""),
 	(_("Radio"), "radio", ""),
+	(_("Radio long"), "radio_long", ""),
 	(_("Rec"), "rec", ""),
 	(_("Teletext"), "text", ""),
 	(_("Help"), "displayHelp", ""),
@@ -192,6 +193,8 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Restart"), "Module/Screens.Standby/TryQuitMainloop/2", "Power"))
 	ButtonSetupFunctions.append((_("Restart enigma"), "Module/Screens.Standby/TryQuitMainloop/3", "Power"))
 	ButtonSetupFunctions.append((_("Deep standby"), "Module/Screens.Standby/TryQuitMainloop/1", "Power"))
+	ButtonSetupFunctions.append((_("SleepTimer"), "Module/Screens.SleepTimerEdit/SleepTimerEdit", "Power"))
+	ButtonSetupFunctions.append((_("PowerTimer"), "Module/Screens.PowerTimerEdit/PowerTimerEditList", "Power"))
 	ButtonSetupFunctions.append((_("Usage Setup"), "Setup/usage", "Setup"))
 	ButtonSetupFunctions.append((_("User interface settings"), "Setup/userinterface", "Setup"))
 	ButtonSetupFunctions.append((_("Recording Setup"), "Setup/recording", "Setup"))
@@ -206,8 +209,6 @@ def getButtonSetupFunctions():
 		for x in [x for x in os.listdir("/usr/script") if x.endswith(".sh")]:
 			x = x[:-3]
 			ButtonSetupFunctions.append((_("Shellscript") + " " + x, "Shellscript/" + x, "Shellscripts"))
-	if os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/EnhancedMovieCenter/plugin.pyo"):
-		ButtonSetupFunctions.append((_("EnhancedMovieCenter"), "EMC/", "Plugins"))
 	if os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/Infopanel/ScriptRunner.pyo"):
 		ButtonSetupFunctions.append((_("ScriptRunner"), "ScriptRunner/", "Plugins"))
 	if os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/Infopanel/QuickMenu.pyo"):

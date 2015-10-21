@@ -219,7 +219,16 @@ def InitUsageConfig():
 		("intermediate", _("Intermediate")),
 		("expert", _("Expert")) ])
 
-	choicelist = [("show_menu", _("Show shutdown menu")), ("shutdown", _("Immediate shutdown")), ("standby", _("Standby")), ("sleeptimerStandby", _("Sleeptimer Standby")), ("sleeptimerDeepStandby", _("Sleeptimer DeepStandby"))]
+	choicelist = [("standby", _("Standby")),("deepstandby", _("Deep Standby"))]
+	config.usage.sleep_timer_action = ConfigSelection(default = "deepstandby", choices = choicelist)
+	choicelist = [("0", _("Disabled")),("event_standby", _("Execute after current event"))]
+	for i in range(900, 7201, 900):
+		m = abs(i / 60)
+		m = ngettext("%d minute", "%d minutes", m) % m
+		choicelist.append((str(i), _("Execute in ") + m))
+	config.usage.sleep_timer = ConfigSelection(default = "0", choices = choicelist)
+
+	choicelist = [("show_menu", _("Show shutdown menu")), ("shutdown", _("Immediate shutdown")), ("standby", _("Standby")), ("sleeptimer", _("SleepTimer")), ("powertimerStandby", _("PowerTimer Standby")), ("powertimerDeepStandby", _("PowerTimer DeepStandby"))]
 	config.usage.on_long_powerpress = ConfigSelection(default = "show_menu", choices = choicelist)
 	config.usage.on_short_powerpress = ConfigSelection(default = "standby", choices = choicelist)
 
@@ -244,8 +253,8 @@ def InitUsageConfig():
 		("5", "DVB-T/-S/-C"),
 		("127", _("No priority")) ])
 
-	config.usage.remote_fallback_enabled = ConfigYesNo(default = False);
-	config.usage.remote_fallback = ConfigText(default = "", fixed_size = False);
+	config.usage.remote_fallback_enabled = ConfigYesNo(default = False)
+	config.usage.remote_fallback = ConfigText(default = "", visible_width = 50, fixed_size = False)
 
 	nims = [("-1", _("auto"))]
 	rec_nims = [("-2", _("Disabled")), ("-1", _("auto"))]
