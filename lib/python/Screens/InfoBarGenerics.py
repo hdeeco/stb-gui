@@ -1534,18 +1534,22 @@ class InfoBarMenu:
 		self.session.openWithCallback(self.mainMenuClosed, Menu, menu)
 
 	def showNetworkMounts(self):
-		menulist = mdom.getroot().findall('menu')
-		for item in menulist:
-			if item.attrib['entryID'] == 'setup_selection':
-				menulist = item.findall('menu')
-				for item in menulist:
-					if item.attrib['entryID'] == 'extended_selection':
-						menulist = item.findall('menu')
-						for item in menulist:
-							if item.attrib['entryID'] == 'network_menu':
-								menu = item
-		assert menu.tag == "menu", "root element in menu must be 'menu'!"
-		self.session.openWithCallback(self.mainMenuClosed, Menu, menu)
+		try:
+			menulist = mdom.getroot().findall('menu')
+			for item in menulist:
+				if item.attrib['entryID'] == 'setup_selection':
+					menulist = item.findall('menu')
+					for item in menulist:
+						if item.attrib['entryID'] == 'extended_selection':
+							menulist = item.findall('menu')
+							for item in menulist:
+								if item.attrib['entryID'] == 'network_menu':
+									menu = item
+			assert menu.tag == "menu", "root element in menu must be 'menu'!"
+			self.session.openWithCallback(self.mainMenuClosed, Menu, menu)
+		except:
+			from Screens.NetworkSetup import NetworkAdapterSelection
+			self.session.open(NetworkAdapterSelection)
 
 	def showRFSetup(self):
 		if SystemInfo["RfModulator"]:
