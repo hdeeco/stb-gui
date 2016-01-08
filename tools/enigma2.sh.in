@@ -37,7 +37,6 @@ if [ "$(grep config.misc.SyncTimeUsing /etc/enigma2/settings)" == "config.misc.S
 fi
 
 if [ -x @bindir@/showiframe ]; then
-	killall -9 showiframe; sleep 1
 	if [ -f @sysconfdir@/enigma2/backdrop.mvi ]; then
 		@bindir@/showiframe @sysconfdir@/enigma2/backdrop.mvi
 	elif [ -f @datadir@/backdrop.mvi ]; then
@@ -94,7 +93,7 @@ stbcheck=00
 if [ -e /proc/stb/info/subtype ]; then
    stbcheck=`cat /proc/stb/info/subtype`
 fi
-if [ -e /etc/defaultsat.tar.gz ] && [ ! -e /etc/enigma2/lamedb ] && [ ! $stbcheck == "01" ]; then
+if [ -e /etc/defaultsat.tar.gz ] && [ ! -e /etc/enigma2/lamedb ] && [ ! $stbcheck == "01" ] && [ ! $stbcheck == "1" ]; then
 	tar -xzf /etc/defaultsat.tar.gz -C /etc/enigma2
 fi
 

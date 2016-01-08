@@ -17,6 +17,8 @@ from os import path as os_path, remove, unlink, rename, chmod, access, X_OK, sys
 
 from enigma import eTimer, eDVBCI_UI, eDVBCIInterfaces
 
+from boxbranding import getBrandOEM, getBoxType
+
 MAX_NUM_CI = 4
 
 def setCIBitrate(configElement):
@@ -264,7 +266,10 @@ class CiMessageHandler:
 		self.ci = { }
 		self.dlgs = { }
 		eDVBCI_UI.getInstance().ciStateChanged.get().append(self.ciStateChanged)
-		SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots() > 0
+		if getBoxType() in ('vuzero'):
+			SystemInfo["CommonInterface"] = False
+		else:
+			SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots() > 0
 		try:
 			file = open("/proc/stb/tsmux/ci0_tsclk", "r")
 			file.close()
@@ -514,7 +519,15 @@ class CIHelper(Screen):
 		self['labdisabled'].show()
 		self['key_green'].setText(_("Start"))
 		self.my_cihelper_run = False
-		
+		if fileExists('/etc/rcS.d/S50cihelper.sh') or fileExists('/etc/rc4.d/S50cihelper.sh'):
+			self['labdisabled'].hide()
+			self['labactive'].show()
+			self.my_cihelper_active = True
+			autostartstatus_summary = self['autostart'].text + ' ' + self['labactive'].text
+		else:
+			self['labactive'].hide()
+			self['labdisabled'].show()
+			autostartstatus_summary = self['autostart'].text + ' ' + self['labdisabled'].text
 		if cihelper_process:
 			self.my_cihelper_run = True
 			self['labdisabled'].hide()

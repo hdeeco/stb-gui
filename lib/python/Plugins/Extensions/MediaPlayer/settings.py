@@ -13,13 +13,10 @@ config.mediaplayer.repeat = ConfigYesNo(default=False)
 config.mediaplayer.savePlaylistOnExit = ConfigYesNo(default=True)
 config.mediaplayer.saveDirOnExit = ConfigYesNo(default=False)
 config.mediaplayer.defaultDir = ConfigDirectory()
-config.mediaplayer.useAlternateUserAgent = ConfigYesNo(default=False)
-config.mediaplayer.alternateUserAgent = ConfigText(default="")
 config.mediaplayer.sortPlaylists = ConfigYesNo(default=False)
 config.mediaplayer.alwaysHideInfoBar = ConfigYesNo(default=False)
 config.mediaplayer.onMainMenu = ConfigYesNo(default=True)
 config.mediaplayer.onPluginMenu = ConfigYesNo(default=False)
-config.mediaplayer.extraHeaders = ConfigText(default="")
 
 class DirectoryBrowser(Screen, HelpableScreen):
 

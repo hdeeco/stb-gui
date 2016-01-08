@@ -1400,8 +1400,9 @@ MODE_RADIO = 1
 # type 27 = advanced codec HD NVOD reference service (NYI)
 # type 2 = digital radio sound service
 # type 10 = advanced codec digital radio sound service
+# type 31 = High Efficiency Video Coing digital television
 
-service_types_tv = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 22) || (type == 25) || (type == 134) || (type == 195)'
+service_types_tv = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 22) || (type == 25) || (type == 31) || (type == 134) || (type == 195)'
 service_types_radio = '1:7:2:0:0:0:0:0:0:0:(type == 2) || (type == 10)'
 
 class ChannelSelectionBase(Screen):
@@ -2483,7 +2484,11 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 			# This unfortunately won't work with subservices
 			self.setCurrentSelection(self.session.pip.getCurrentService())
 		else:
-			self.setCurrentSelection(currentPlayedRef)
+			lastservice = eServiceReference(self.lastservice.value)
+			if lastservice.valid() and self.getCurrentSelection() == lastservice:
+				pass	# keep current selection
+			else:
+				self.setCurrentSelection(currentPlayedRef)
 
 	def setStartRoot(self, root):
 		if root:

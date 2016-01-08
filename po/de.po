@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: tuxbox-enigma 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-05 14:38+0000\n"
-"PO-Revision-Date: 2015-10-26 20:55+0100\n"
+"PO-Revision-Date: 2016-01-02 23:39+0100\n"
 "Last-Translator: mike99 <mike99@mail.to>\n"
 "Language-Team: openATV\n"
 "Language: de\n"
@@ -18,6 +18,15 @@ msgstr ""
 
 msgid "Stop recording now"
 msgstr "Aufnahme stoppen"
+
+msgid "REC Symbol"
+msgstr "REC Zeichen"
+
+msgid "Blinking REC Symbol"
+msgstr "Blinkendes REC Zeichen"
+
+msgid "Channelname"
+msgstr "Kanalname"
 
 msgid "Change next timer"
 msgstr "Nächsten Timer ändern"
@@ -483,10 +492,6 @@ msgstr "3"
 msgid "30 Days"
 msgstr "30 Tage"
 
-#
-msgid "30 minutes"
-msgstr "30 Minuten"
-
 msgid "30 seconds"
 msgstr "30 Sekunden"
 
@@ -529,16 +534,8 @@ msgid "5"
 msgstr "5"
 
 #
-msgid "5 minutes"
-msgstr "5 Minuten"
-
-#
 msgid "6"
 msgstr "6"
-
-#
-msgid "60 minutes"
-msgstr "60 Minuten"
 
 #
 msgid "7"
@@ -1231,6 +1228,9 @@ msgstr "Autostart aktiviert."
 msgid "Autostart:"
 msgstr "Autostart:"
 
+msgid "OscamInfo Mainmenu"
+msgstr "OscamInfo Hauptmenü"
+
 #
 msgid "Available format variables"
 msgstr "Verfügbare Formatierungsvariablen"
@@ -1274,6 +1274,18 @@ msgstr "Optionen zum Löschen im Hintergrund "
 
 msgid "Background delete speed"
 msgstr "Geschwindigkeit beim Löschen im Hintergrund"
+
+msgid "Use the extended List"
+msgstr "Die erweiterte Liste verwenden"
+
+msgid "Update delay for Events in List. Scrolling in List is faster with higher delay, specialy on big Lists !"
+msgstr "Updateverzögerung für Events in der Liste. Das Scrollverhalten wird schneller mit einer höheren Verzögerung, speziell bei größeren Listen !"
+
+msgid "ServicePicon"
+msgstr "Sender-Picon"
+
+msgid "ServiceName"
+msgstr "Sender-Name"
 
 msgid "Backup completed."
 msgstr "Sicherung beendet."
@@ -1345,9 +1357,9 @@ msgstr "Verhalten beim Stoppen eines Films"
 msgid "Behavior when a movie reaches the end"
 msgstr "Verhalten bei Filmende"
 
-#
+#: About.py:453
 msgid "Bitrate:"
-msgstr "Datenrate:"
+msgstr "Datenrate:\t"
 
 msgid "Black"
 msgstr "Schwarz"
@@ -3154,9 +3166,9 @@ msgstr "WLAN-Sicherheitsschlüssel"
 msgid "Encryption Keytype"
 msgstr "Typ des Sicherheitsschlüssels"
 
-#
+#: About.py:467
 msgid "Encryption:"
-msgstr "Verschlüsselung:\t\t"
+msgstr "Verschlüsselung:\t"
 
 #
 msgid "End time"
@@ -3524,8 +3536,9 @@ msgstr "Freier Speicher: \t"
 msgid "Free to Air"
 msgstr "FreeTV (FTA)"
 
+#: About.py:312
 msgid "Free:"
-msgstr "Frei:"
+msgstr "Frei:\t"
 
 #
 msgid "Frequency"
@@ -3901,9 +3914,21 @@ msgstr "IMDb Suche"
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#
+#: About.py:374:383:392:401
 msgid "IP:"
-msgstr "IP:"
+msgstr "IP:\t"
+
+#: About.py:376:385:394:403
+msgid "Netmask:"
+msgstr "Netmask:\t"
+
+#: About.py:378:387:396:405
+msgid "MAC:"
+msgstr "MAC:\t"
+
+#: About.py:413
+msgid "Hostname:"
+msgstr "Hostname:\t"
 
 #
 msgid "ISO file is too large for this filesystem!"
@@ -4108,9 +4133,13 @@ msgstr "Erweiterungen installieren..."
 msgid "Install local extension"
 msgstr "Lokale Erweiterung installieren"
 
-#
+#: SoftwareManager/plugin.py
 msgid "Install or remove finished."
 msgstr "Installation oder Deinstallation beendet."
+
+#: SoftwareManager/plugin.py
+msgid "Do you want to reboot your receiver?"
+msgstr "Wollen Sie jetzt neu starten?"
 
 msgid "Install picons on"
 msgstr "Picons installieren auf"
@@ -4583,6 +4612,43 @@ msgstr ""
 msgid "May"
 msgstr "Mai"
 
+#: MediaPlayer/plugin.py:177
+msgid "Exit mediaplayer"
+msgstr "Mediaplayer beenden"
+
+#: MediaPlayer/plugin.py:184
+msgid "Stop entry"
+msgstr "Wiedergabe anhalten"
+
+#: MediaPlayer/plugin.py:188
+msgid "Jump to beginning of list"
+msgstr "Zum Anfang der Liste springen"
+
+#: MediaPlayer/plugin.py:189
+msgid "Jump to end of list"
+msgstr "Zum Ende der Liste springen"
+
+#: MediaPlayer/plugin.py:190 plugin.py:191
+msgid "Switch between filelist/playlist"
+msgstr "Wechseln zwischen Dateiliste und Playliste"
+
+#: MediaPlayer/plugin.py:341 plugin.py:347
+#, python-format
+msgid "This %s %s cannot decode %s streams!"
+msgstr "Die %s %s kann nicht entschüsseln %s streams!"
+
+#: MediaPlayer/plugin.py:621 plugin.py:1238
+msgid "Play audio-CD..."
+msgstr "Audio-CD wiedergeben..."
+
+#: MediaPlayer/plugin.py:626
+msgid "Add files to playlist"
+msgstr "Zur Playliste hinzufügen"
+
+#: MediaPlayer/plugin.py:1220
+msgid "View video CD..."
+msgstr "Video-CD wiedergeben..."
+
 #
 msgid "Media player"
 msgstr "Media Player"
@@ -4901,7 +4967,7 @@ msgstr "Teste Netzwerk..."
 msgid "Network test: "
 msgstr "Netzwerktest: "
 
-#
+#: About.py:482
 msgid "Network:"
 msgstr "Netzwerk:"
 
@@ -5763,6 +5829,30 @@ msgstr "Tuner C einstellen."
 msgid "Please set up tuner D"
 msgstr "Tuner D einstellen."
 
+#
+msgid "Please set up tuner E"
+msgstr "Tuner E einstellen."
+
+#
+msgid "Please set up tuner F"
+msgstr "Tuner F einstellen."
+
+#
+msgid "Please set up tuner G"
+msgstr "Tuner G einstellen."
+
+#
+msgid "Please set up tuner H"
+msgstr "Tuner H einstellen."
+
+#
+msgid "Please set up tuner I"
+msgstr "Tuner I einstellen."
+
+#
+msgid "Please set up tuner J"
+msgstr "Tuner J einstellen."
+
 msgid "Please setup your tuner configuration."
 msgstr "Bitte Tuner-Konfiguration festlegen."
 
@@ -6041,6 +6131,9 @@ msgid "Progress"
 msgstr "Fortschritt"
 
 msgid "Progress Small"
+msgstr "Fortschritt klein"
+
+msgid "Small progress"
 msgstr "Fortschritt klein"
 
 #
@@ -7394,7 +7487,7 @@ msgstr "Hintergrund im Radio-Modus anzeigen"
 
 #
 msgid "Show blinking Clock on Display during recording"
-msgstr "Blinkende Uhr im Display während Aufnahmen"
+msgstr "Blinkende Uhr im Display bei Aufnahmen"
 
 msgid "Enable blinking Clock on the LCD Display"
 msgstr "Hier können Sie die blinkende Uhr in dem Display aktivieren."
@@ -7508,9 +7601,9 @@ msgstr "%s %s herunterfahren nach"
 msgid "Side by Side"
 msgstr "Nebeneinander"
 
-#
+#: About.py:457
 msgid "Signal Strength:"
-msgstr "Signalstärke:"
+msgstr "Signalstärke:\t"
 
 msgid "Signal strength:"
 msgstr "Signalstärke:\t"
@@ -8096,7 +8189,7 @@ msgstr "Der DVD-Standard unterstützt keine H.264 (HDTV) Videos. Soll stattdesse
 
 msgid ""
 "The Filesystem on your Timeshift-Device does not support hardlinks.\n"
-"Make sure it is formated in EXT2 or EXT3!"
+"Make sure it is formatted in EXT2 or EXT3!"
 msgstr ""
 "Das Dateisystem auf dem Timeshift-Aufnahmegerät unterstützt keine Hardlinks.\n"
 "Formatierung in EXT2 oder EXT3 sicherstellen!"
@@ -8843,8 +8936,9 @@ msgstr "Insgesamt abgefertigte Client-ECMs"
 msgid "Total handled client emm's"
 msgstr "Insgesamt abgefertigte Client-EMMs"
 
+#: About.py:311
 msgid "Total:"
-msgstr "Insgesamt:"
+msgstr "Insgesamt:\t"
 
 #
 msgid "Track"
@@ -10114,6 +10208,38 @@ msgstr "Fokus umschalten zum Hauptbildschirm"
 msgid "Zap mode"
 msgstr "Umschaltmodus"
 
+#: data/setup.xml
+msgid "Channel zap delay mode"
+msgstr "Umschaltverzögerung"
+
+#: data/setup.xml
+msgid "Setup delay mode to zap to channels."
+msgstr "Hier können Sie den Verzögerungsmodus beim Umschalten einstellen."
+
+#: data/setup.xml
+msgid "Channel zap delay first button"
+msgstr "Umschaltverzögerung der ersten Ziffer"
+
+#: data/setup.xml
+msgid "User defined delay when you press the first button to zap to the channel."
+msgstr "Hier können Sie die Umschaltverzögerung der ersten Zifferntaste einstellen."
+
+#: data/setup.xml
+msgid "Channel zap delay another button"
+msgstr "Umschaltverzögerung weiterer Ziffern"
+
+#: data/setup.xml
+msgid "User defined delay when you press another button to zap to the channel."
+msgstr "Hier können Sie die Umschaltverzögerung der weiteren Zifferntasten einstellen."
+
+#: data/setup.xml
+msgid "Number of digits in channel number"
+msgstr "Anzahl der Stellen in der Kanalnummer "
+
+#: data/setup.xml
+msgid "This allows you to set the number of digits to 5, if you have more than 9999 channels."
+msgstr "Hier können Sie die Anzahl der Stellen auf 5 setzen, wenn Sie mehr als 9999 Kanäle haben."
+
 msgid "[TimeShift] - Merging records failed!"
 msgstr "TimeShift - Zusammenführen der Aufnahmen fehlgeschlagen!"
 
@@ -10412,6 +10538,10 @@ msgstr "Gelb lang"
 msgid "Blue long"
 msgstr "Blau lang"
 
+#: ButtonSetup.py
+msgid "Subtitle long"
+msgstr "Untertitel lang"
+
 #
 #, python-format
 msgid "burn audio track (%s)"
@@ -10691,6 +10821,14 @@ msgstr "In Deep-Standby herunterfahren"
 msgid "go to standby"
 msgstr "In Standby gehen"
 
+#: PowerTimerEntry.py:118
+msgid "auto standby"
+msgstr "Automatisch in Standby gehen"
+
+#: PowerTimerEntry.py:118
+msgid "auto deepstandby"
+msgstr "Automatisch in Deep-Standby gehen"
+
 #
 msgid "grab this frame as bitmap"
 msgstr "Diesen Frame als Bitmap speichern"
@@ -10886,9 +11024,21 @@ msgstr "Filmliste"
 msgid "multinorm"
 msgstr "Multinorm"
 
-#
+#: ParentalControl.py
 msgid "never"
 msgstr "niemals"
+
+#: ParentalControl.py
+msgid "5 minutes"
+msgstr "5 Minuten"
+
+#: ParentalControl.py
+msgid "30 minutes"
+msgstr "30 Minuten"
+
+#: ParentalControl.py
+msgid "60 minutes"
+msgstr "60 Minuten"
 
 #
 msgid "next channel"
@@ -11323,6 +11473,11 @@ msgstr "Sendungs-Details anzeigen"
 msgid "show extended description"
 msgstr "Zeige erweiterte Beschreibung"
 
+#: InfoBarGenerics.py:1677
+msgid "Show epg"
+msgstr "Zeige EPG"
+
+#: InfoBarGenerics.py:1678
 msgid "show program information..."
 msgstr "Programminformationen anzeigen"
 
@@ -11589,7 +11744,7 @@ msgid "wireless network interface"
 msgstr "WLAN Interface"
 
 msgid "with exit button"
-msgstr "Mit EXIT-Taster"
+msgstr "Mit EXIT-Taste"
 
 msgid "with left/right buttons"
 msgstr "Mit Links-/Rechts-Tasten"
@@ -11951,6 +12106,10 @@ msgid "will take about 3-12 minutes for this system\n"
 msgstr "zwischen 3-12 Minuten\n"
 
 #
+msgid "will take about 1-4 minutes for this system\n"
+msgstr "zwischen 1-4 Minuten\n"
+
+#
 msgid "this will take between 2 and 9 minutes\n"
 msgstr "zwischen 2-9 Minuten\n"
 
@@ -12072,8 +12231,8 @@ msgstr "Zeige Eventview"
 msgid "Show CoolSingleGuide"
 msgstr "Zeige CoolSingleGuide"
 
-#
-msgid "Show epg"
+#: UsageConfig.py:799
+msgid "Show EPG"
 msgstr "Zeige EPG"
 
 #
@@ -12324,6 +12483,10 @@ msgstr "Ändern"
 msgid "add Current"
 msgstr "Hinzufügen"
 
+#: Volume_adjust/plugin.py:L58
+msgid "add Service"
+msgstr "Kanal hinzufügen"
+
 msgid "press the menu button to set a general AC3/Dolby offset"
 msgstr "Drücke die MENU Taste, um einen allgemeinen AC3/Dolby Offset zu setzen."
 
@@ -12433,14 +12596,41 @@ msgstr "Gelbe Taste"
 msgid "RedPanel"
 msgstr "Rote Taste"
 
+#: CronTimer.py : CronManager.py
 msgid "Run how often ?"
 msgstr "Wie oft ausführen?"
 
+#: CronTimer.py : CronManager.py
 msgid "Time to execute command or script"
 msgstr "Startzeit für Befehls- / Script-Ausführung"
 
+#: CronTimer.py : CronManager.py
 msgid "Command To Run"
-msgstr "Befehl zum ausführen"
+msgstr "Befehl zum Ausführen"
+
+#: CronTimer.py : CronManager.py
+msgid "What Day of week ?"
+msgstr "An welchem Wochentag?"
+
+#: CronTimer.py : CronManager.py
+msgid "What Day of month ?"
+msgstr "An welchem Tag des Monats?"
+
+#: CronTimer.py : CronManager.py
+msgid "Remove Confirmation"
+msgstr "Löschen bestätigen"
+
+#: CronTimer.py : CronManager.py
+msgid ""
+"Are you sure you want to delete this:\n"
+" "
+msgstr ""
+"Sicher das Sie löschen wollen:\n"
+" "
+
+#: CronTimer.py : CronManager.py
+msgid "You must set at least one Command"
+msgstr "Sie müssen mindestens einen Befehl setzen"
 
 msgid "Command type"
 msgstr "Befehlsart"
@@ -13635,7 +13825,7 @@ msgstr "Einstellung, um die Kanalnamen, Picons oder beides im EPG anzuzeigen."
 
 #
 msgid "Configure the width allocated to the service name."
-msgstr "Legen Sie die Breite fest."
+msgstr "Legen Sie die Breite des Sendernamen fest."
 
 #
 msgid "Configure the amount of time that will be presented."
@@ -13659,7 +13849,7 @@ msgstr "Picon Breite"
 
 #
 msgid "Service width"
-msgstr "Breite"
+msgstr "Sendernamen Breite"
 
 #
 msgid "Timeline font size"
@@ -13961,7 +14151,7 @@ msgid "wakeup"
 msgstr "Aufwachen"
 
 msgid "restart GUI"
-msgstr "GUI Neustarten"
+msgstr "GUI neustarten"
 
 msgid "reboot system"
 msgstr "System neustarten"
@@ -14276,7 +14466,7 @@ msgid "Time for next LCD scrolling"
 msgstr "Zeit bis zum nächsten Scrollen des LCDs"
 
 msgid "Show blinking rec symbol on Display during recording"
-msgstr "Blinkendes REC-Symbol im Display während Aufnahmen"
+msgstr "Blinkendes REC-Symbol im Display bei Aufnahmen"
 
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Hier können Sie das blinkende Record-Symbol in dem Display aktivieren."
@@ -14530,6 +14720,12 @@ msgstr ""
 
 msgid "show picons in service list"
 msgstr "Senderlogos anzeigen"
+
+msgid "Service picons downsize"
+msgstr "Senderlogos verkleinern"
+
+msgid "Reduce the size of the service picons for more line spacing between them."
+msgstr "Reduzieren Sie die Größe der Senderlogos für mehr Zeilenabstand zwischen ihnen."
 
 msgid "Configure if service picons will be shown in the servicelist."
 msgstr "Wenn aktiviert, werden die Picons in der Kanalliste angezeigt."
@@ -15016,11 +15212,15 @@ msgid ""
 "Please check after reboot MyMetrixLite-Plugin and apply your settings."
 msgstr ""
 "Fehler beim erstellen des MetrixHD-Skins.\n"
-"Bitte überprüfen und übernehmen Sie die Einstellungen nach dem Restart in dem MyMetrixLite-Plugin."
+"Bitte überprüfen und übernehmen Sie ihre Einstellungen nach einem Neustart in dem MyMetrixLite-Plugin."
 
 #: BackupRestore.py
-msgid "Unknown Error creating Skin."
-msgstr "Unbekannter Fehler beim erstellen des Skins."
+msgid ""
+"Unknown Error creating Skin.\n"
+"Please check after reboot MyMetrixLite-Plugin and apply your settings."
+msgstr ""
+"Unbekannter Fehler beim erstellen des Skins.\n"
+"Bitte überprüfen und übernehmen Sie ihre Einstellungen nach einem Neustart in dem MyMetrixLite-Plugin."
 
 #: BackupRestore.py
 msgid "Error creating HD-Skin. Not enough flash memory free."
@@ -15039,7 +15239,7 @@ msgid ""
 "Error creating FullHD-Skin. Icon package download not available.\n"
 "Using HD-Skin!"
 msgstr ""
-"Fehler beim erstellen des FullHD-Skins. Der Download des Icon-Packets ist nicht verfügbar.\n"
+"Fehler beim erstellen des FullHD-Skins. Der Download des Icon-Pakets ist nicht verfügbar.\n"
 "Es wird der HD-Skin verwendet!"
 
 #: BackupRestore.py
@@ -15396,6 +15596,10 @@ msgstr "Aus-Taste lang"
 msgid "Context"
 msgstr "Kontext"
 
+#: ButtonSetup.py
+msgid "Context long"
+msgstr "Kontext lang"
+
 msgid "F1/F3"
 msgstr ""
 
@@ -15643,30 +15847,6 @@ msgstr "Flashen: "
 msgid "Setup EPG"
 msgstr "EPG Einstellungen"
 
-# MetrixHDSTBInfo.py
-msgid "Flash Memory free: %s MByte"
-msgstr "Freier Flash Speicher: %s MByte"
-
-# MetrixHDSTBInfo.py
-msgid "CPU-Load: %s"
-msgstr "CPU-Last: %s"
-
-# MetrixHDSTBInfo.py
-msgid "CPU-Temp: %s"
-msgstr "CPU-Temp: %s"
-
-# MetrixHDSTBInfo.py
-msgid "CPU-Speed: %s MHz"
-msgstr "CPU-Speed: %s MHz"
-
-# MetrixHDSTBInfo.py
-msgid "SYS-Temp: %s"
-msgstr "SYS-Temp: %s"
-
-# MetrixHDSTBInfo.py
-msgid "RAM-Free: %s MB"
-msgstr "RAM-Frei: %s MB"
-
 # AudioSelection.py
 msgid "Switch between Audio-, Subtitlepage"
 msgstr "Umschalten zwischen Audio-, Untertitelauswahl, am Steuerkreuz"
@@ -15749,6 +15929,30 @@ msgstr "Verzögerung:"
 # PowerTimerList.py
 msgid "Time range:"
 msgstr "Zeitbereich:"
+
+#: PowerTimerList.py:14
+msgid "Nothing"
+msgstr "Nichts"
+
+#: PowerTimerList.py:15
+msgid "Wake Up"
+msgstr "Aufwachen"
+
+#: PowerTimerList.py:16
+msgid "Wake Up To Standby"
+msgstr "In Standby aufwachen"
+
+#: PowerTimerList.py:18
+msgid "Auto Standby"
+msgstr "Automatisch in Standby"
+
+#: PowerTimerList.py:19
+msgid "Auto Deep Standby"
+msgstr "Automatisch in Deep-Standby"
+
+#: PowerTimerList.py:22
+msgid "Restart GUI"
+msgstr "GUI Neustart"
 
 msgid "Usage & GUI"
 msgstr "Bedienung & Oberfläche"
@@ -16652,6 +16856,10 @@ msgstr "Springe zur aktuellen Zeit"
 msgid "Page right"
 msgstr "Seite nach rechts"
 
+#: EpgSelection.py:307
+msgid "No of items switch (increase or reduced)"
+msgstr "Zeilenanzahl-Schalter (erhöhen/reduzieren)"
+
 #: EpgSelection.py:309
 msgid "Page down"
 msgstr "Seite zurück"
@@ -16675,3 +16883,49 @@ msgstr "Video Clipping"
 #: SystemPlugins/VideoClippingSetup/plugin.py:135
 msgid "clip overscan / letterbox borders"
 msgstr ""
+
+msgid ""
+"\n"
+"<This tuner is configured automatically>"
+msgstr ""
+"\n"
+"<Diese Tuner wird automatisch verwaltet>"
+
+msgid "HDMI Colorspace"
+msgstr "HDMI Farbraum"
+
+msgid "This option allows you can config the Colorspace from Auto to RGB"
+msgstr "Diese Option erlaubt das Umstellen des Farbraums von Auto auf RGB"
+
+msgid "Disable MiniTV"
+msgstr "Entferne MiniTV im Display"
+
+msgid "Enable MiniTV"
+msgstr "Zeige MiniTV im Display"
+
+msgid "Disable FastZapping"
+msgstr "Deaktiviere FastZapping"
+
+msgid "Enable FastZapping"
+msgstr "Aktiviere FastZapping"
+
+msgid "Simple zoom"
+msgstr "Einfacher Zoom"
+
+msgid "Extrude from left"
+msgstr "Verformen nach links"
+
+msgid "Popup"
+msgstr "Aufblenden"
+
+msgid "Slide from left"
+msgstr "Von links Gleiten"
+
+msgid "Slide right to left"
+msgstr "Von rechts nach links"
+
+msgid "Zoom from left"
+msgstr "Zoom von links"
+
+msgid "Zoom from right"
+msgstr "Zoom von rechts"

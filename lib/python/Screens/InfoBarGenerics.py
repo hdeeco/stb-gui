@@ -995,7 +995,11 @@ class NumberZap(Screen):
 			self["servicename"].setText(ServiceReference(self.service).getServiceName())
 
 	def keyNumberGlobal(self, number):
-		self.Timer.start(1000, True)
+		if config.usage.numzaptimeoutmode.value is not "off":
+			if config.usage.numzaptimeoutmode.value is "standard":
+				self.Timer.start(1000, True)
+			else:
+				self.Timer.start(config.usage.numzaptimeout2.value, True)
 		self.numberString += str(number)
 		self["number"].setText(self.numberString)
 		self["number_summary"].setText(self.numberString)
@@ -1004,7 +1008,7 @@ class NumberZap(Screen):
 		self.handleServiceName()
 		self["service_summary"].setText(self["servicename"].getText())
 
-		if len(self.numberString) >= 4:
+		if len(self.numberString) >= int(config.usage.maxchannelnumlen.value):
 			self.keyOK()
 
 	def __init__(self, session, number, searchNumberFunction = None):
@@ -1045,7 +1049,11 @@ class NumberZap(Screen):
 
 		self.Timer = eTimer()
 		self.Timer.callback.append(self.keyOK)
-		self.Timer.start(3000, True)
+		if config.usage.numzaptimeoutmode.value is not "off":
+			if config.usage.numzaptimeoutmode.value is "standard":
+				self.Timer.start(3000, True)
+			else:
+				self.Timer.start(config.usage.numzaptimeout1.value, True)
 
 class InfoBarNumberZap:
 	""" Handles an initial number for NumberZapping """
@@ -1366,6 +1374,7 @@ class InfoBarChannelSelection:
 			if self.pts_blockZap_timer.isActive():
 				return
 
+			self["SeekActionsPTS"].setEnabled(False)
 			if self.servicelist.inBouquet():
 				prev = self.servicelist.getCurrentSelection()
 				if prev:
@@ -1418,12 +1427,15 @@ class InfoBarChannelSelection:
 				#self.servicelist2.moveUp()
 			#self.servicelist2.zap(enable_pipzap = True)
 			#ChannelSelectionInstance.dopipzap = False
+		#if self.timeshiftEnabled() and self.isSeekable():
+		#	self["SeekActionsPTS"].setEnabled(True)
 
 	def zapDown(self):
 		#if not self.LongButtonPressed or SystemInfo.get("NumVideoDecoders", 1) <= 1:
 			if self.pts_blockZap_timer.isActive():
 				return
 
+			self["SeekActionsPTS"].setEnabled(False)
 			if self.servicelist.inBouquet():
 				prev = self.servicelist.getCurrentSelection()
 				if prev:
@@ -1476,6 +1488,8 @@ class InfoBarChannelSelection:
 				#self.servicelist2.moveDown()
 			#self.servicelist2.zap(enable_pipzap = True)
 			#ChannelSelectionInstance.dopipzap = False
+		#if self.timeshiftEnabled() and self.isSeekable():
+		#	self["SeekActionsPTS"].setEnabled(True)
 
 	def volumeUp(self):
 		VolumeControl.instance.volUp()
@@ -2541,7 +2555,7 @@ class InfoBarSeek:
 			print "[InfoBarGeneretics] error in 'def doSeekRelative'", exc_info()[:2]
 
 		seekable = self.getSeek()
-		if seekable is None and int(self.seek.getLength()[1]) < 1:
+		if seekable is None or int(seekable.getLength()[1]) < 1:
 			return
 		prevstate = self.seekstate
 
@@ -2966,6 +2980,9 @@ class InfoBarExtensions:
 		#self.addExtension(extension = self.getSoftcamPanel, type = InfoBarExtensions.EXTENSION_LIST)
 		if config.usage.show_restart_network_extensionslist.getValue() is True:
 			self.addExtension(extension = self.getRestartNetwork, type = InfoBarExtensions.EXTENSION_LIST)
+
+		for p in plugins.getPlugins(PluginDescriptor.WHERE_EXTENSIONSINGLE):
+			p(self)
 
 	def bluekey_qm(self):
 		if config.workaround.blueswitch.value == "1":
@@ -3461,7 +3478,7 @@ class InfoBarINFOpanel:
 				"softcamPanel": (self.softcamPanel, _("Softcam-Panel...")),
 			})
 		self.onHBBTVActivation = [ ]
-		self.onRedButtonActivation = [ ]	
+		self.onRedButtonActivation = [ ]
 
 	def selectRedKeytask(self):
 		isWEBBROWSER = None
@@ -3475,6 +3492,8 @@ class InfoBarINFOpanel:
 		if os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/NXHbbTV/plugin.pyo"):
 			isHBBTV = True
 		if os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/OpenOpera/plugin.pyo"):
+			isHBBTV = True
+		if os.path.isfile("/usr/lib/enigma2/python/Plugins/Extensions/WebkitHbbTV/plugin.pyo"):
 			isHBBTV = True
 
 		if isWEBBROWSER or isHBBTV:

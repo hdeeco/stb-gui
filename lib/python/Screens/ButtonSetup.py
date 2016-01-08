@@ -41,6 +41,7 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("Help"), "displayHelp", ""),
 	(_("Help long"), "displayHelp_long", ""),
 	(_("Subtitle"), "subtitle", ""),
+	(_("Subtitle long"), "subtitle_long", ""),
 	(_("Menu"), "mainMenu", ""),
 	(_("List/Fav/PVR"), "list", ""),
 	(_("List/Fav/PVR long"), "list_long", ""),
@@ -89,6 +90,7 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("HDMIin"), "HDMIin", "Infobar/HDMIIn"),
 	(_("HDMIin") + " " + _("long"), "HDMIin_long", (SystemInfo["LcdLiveTV"] and "Infobar/ToggleLCDLiveTV") or ""),
 	(_("Context"), "contextMenu", "Infobar/showExtensionSelection"),
+	(_("Context long"), "context_long", ""),
 	(_("SAT"), "sat", "Infobar/openSatellites"),
 	(_("SAT long"), "sat_long", ""),
 	(_("Prov"), "prov", ""),
@@ -98,7 +100,9 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("F2"), "f2", ""),
 	(_("F2 long"), "f2_long", ""),
 	(_("F3"), "f3", ""),
-	(_("F3 long"), "f3_long", ""),]
+	(_("F3 long"), "f3_long", ""),
+	(_("F4"), "f4", ""),
+	(_("F4 long"), "f4_long", ""),]
 
 config.misc.ButtonSetup = ConfigSubsection()
 config.misc.ButtonSetup.additional_keys = ConfigYesNo(default=True)
@@ -184,6 +188,8 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Network menu"), "Infobar/showNetworkMounts", "Setup"))
 	ButtonSetupFunctions.append((_("Plugin Browser"), "Module/Screens.PluginBrowser/PluginBrowser", "Setup"))
 	ButtonSetupFunctions.append((_("Channel Info"), "Module/Screens.ServiceInfo/ServiceInfo", "Setup"))
+	ButtonSetupFunctions.append((_("SkinSelector"), "Module/Screens.SkinSelector/SkinSelector", "Setup"))
+	ButtonSetupFunctions.append((_("LCD SkinSelector"), "Module/Screens.SkinSelector/LcdSkinSelector", "Setup"))
 	ButtonSetupFunctions.append((_("Timer"), "Module/Screens.TimerEdit/TimerEditList", "Setup"))
 	ButtonSetupFunctions.append((_("Open AutoTimer"), "Infobar/showAutoTimerList", "Setup"))
 	for plugin in plugins.getPluginsForMenu("system"):
@@ -201,6 +207,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Harddisk Setup"), "Setup/harddisk", "Setup"))
 	ButtonSetupFunctions.append((_("Subtitles Settings"), "Setup/subtitlesetup", "Setup"))
 	ButtonSetupFunctions.append((_("Language"), "Module/Screens.LanguageSelection/LanguageSelection", "Setup"))
+	ButtonSetupFunctions.append((_("OscamInfo Mainmenu"), "Module/Screens.OScamInfo/OscamInfoMenu", "Plugins"))
 	if os.path.isdir("/etc/ppanels"):
 		for x in [x for x in os.listdir("/etc/ppanels") if x.endswith(".xml")]:
 			x = x[:-4]
