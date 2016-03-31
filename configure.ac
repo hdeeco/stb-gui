@@ -160,7 +160,6 @@ AM_CONDITIONAL(QUADBOX2400, test "$BOXTYPE" == quadbox2400)
 AM_CONDITIONAL(OPTIMUSSOS1, test "$BOXTYPE" == optimussos1)
 AM_CONDITIONAL(OPTIMUSSOS2, test "$BOXTYPE" == optimussos2)
 AM_CONDITIONAL(SOGNO8800HD, test "$BOXTYPE" == sogno8800hd)
-AM_CONDITIONAL(UNIBOXHDE, test "$BOXTYPE" == uniboxhde)
 AM_CONDITIONAL(PROTEK9900LX, test "$BOXTYPE" == 9900lx)
 AM_CONDITIONAL(TMTWINOE, test "$BOXTYPE" == tmtwin)
 AM_CONDITIONAL(TM2TOE, test "$BOXTYPE" == tm2t)
@@ -528,7 +527,6 @@ if test `echo "$BOXTYPE" | cut -b 1-4` == "ixus"; then
 fi
 
 if test "$BOXTYPE" == "blackbox7405"; then
-	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
 	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
 	AC_DEFINE(KEY_PLAY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
 	AC_DEFINE(KEY_MEDIA_TO_KEY_BOOKMARKS, 1,[define when rc sends a KEY_MEDIA event for its KEY_BOOKMARKS key])
