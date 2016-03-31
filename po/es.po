@@ -15988,3 +15988,28 @@ msgstr "Ucraniano"
 
 msgid "Undetermined"
 msgstr "Indeterminado"
+
+msgid ""
+"\n"
+"%d.%d.%d, %2d:%02d  -  %s"
+msgstr ""
+"\n"
+"%02d/%02d/%02d, %2d:%02d en %s"
+
+msgid "CH%s"
+msgstr "CANAL %s"
+
+msgid "CH"
+msgstr "CANAL "
+
+msgid " (Channel %s)"
+msgstr " (Canal %s)"
+
+msgid "%s %02d.%02d."
+msgstr "%s %02d/%02d"
+
+msgid "%02d.%02d."
+msgstr "%02d/%02d"
+
+msgid "%02d.%02d.%d"
+msgstr "%02d/%02d/%d"

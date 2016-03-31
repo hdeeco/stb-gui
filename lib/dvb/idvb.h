@@ -299,10 +299,12 @@ public:
 		dxNoDVB=4,  // dont use PMT for this service ( use cached pids )
 		dxHoldName=8,
 		dxNewFound=64,
+		dxIsDedicated3D=128,
 	};
 
 	bool usePMT() const { return !(m_flags & dxNoDVB); }
 	bool isHidden() const { return m_flags & dxDontshow; }
+	bool isDedicated3D() const { return m_flags & dxIsDedicated3D; }
 
 	CAID_LIST m_ca;
 
@@ -403,8 +405,10 @@ class eDVBFrontendParametersATSC;
 class iDVBFrontendParameters: public iObject
 {
 #ifdef SWIG
+public:
 	iDVBFrontendParameters();
 	~iDVBFrontendParameters();
+private:
 #endif
 public:
 	enum { flagOnlyFree = 1 };

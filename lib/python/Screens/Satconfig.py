@@ -1,4 +1,4 @@
-from enigma import eDVBDB
+from enigma import eDVBDB, eDVBResourceManager
 from Screens.Screen import Screen
 from Components.SystemInfo import SystemInfo
 from Components.ActionMap import ActionMap
@@ -250,7 +250,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			self.have_advanced = False
 			if self.nimConfig.configMode.value == "enabled":
 				self.list.append(getConfigListEntry(_("Terrestrial provider"), self.nimConfig.terrestrial))
-				if not getBoxType() in ('osmini', 'spycat', 'spycatmini'):
+				if not getBoxType() in ('spycat'):
 					self.list.append(getConfigListEntry(_("Enable 5V for active antenna"), self.nimConfig.terrestrial_5V))
 		else:
 			self.have_advanced = False
@@ -743,9 +743,11 @@ class NimSelection(Screen):
 		self["key_red"] = StaticText(_("Close"))
 		self["key_green"] = StaticText(_("Select"))
 
-		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
+		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions", "ChannelSelectEPGActions"],
 		{
 			"ok": self.okbuttonClick,
+			"info": self.extraInfo,
+			"epg": self.extraInfo,
 			"cancel": self.close,
 			"red": self.close,
 			"green": self.okbuttonClick,
@@ -775,6 +777,13 @@ class NimSelection(Screen):
 
 	def setResultClass(self):
 		self.resultclass = NimSetup
+
+	def extraInfo(self):
+		nim = self["nimlist"].getCurrent()
+		nim = nim and nim[3]
+		if config.usage.setup_level.index >= 2 and nim is not None:
+			text = _("Capabilities: ") + ",".join(eDVBResourceManager.getInstance().getFrontendCapabilities(nim.slot).splitlines())
+			self.session.open(MessageBox, text, MessageBox.TYPE_INFO, simple=True)
 
 	def okbuttonClick(self):
 		nim = self["nimlist"].getCurrent()
