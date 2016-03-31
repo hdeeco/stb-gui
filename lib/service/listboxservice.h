@@ -183,6 +183,7 @@ private:
 	int m_servicetype_icon_mode;
 	int m_crypto_icon_mode;
 	int m_record_indicator_mode;
+	int m_progressbar_mode;
 	int m_column_width;
 	int m_progressbar_height;
 	int m_progressbar_border_width;
