@@ -1002,17 +1002,14 @@ class PowerTimer(timer.Timer):
 
 		list.append('</timers>\n')
 
-		try:
-			file = open(self.Filename + ".writing", "w")
-			for x in list:
-				file.write(x)
-			file.flush()
+		file = open(self.Filename + ".writing", "w")
+		for x in list:
+			file.write(x)
+		file.flush()
 
-			os.fsync(file.fileno())
-			file.close()
-			os.rename(self.Filename + ".writing", self.Filename)
-		except:
-			pass
+		os.fsync(file.fileno())
+		file.close()
+		os.rename(self.Filename + ".writing", self.Filename)
 
 	def isProcessing(self, exceptTimer = None, endedTimer = None):
 		isRunning = False
