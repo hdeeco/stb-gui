@@ -1,6 +1,5 @@
 ## Our buildserver is currently running on: ##
 
-=======
 > Ubuntu 12.04.5 LTS (GNU/Linux 3.2.13-grsec-xxxx-grs-ipv6-64 x86_64)
 
 ## openATV 5.3 is build using oe-alliance build-environment and several git repositories: ##
