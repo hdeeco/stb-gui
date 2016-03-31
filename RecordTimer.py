@@ -1180,15 +1180,18 @@ class RecordTimer(timer.Timer):
 
 		list.append('</timers>\n')
 
-		file = open(self.Filename + ".writing", "w")
-		for x in list:
-			file.write(x)
-		file.flush()
+		try:
+			file = open(self.Filename + ".writing", "w")
+			for x in list:
+				file.write(x)
+			file.flush()
 
-		os.fsync(file.fileno())
-		file.close()
-		os.rename(self.Filename + ".writing", self.Filename)
-
+			os.fsync(file.fileno())
+			file.close()
+			os.rename(self.Filename + ".writing", self.Filename)
+		except:
+			pass
+		      
 	def getNextZapTime(self):
 		now = time()
 		for timer in self.timer_list:
