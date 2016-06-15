@@ -119,84 +119,83 @@ self.session.open(RemoteControlCode)
 				<item weight="40" level="1" text="Keyboard" entryID="keyboard"><setup id="keyboard" /></item>
 			</menu>
 			<item weight="70" level="0" text="Language" entryID="language_setup"><screen module="LanguageSelection" /></item>
-		</menu>
-				<!-- Menu / Settings / System / Extended System / OSD settings -->
-				<menu weight="40" level="2" text="OSD settings" entryID="osd_setup">
-					<id val="osd_menu" />
-					<item weight="0" level="0" entryID="user_interface"><setup id="userinterface" /></item>
-					<item weight="5" level="2" text="Button setup" entryID="buttonsetup_setup"><screen module="ButtonSetup" screen="ButtonSetup"/></item>
-					<item weight="10" level="0" text="Skin Setup" entryID="skin_setup"><screen module="SkinSelector" screen="SkinSelector"/></item>
-					<item weight="15" level="2" text="OSD Position" entryID="osdsetup" requires="CanChangeOsdPosition"><screen module="UserInterfacePositioner" screen="UserInterfacePositioner2"/></item>
-					<item weight="20" level="2" text="OSD 3D Setup" entryID="osd3dsetup" requires="CanChange3DOsd"><screen module="UserInterfacePositioner" screen="OSD3DSetupScreen"/></item>
-				</menu>
+			<!-- Menu / Settings / System / Extended System / OSD settings -->
+			<menu weight="40" level="2" text="OSD settings" entryID="osd_setup">
+				<id val="osd_menu" />
+				<item weight="0" level="0" entryID="user_interface"><setup id="userinterface" /></item>
+				<item weight="5" level="2" text="Button setup" entryID="buttonsetup_setup"><screen module="ButtonSetup" screen="ButtonSetup"/></item>
+				<item weight="10" level="0" text="Skin Setup" entryID="skin_setup"><screen module="SkinSelector" screen="SkinSelector"/></item>
+				<item weight="15" level="2" text="OSD Position" entryID="osdsetup" requires="CanChangeOsdPosition"><screen module="UserInterfacePositioner" screen="UserInterfacePositioner2"/></item>
+				<item weight="20" level="2" text="OSD 3D Setup" entryID="osd3dsetup" requires="CanChange3DOsd"><screen module="UserInterfacePositioner" screen="OSD3DSetupScreen"/></item>
+			</menu>
 
-				<!-- Menu / Settings / System / Extended System / Storage devices -->
-				<menu weight="45" level="0" text="Storage devices" entryID="hardisk_selection" requires="Harddisk">
-					<id val="harddisk" />
-					<item weight="0" level="1" entryID="harddisk_setup"><setup id="harddisk"/></item>
-					<item weight="5" level="0" text="Initialization" entryID="harddisk_init"><screen module="HarddiskSetup" screen="HarddiskSelection"/></item>
-					<item weight="10" level="0" text="Filesystem Check" entryID="harddisk_check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection"/></item>
-					<item weight="15" level="0" text="Convert ext3 filesystem to ext4" entryID="harddisk_convert" requires="ext4"><screen module="HarddiskSetup" screen="HarddiskConvertExt4Selection"/></item>
-				</menu>
+			<!-- Menu / Settings / System / Extended System / Storage devices -->
+			<menu weight="45" level="0" text="Storage devices" entryID="hardisk_selection" requires="Harddisk">
+				<id val="harddisk" />
+				<item weight="0" level="1" entryID="harddisk_setup"><setup id="harddisk"/></item>
+				<item weight="5" level="0" text="Initialization" entryID="harddisk_init"><screen module="HarddiskSetup" screen="HarddiskSelection"/></item>
+				<item weight="10" level="0" text="Filesystem Check" entryID="harddisk_check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection"/></item>
+				<item weight="15" level="0" text="Convert ext3 filesystem to ext4" entryID="harddisk_convert" requires="ext4"><screen module="HarddiskSetup" screen="HarddiskConvertExt4Selection"/></item>
+			</menu>
 
-				<!-- Menu / Settings / System / Extended System / EPG -->
-				<menu weight="50" level="2" text="EPG" entryID="epg_menu" requires="Feed">
-					<id val="epg" />
-					<item weight="0" level="0" entryID="epg_setup"><setup id="epgsettings" /></item>
+			<!-- Menu / Settings / System / Extended System / EPG -->
+			<menu weight="50" level="2" text="EPG" entryID="epg_menu" requires="Feed">
+				<id val="epg" />
+				<item weight="0" level="0" entryID="epg_setup"><setup id="epgsettings" /></item>
 
-					<!-- Menu / Settings / System / Extended System / EPG / Load Save-->
-					<menu weight="5" level="2" text="Load/Save" entryID="epgloadsave_menu">
-						<id val="epgloadsave_menu" />
-						<item weight="0" level="0" entryID="saveepgcache" text="Save EPG">
-							<code>
+				<!-- Menu / Settings / System / Extended System / EPG / Load Save-->
+				<menu weight="5" level="2" text="Load/Save" entryID="epgloadsave_menu">
+					<id val="epgloadsave_menu" />
+					<item weight="0" level="0" entryID="saveepgcache" text="Save EPG">
+						<code>
 from Components.EpgLoadSave import EpgSaveMsg
 def msgClosed(ret):
-	if ret:
-		from enigma import eEPGCache
-		epgcache = eEPGCache.getInstance()
-		epgcache.save()
+if ret:
+	from enigma import eEPGCache
+	epgcache = eEPGCache.getInstance()
+	epgcache.save()
 self.session.openWithCallback(msgClosed, EpgSaveMsg)
 </code>
-						</item>
-						<item weight="5" level="0" entryID="loadepgcache" text="Load EPG">
-							<code>
+					</item>
+					<item weight="5" level="0" entryID="loadepgcache" text="Load EPG">
+						<code>
 from Components.EpgLoadSave import EpgLoadMsg
 def msgClosed(ret):
-	if ret:
-		from enigma import eEPGCache
-		epgcache = eEPGCache.getInstance()
-		epgcache.load()
+if ret:
+	from enigma import eEPGCache
+	epgcache = eEPGCache.getInstance()
+	epgcache.load()
 self.session.openWithCallback(msgClosed, EpgLoadMsg)
 </code>
-						</item>
-					</menu>
-					<item weight="10" level="2" entryID="setup_epgmulti"><setup id="epgmulti" /></item>
-					<item weight="15" level="2" entryID="setup_epgenhanced"><setup id="epgenhanced" /></item>
-					<item weight="20" level="2" entryID="setup_epginfobar"><setup id="epginfobar" /></item>
-					<item weight="25" level="2" entryID="setup_epginfobargraphical"><setup id="epginfobargraphical" /></item>
-					<item weight="30" level="2" entryID="setup_epggraphical"><setup id="epggraphical" /></item>
+					</item>
 				</menu>
+				<item weight="10" level="2" entryID="setup_epgmulti"><setup id="epgmulti" /></item>
+				<item weight="15" level="2" entryID="setup_epgenhanced"><setup id="epgenhanced" /></item>
+				<item weight="20" level="2" entryID="setup_epginfobar"><setup id="epginfobar" /></item>
+				<item weight="25" level="2" entryID="setup_epginfobargraphical"><setup id="epginfobargraphical" /></item>
+				<item weight="30" level="2" entryID="setup_epggraphical"><setup id="epggraphical" /></item>
+			</menu>
 
-				<item weight="55" level="0" text="HDMI CEC" entryID="hdmicec" requires="HDMICEC">
-					<code>
+			<item weight="55" level="0" text="HDMI CEC" entryID="hdmicec" requires="HDMICEC">
+				<code>
 from Plugins.SystemPlugins.HdmiCEC.plugin import HdmiCECSetupScreen
 self.session.open(HdmiCECSetupScreen)
 </code>
-				</item>
-				<item weight="60" level="1" entryID="rfmod_setup" requires="RfModulator"><setup id="RFmod"/></item>
-				<item weight="70" level="1" text="Remote Control Code" entryID="remotecode" requires="RemoteCode">
-					<code>
+			</item>
+			<item weight="60" level="1" entryID="rfmod_setup" requires="RfModulator"><setup id="RFmod"/></item>
+			<item weight="70" level="1" text="Remote Control Code" entryID="remotecode" requires="RemoteCode">
+				<code>
 from Plugins.SystemPlugins.RemoteControlCode.plugin import RemoteControlCode
 self.session.open(RemoteControlCode)
 </code>
-				</item>
-				<item weight="80" level="0" entryID="dvdplayer_setup"><setup id="dvdplayer" /></item>
-			</menu>
+			</item>
+			<item weight="80" level="0" entryID="dvdplayer_setup"><setup id="dvdplayer" /></item>
+		</menu>
 
-			<item weight="30" level="0" text="Language" entryID="language_setup"><screen module="LanguageSelection" /></item>
+		<item weight="30" level="0" text="Language" entryID="language_setup"><screen module="LanguageSelection" /></item>
 
-			<!-- Menu / Settings / System / Extended System / Network -->
-			<menu weight="35" level="0" text="Network" entryID="network_menu">
+		<!-- Menu / Settings / System / Extended System / Network -->
+		<menu weight="35" level="0" text="Network" entryID="network_menu">
 				<id val="network" />
 				<item weight="0" level="0" text="Device Setup" entryID="device_setup"><screen module="NetworkSetup" screen="NetworkAdapterSelection"/></item>
 				<item weight="5" level="1" text="Mounts Setup" entryID="netmounts_setup"><screen module="NetworkSetup" screen="NetworkMountsMenu"/></item>
@@ -213,7 +212,6 @@ self.session.open(RemoteControlCode)
 				<item weight="60" level="2" text="Remote Tuner Server Setup" entryID="netrts_setup"><screen module="NetworkSetup" screen="RemoteTunerServer"/></item>
 			</menu>
 
-		</menu>
 
 		<item weight="99" level="0" text="Factory reset" entryID="factory_reset">
 			<code>
