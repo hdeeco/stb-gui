@@ -31,12 +31,17 @@ ButtonSetupKeys = [	(_("Red"), "red", ""),
 	(_("Right"), "cross_right", ""),
 	(_("Up"), "cross_up", ""),
 	(_("Down"), "cross_down", ""),
+	(_("PageUp"), "pageup", ""),
+	(_("PageUp long"), "pageup_long", ""),
+	(_("PageDown"), "pagedown", ""),
+	(_("PageDown long"), "pagedown_long", ""),
 	(_("Channel up"), "channelup", ""),
 	(_("Channel down"), "channeldown", ""),
 	(_("TV"), "showTv", ""),
 	(_("Radio"), "radio", ""),
 	(_("Radio long"), "radio_long", ""),
 	(_("Rec"), "rec", ""),
+	(_("Rec long"), "rec_long", ""),
 	(_("Teletext"), "text", ""),
 	(_("Help"), "displayHelp", ""),
 	(_("Help long"), "displayHelp_long", ""),
@@ -167,6 +172,7 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Start teletext"), "Infobar/startTeletext", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show subservice selection"), "Infobar/subserviceSelection", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show subtitle selection"), "Infobar/subtitleSelection", "InfoBar"))
+	ButtonSetupFunctions.append((_("Show subtitle quick menu"), "Infobar/subtitleQuickMenu", "InfoBar"))
 	ButtonSetupFunctions.append((_("Letterbox zoom"), "Infobar/vmodeSelection", "InfoBar"))
 	if SystemInfo["PIPAvailable"]:
 		ButtonSetupFunctions.append((_("Show PIP"), "Infobar/showPiP", "InfoBar"))

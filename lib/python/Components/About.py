@@ -1,4 +1,4 @@
-from boxbranding import getBoxType, getImageVersion, getDriverDate
+from boxbranding import getBoxType, getMachineBuild, getImageVersion, getDriverDate
 from sys import modules
 import socket, fcntl, struct, time, os
 
@@ -51,10 +51,12 @@ def getDriverBuildDateString():
 		return driversdate
 	      
 def getChipSetString():
-	if getBoxType() in ('dm7080','dm820'):
+	if getMachineBuild() in ('dm7080','dm820'):
 		return "7435"
-	if getBoxType() == "blackbox7405":
+	elif getBoxType() == "blackbox7405":
 		return "7413"
+	elif getMachineBuild() in ('hd51'):
+		return "7251S"
 	else:
 		try:
 			f = open('/proc/stb/info/chipset', 'r')
@@ -65,8 +67,10 @@ def getChipSetString():
 			return "unavailable"
 
 def getCPUSpeedString():
-	if getBoxType() in ('vusolo4k'):
+	if getMachineBuild() in ('vusolo4k', 'hd51'):
 		return "1,5 GHz"
+	elif getMachineBuild() in ('hd52'):
+		return "1,7 GHz"
 	else:
 		try:
 			file = open('/proc/cpuinfo', 'r')
@@ -87,7 +91,7 @@ def getCPUSpeedString():
 			return "unavailable"
 
 def getCPUString():
-	if getBoxType() in ('xc7362', 'vusolo4k'):
+	if getMachineBuild() in ('xc7362', 'vusolo4k', 'hd51', 'hd52'):
 		return "Broadcom"
 	else:
 		try:

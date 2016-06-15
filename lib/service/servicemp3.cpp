@@ -109,6 +109,7 @@ eServiceFactoryMP3::eServiceFactoryMP3()
 		extensions.push_back("asf");
 		extensions.push_back("wmv");
 		extensions.push_back("wma");
+		extensions.push_back("webm");
 		extensions.push_back("stream");
 		sc->addServiceFactory(eServiceFactoryMP3::id, this, extensions);
 	}
@@ -414,7 +415,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_is_live = false;
 	m_use_prefillbuffer = false;
 	m_paused = false;
-	m_seek_paused = false;
 	m_cuesheet_loaded = false; /* cuesheet CVR */
 #if GST_VERSION_MAJOR >= 1
 	m_use_chapter_entries = false; /* TOC chapter support CVR */
@@ -498,6 +498,11 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	else if ( strcasecmp(ext, ".asf") == 0 || strcasecmp(ext, ".wmv") == 0)
 	{
 		m_sourceinfo.containertype = ctASF;
+		m_sourceinfo.is_video = TRUE;
+	}
+	else if ( strcasecmp(ext, ".webm") == 0)
+	{
+		m_sourceinfo.containertype = ctWEBM;
 		m_sourceinfo.is_video = TRUE;
 	}
 	else if ( strcasecmp(ext, ".m4a") == 0 )
@@ -911,8 +916,7 @@ RESULT eServiceMP3::seekToImpl(pts_t to)
 
 	if (m_paused)
 	{
-		m_seek_paused = true;
-		gst_element_set_state(m_gst_playbin, GST_STATE_PLAYING);
+		m_event((iPlayableService*)this, evUpdatedInfo);
 	}
 
 	return 0;
@@ -937,13 +941,24 @@ RESULT eServiceMP3::trickSeek(gdouble ratio)
 {
 	if (!m_gst_playbin)
 		return -1;
+	GstState state, pending;
 	if (ratio > -0.01 && ratio < 0.01)
 	{
 		gst_element_set_state(m_gst_playbin, GST_STATE_PAUSED);
+		/* pipeline sometimes block due to audio track issue off gstreamer.
+		If the pipeline is blocked up on pending state change to paused ,
+        this issue is solved be just reslecting the current audio track.*/
+		gst_element_get_state(m_gst_playbin, &state, &pending, 1 * GST_SECOND);
+		if (state == GST_STATE_PLAYING && pending == GST_STATE_PAUSED)
+		{
+			if (m_currentAudioStream >= 0)
+				selectTrack(m_currentAudioStream);
+			else
+				selectTrack(0);
+		}
 		return 0;
 	}
 
-#if GST_VERSION_MAJOR >= 1
 	bool unpause = (m_currentTrickRatio == 1.0 && ratio == 1.0);
 	if (unpause)
 	{
@@ -976,7 +991,6 @@ RESULT eServiceMP3::trickSeek(gdouble ratio)
 		if (!strcmp(name, "filesrc") || !strcmp(name, "souphttpsrc"))
 		{
 			GstStateChangeReturn ret;
-			GstState state, pending;
 			/* make sure that last state change was successfull */
 			ret = gst_element_get_state(m_gst_playbin, &state, &pending, 0);
 			if (ret == GST_STATE_CHANGE_SUCCESS)
@@ -998,7 +1012,7 @@ RESULT eServiceMP3::trickSeek(gdouble ratio)
 seek_unpause:
 		eDebugNoNewLine(", doing seeking unpause\n");
 	}
-#endif
+
 	m_currentTrickRatio = ratio;
 
 	bool validposition = false;
@@ -1010,7 +1024,9 @@ seek_unpause:
 		pos = pts * 11111LL;
 	}
 
-	gst_element_set_state(m_gst_playbin, GST_STATE_PLAYING);
+	gst_element_get_state(m_gst_playbin, &state, &pending, 1 * GST_SECOND);
+	if (state != GST_STATE_PLAYING)
+		gst_element_set_state(m_gst_playbin, GST_STATE_PLAYING);
 
 	if (validposition)
 	{
@@ -1065,9 +1081,9 @@ RESULT eServiceMP3::getPlayPosition(pts_t &pts)
 	if (!m_gst_playbin || m_state != stRunning)
 		return -1;
 
-	if (audioSink || videoSink)
+	if ((audioSink || videoSink) && !m_paused)
 	{
-		g_signal_emit_by_name(audioSink ? audioSink : videoSink, "get-decoder-time", &pos);
+		g_signal_emit_by_name(videoSink ? videoSink : audioSink, "get-decoder-time", &pos);
 		if (!GST_CLOCK_TIME_IS_VALID(pos)) return -1;
 	}
 	else
@@ -1502,18 +1518,12 @@ RESULT eServiceMP3::selectTrack(unsigned int i)
 		if (ppos < 0)
 			ppos = 0;
 	}
-
-	int ret = selectAudioStream(i);
-	if (!ret)
+	if (validposition)
 	{
-		if (validposition)
-		{
-			/* flush */
-			seekTo(ppos);
-		}
+		/* flush */
+		seekTo(ppos);
 	}
-
-	return ret;
+	return selectAudioStream(i);
 }
 
 int eServiceMP3::selectAudioStream(int i)
@@ -1747,13 +1757,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				case GST_STATE_CHANGE_PAUSED_TO_PLAYING:
 				{
 					m_paused = false;
-					if (m_seek_paused)
-					{
-						m_seek_paused = false;
-						gst_element_set_state(m_gst_playbin, GST_STATE_PAUSED);
-					}
-					else
-						m_event((iPlayableService*)this, evGstreamerPlayStarted);
+					m_event((iPlayableService*)this, evGstreamerPlayStarted);
 				}	break;
 				case GST_STATE_CHANGE_PLAYING_TO_PAUSED:
 				{
@@ -1945,6 +1949,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 #else
 				GstCaps* caps = gst_pad_get_current_caps(pad);
 #endif
+				gst_object_unref(pad);
 				if (!caps)
 					continue;
 				GstStructure* str = gst_caps_get_structure(caps, 0);
@@ -2009,9 +2014,11 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					g_signal_connect (G_OBJECT (pad), "notify::caps", G_CALLBACK (gstTextpadHasCAPS), this);
 
 				subs.type = getSubtitleType(pad, g_codec);
+				gst_object_unref(pad);
 				g_free(g_codec);
 				m_subtitleStreams.push_back(subs);
 			}
+
 			m_event((iPlayableService*)this, evUpdatedInfo);
 
 			if ( m_errorInfo.missing_codec != "" )
@@ -2489,6 +2496,7 @@ void eServiceMP3::gstTextpadHasCAPS_synced(GstPad *pad)
 					subs.language_code = std::string(g_lang);
 					g_free(g_lang);
 				}
+				gst_tag_list_free(tags);
 			}
 
 			if (m_currentSubtitleStream >= 0 && m_currentSubtitleStream < (int)m_subtitleStreams.size())

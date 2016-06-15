@@ -10,6 +10,10 @@
 
 #include <deque>
 #include <fstream>
+#include <ios>
+#include <sstream>
+#include <iomanip>
+#include <string>
 #include <time.h>
 #include <unistd.h>  // for usleep
 #include <sys/vfs.h> // for statfs
@@ -670,7 +674,7 @@ bool eEPGCache::FixOverlapping(EventCacheItem &servicemap, time_t TM, int durati
 {
 	bool ret = false;
 	timeMap::iterator tmp = tm_it;
-	while ((tmp->first + tmp->second->getDuration() - 300) > TM)
+	while ((tmp->first + tmp->second->getDuration() - 360) > TM)
 	{
 		if(tmp->first != TM
 #ifdef ENABLE_PRIVATE_EPG
@@ -1530,7 +1534,7 @@ void eEPGCache::channel_data::finishEPG()
 {
 	if (!isRunning)  // epg ready
 	{
-		eDebug("[EPGC] stop caching events(%ld)", ::time(0));
+		eDebug("[EPGC] stop caching events");
 		zapTimer->start(UPDATE_INTERVAL, 1);
 		eDebug("[EPGC] next update in %i min", UPDATE_INTERVAL / 60000);
 		for (unsigned int i=0; i < sizeof(seenSections)/sizeof(tidMap); ++i)
@@ -1551,7 +1555,7 @@ void eEPGCache::channel_data::finishEPG()
 
 void eEPGCache::channel_data::startEPG()
 {
-	eDebug("[EPGC] start caching events(%ld)", ::time(0));
+	eDebug("[EPGC] start caching events");
 	state=0;
 	haveData=0;
 	for (unsigned int i=0; i < sizeof(seenSections)/sizeof(tidMap); ++i)
@@ -1625,15 +1629,17 @@ void eEPGCache::channel_data::startEPG()
 	mask.flags = eDVBSectionFilterMask::rfCRC;
 
 	eDVBChannelID chid = channel->getChannelID();
-	char optsidonid[12];
-	sprintf (optsidonid,"%x", chid.dvbnamespace.get());
-	optsidonid [strlen(optsidonid) - 4] = '\0';
-	sprintf (optsidonid, "%s%04x%04x", optsidonid, chid.transport_stream_id.get(), chid.original_network_id.get());
-	std::map<std::string,int>::iterator it = cache->customeitpids.find(std::string(optsidonid));
+	std::ostringstream epg_id;
+	epg_id << std::hex << std::setfill('0') <<
+		std::setw(0) << ((chid.dvbnamespace.get() & 0xffff0000) >> 16) <<
+		std::setw(4) << chid.transport_stream_id.get() <<
+		std::setw(4) << chid.original_network_id.get();
+
+	std::map<std::string,int>::iterator it = cache->customeitpids.find(epg_id.str());
 	if (it != cache->customeitpids.end())
 	{
 		mask.pid = it->second;
-		eDebug("[eEPGCache] Using non standart pid %#x", mask.pid);
+		eDebug("[eEPGCache] Using non-standard pid %#x", mask.pid);
 	}
 
 	if (eEPGCache::getInstance()->getEpgSources() & eEPGCache::NOWNEXT)
@@ -2078,7 +2084,7 @@ void eEPGCache::channel_data::readData( const uint8_t *data, int source)
 #endif
 			default: eDebugNoNewLine("unknown");break;
 		}
-		eDebugNoNewLineEnd(" finished(%ld)", ::time(0));
+		eDebug(" finished(%ld)", ::time(0));
 		if ( reader )
 			reader->stop();
 		isRunning &= ~source;
@@ -3099,7 +3105,9 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 		char event_type = (char) PyInt_AsLong(PyTuple_GET_ITEM(singleEvent, 5));
 
 		Py_BEGIN_ALLOW_THREADS;
-		submitEventData(refs, start, duration, title, short_summary, long_description, event_type);
+		{
+			submitEventData(refs, start, duration, title, short_summary, long_description, event_type);
+		}
 		Py_END_ALLOW_THREADS;
 	}
 }
@@ -3274,61 +3282,63 @@ PyObject *eEPGCache::search(ePyObject arg)
 							break;
 					}
 					Py_BEGIN_ALLOW_THREADS; /* No Python code in this section, so other threads can run */
-					singleLock s(cache_lock);
-					std::string title;
-					for (DescriptorMap::iterator it(eventData::descriptors.begin());
-						it != eventData::descriptors.end(); ++it)
 					{
-						uint8_t *data = it->second.data;
-						if ( data[0] == 0x4D ) // short event descriptor
+						singleLock s(cache_lock);
+						std::string title;
+						for (DescriptorMap::iterator it(eventData::descriptors.begin());
+							it != eventData::descriptors.end(); ++it)
 						{
-							const char *titleptr = (const char*)&data[6];
-							int title_len = data[5];
-							if (data[6] < 0x20)
+							uint8_t *data = it->second.data;
+							if ( data[0] == 0x4D ) // short event descriptor
 							{
-								/* custom encoding */
-								title = convertDVBUTF8((unsigned char*)titleptr, title_len, 0x40, 0);
-								titleptr = title.data();
-								title_len = title.length();
-							}
-							if (title_len < textlen)
-								/*Doesn't fit, so cannot match anything */
-								continue;
-							if (querytype == 1)
-							{
-								/* require exact title match */
-								if (title_len != textlen)
-									continue;
-							}
-							else if (querytype == 3)
-							{
-								/* Do a "startswith" match by pretending the text isn't that long */
-								title_len = textlen;
-							}
-							if (casetype)
-							{
-								while (title_len >= textlen)
+								const char *titleptr = (const char*)&data[6];
+								int title_len = data[5];
+								if (data[6] < 0x20)
 								{
-									if (!strncasecmp(titleptr, str, textlen))
-									{
-										descr.push_back(it->first);
-										break;
-									}
-									title_len--;
-									titleptr++;
+									/* custom encoding */
+									title = convertDVBUTF8((unsigned char*)titleptr, title_len, 0x40, 0);
+									titleptr = title.data();
+									title_len = title.length();
 								}
-							}
-							else
-							{
-								while (title_len >= textlen)
+								if (title_len < textlen)
+									/*Doesn't fit, so cannot match anything */
+									continue;
+								if (querytype == 1)
 								{
-									if (!memcmp(titleptr, str, textlen))
+									/* require exact title match */
+									if (title_len != textlen)
+										continue;
+								}
+								else if (querytype == 3)
+								{
+									/* Do a "startswith" match by pretending the text isn't that long */
+									title_len = textlen;
+								}
+								if (casetype)
+								{
+									while (title_len >= textlen)
 									{
-										descr.push_back(it->first);
-										break;
+										if (!strncasecmp(titleptr, str, textlen))
+										{
+											descr.push_back(it->first);
+											break;
+										}
+										title_len--;
+										titleptr++;
 									}
-									title_len--;
-									titleptr++;
+								}
+								else
+								{
+									while (title_len >= textlen)
+									{
+										if (!memcmp(titleptr, str, textlen))
+										{
+											descr.push_back(it->first);
+											break;
+										}
+										title_len--;
+										titleptr++;
+									}
 								}
 							}
 						}
@@ -3506,7 +3516,6 @@ PyObject *eEPGCache::search(ePyObject arg)
 				++cit;
 		}
 	}
-
 	if (!ret)
 		Py_RETURN_NONE;
 
@@ -4422,7 +4431,7 @@ void eEPGCache::channel_data::readMHWData(const uint8_t *data)
 		eDebug("[EPGC] mhw %d themes found", m_themes.size());
 		// Themes table has been read, start reading the titles table.
 		startMHWReader(0xD2, 0x90);
-		startMHWTimeout(4000);
+		startMHWTimeout(5000);
 		return;
 	}
 	else if (m_MHWFilterMask.pid == 0xD2 && m_MHWFilterMask.data[0] == 0x90)
